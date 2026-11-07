@@ -116,55 +116,84 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 422, error: "Username này chưa được xác nhận là tài khoản Locket thật. Vui lòng kiểm tra lại." };
   }
 
-  const profile = data.profile;
-  const uid = String(profile?.uid || "").trim();
+  // Uplocket có thể bọc hồ sơ trong data/result; chuẩn hóa các dạng phản hồi phổ biến.
+  const envelopes = [data, data?.data, data?.result].filter(x => x && typeof x === "object");
+  const profileCandidates = [
+    data?.profile, data?.data?.profile, data?.result?.profile,
+    data?.account, data?.data?.account, data?.result?.account,
+    data?.user, data?.data?.user, data?.result?.user
+  ].filter(x => x && typeof x === "object");
+  let profile = profileCandidates.find(x => x.uid || x.userId || x.user_id || x.id);
+  if (!profile) {
+    profile = envelopes.find(x => x.uid || x.userId || x.user_id) || null;
+  }
+  const uid = String(profile?.uid || profile?.userId || profile?.user_id || profile?.id || "").trim();
   if (!profile || !uid || /^usr_/i.test(uid)) {
     console.error("Uplocket account lookup returned an incomplete or provisional profile.");
     return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
   }
 
-  // Detect Gold entitlement across common Uplocket response shapes.
-  const roots = [data, data?.data, data?.result, data?.profile, data?.account, data?.data?.profile, data?.result?.profile].filter(Boolean);
-  const goldKeys = /(gold|premium|subscription|entitlement)/i;
+  // Đọc trạng thái Gold cả khi API đặt status bên trong subscription/membership.
   const normalizeGold = value => {
     if (value === true || value === 1) return true;
     if (value === false || value === 0) return false;
     if (typeof value !== "string") return null;
-    const state = value.trim().toLowerCase();
-    if (["true","1","active","gold","premium","subscribed","enabled","valid","đang hoạt động"].includes(state)) return true;
-    if (["false","0","inactive","none","free","no gold","not gold","not_subscribed","expired","disabled","bản free","chưa có gold"].includes(state)) return false;
-    if (/\b(active|enabled|subscribed|premium|gold)\b/.test(state) && !/\b(free|inactive|expired|not|no)\b/.test(state)) return true;
-    if (/\b(free|inactive|expired|not_gold|no_gold|disabled)\b/.test(state)) return false;
+    const state = value.trim().toLowerCase().replace(/[ -]+/g, "_");
+    if (["true","1","active","gold","gold_active","premium","subscribed","enabled","valid","đang_hoạt_động"].includes(state)) return true;
+    if (["false","0","inactive","none","free","no_gold","not_gold","not_subscribed","expired","disabled","bản_free","chưa_có_gold"].includes(state)) return false;
+    if (/(gold|premium)/.test(state) && !/(free|inactive|expired|not|no_)/.test(state)) return true;
+    if (/(^|_)(free|inactive|expired|disabled|not_gold|no_gold)(_|$)/.test(state)) return false;
     return null;
   };
-  function findGoldFlag(value, depth=0) {
-    if (!value || typeof value !== "object" || depth > 6) return null;
-    for (const [key, child] of Object.entries(value)) {
-      if (goldKeys.test(key)) {
+  function findGoldFlag(value, depth=0, inEntitlement=false) {
+    if (!value || typeof value !== "object" || depth > 8) return null;
+    const entries = Array.isArray(value) ? value.map((v,i)=>[String(i),v]) : Object.entries(value);
+    for (const [key, child] of entries) {
+      const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const entitlementKey = /(gold|premium|subscription|entitlement|membership|plan|tier)/i.test(key);
+      const statusKey = /^(status|state|active|enabled|isactive|isgold|hasgold|ispremium|haspremium)$/i.test(normalizedKey);
+      if (entitlementKey) {
         const direct = normalizeGold(child);
         if (direct !== null) return direct;
         if (child && typeof child === "object") {
-          const nestedFlag = findGoldFlag(child, depth+1);
-          if (nestedFlag !== null) return nestedFlag;
+          const nested = findGoldFlag(child, depth+1, true);
+          if (nested !== null) return nested;
         }
+      } else if (statusKey && inEntitlement) {
+        const direct = normalizeGold(child);
+        if (direct !== null) return direct;
+      } else if ((normalizedKey === "status" || normalizedKey === "state") && typeof child === "string") {
+        const direct = normalizeGold(child);
+        if (direct !== null && /(gold|premium|free)/i.test(child)) return direct;
       }
     }
-    for (const child of Object.values(value)) {
+    for (const child of entries.map(entry=>entry[1])) {
       if (child && typeof child === "object") {
-        const nestedFlag = findGoldFlag(child, depth+1);
-        if (nestedFlag !== null) return nestedFlag;
+        const nested = findGoldFlag(child, depth+1, inEntitlement);
+        if (nested !== null) return nested;
       }
     }
     return null;
   }
-  const goldActive = roots.reduce((found, root) => found !== null ? found : findGoldFlag(root), null);
+  const goldActive = envelopes.reduce((found, root) => found !== null ? found : findGoldFlag(root), null);
   const goldStatus = goldActive === true ? "GOLD" : goldActive === false ? "BẢN FREE" : null;
-  const verifiedUsername = String(profile.username || username).trim();
+  const verifiedUsername = String(profile.username || profile.userName || profile.handle || username).trim().replace(/^@/,"");
   if (!verifiedUsername || verifiedUsername.length > 100) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
   }
-
-  return { ok: true, username: verifiedUsername, goldStatus, profile: { username: verifiedUsername, uid, name: String(profile.name || "").slice(0,100), avatar: String(profile.avatar || "").slice(0,1000) } };
+  const displayName = profile.name || profile.displayName || profile.fullName || profile.full_name || "";
+  const avatarUrl = profile.avatar || profile.avatarUrl || profile.photoURL || profile.photo_url || profile.picture || "";
+  return {
+    ok: true,
+    username: verifiedUsername,
+    goldStatus,
+    profile: {
+      username: verifiedUsername,
+      uid,
+      name: String(displayName).slice(0,100),
+      avatar: String(avatarUrl).slice(0,1000)
+    }
+  };
 }
 
 async function lookupInstallLink(request, env, origin) {
