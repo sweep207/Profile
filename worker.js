@@ -325,7 +325,7 @@ async function activatePaidOrder(order, env) {
     const response = await fetch("https://uplocket.io.vn/api/v1/dns/export", {
       method: "POST",
       headers: {"Authorization":"Bearer " + env.UPLOCKET_API_KEY,"Content-Type":"application/json","Accept":"application/json"},
-      body: JSON.stringify({username:order.username,durationDays,packageName:plan.name,activationDate:order.activation_date||null})
+      body: JSON.stringify({username:order.username,durationDays,packageName:plan.name,memberSinceDate:order.activation_date||"today"})
     });
     const raw = await response.text();
     let data = {};
