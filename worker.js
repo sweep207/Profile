@@ -117,12 +117,17 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
   }
 
+  const goldStatusValue = data.gold_status ?? data.goldStatus ?? data.is_gold ?? data.isGold ?? profile.gold_status ?? profile.goldStatus ?? profile.is_gold ?? profile.isGold;
+  let goldStatus = null;
+  if (goldStatusValue === true) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
+  else if (goldStatusValue === false) goldStatus = "CHƯA CÓ GOLD";
+  else if (typeof goldStatusValue === "string" && goldStatusValue.trim()) goldStatus = goldStatusValue.trim().slice(0,80);
   const verifiedUsername = String(profile.username || username).trim();
   if (!verifiedUsername || verifiedUsername.length > 100) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
   }
 
-  return { ok: true, username: verifiedUsername, profile: { username: verifiedUsername, uid, name: String(profile.name || "").slice(0,100), avatar: String(profile.avatar || "").slice(0,1000) } };
+  return { ok: true, username: verifiedUsername, goldStatus, profile: { username: verifiedUsername, uid, name: String(profile.name || "").slice(0,100), avatar: String(profile.avatar || "").slice(0,1000) } };
 }
 
 async function lookupInstallLink(request, env, origin) {
@@ -136,9 +141,9 @@ async function lookupInstallLink(request, env, origin) {
   if(!username || username.length>100) return json({success:false,error:"Username Locket không hợp lệ."},400,origin);
   const verification=await verifyLocketAccount(username,env);
   if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
-  const row=await env.DB.prepare("SELECT install_url,plan,created_at FROM orders WHERE lower(username)=lower(?) AND status='completed' AND install_url IS NOT NULL AND install_url<>'' ORDER BY created_at DESC LIMIT 1").bind(verification.username).first();
+  const row=await env.DB.prepare("SELECT install_url,plan,created_at,activation_date FROM orders WHERE lower(username)=lower(?) AND status='completed' AND install_url IS NOT NULL AND install_url<>'' ORDER BY created_at DESC LIMIT 1").bind(verification.username).first();
   if(!row) return json({success:false,error:"Không tìm thấy link DNS đã kích hoạt cho tài khoản này. Hãy kiểm tra tài khoản hoặc liên hệ hỗ trợ."},404,origin);
-  return json({success:true,install_url:row.install_url,plan:row.plan,created_at:row.created_at},200,origin);
+  return json({success:true,install_url:row.install_url,plan:row.plan,created_at:row.created_at,activation_date:row.activation_date||null},200,origin);
 }
 async function createOrder(request, env, origin) {
   if(!await rateLimit(request,env)) return json({error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
@@ -156,9 +161,9 @@ async function createOrder(request, env, origin) {
 
   const id=crypto.randomUUID(), code=await orderCode(env), expires=Date.now()+10*60*1000;
   await env.DB.prepare(`
-    INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at)
-    VALUES(?,?,?,?,?,'pending',?)
-  `).bind(id,code,verifiedUsername,plan.id,plan.price,expires).run();
+    INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at,activation_date)
+    VALUES(?,?,?,?,?,'pending',?,?)
+  `).bind(id,code,verifiedUsername,plan.id,plan.price,expires,String(body.activationDate||'')).run();
 
   const qr=new URL(`https://img.vietqr.io/image/${encodeURIComponent(env.BANK_ID)}-${encodeURIComponent(env.BANK_ACCOUNT)}-compact2.png`);
   qr.searchParams.set("amount",String(plan.price));
@@ -194,7 +199,7 @@ async function activatePaidOrder(order, env) {
     const response = await fetch("https://uplocket.io.vn/api/v1/dns/export", {
       method: "POST",
       headers: {"Authorization":"Bearer " + env.UPLOCKET_API_KEY,"Content-Type":"application/json","Accept":"application/json"},
-      body: JSON.stringify({username:order.username,durationDays,packageName:plan.name})
+      body: JSON.stringify({username:order.username,durationDays,packageName:plan.name,activationDate:order.activation_date||null})
     });
     const raw = await response.text();
     let data = {};
@@ -325,7 +330,7 @@ export default {
       if(!env.DB) return json({error:"D1 binding DB chưa được cấu hình."},503,origin||"");
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="POST" && url.pathname==="/lookup-install-link") return await lookupInstallLink(request,env,origin||"");
-      if(request.method==="POST" && url.pathname==="/verify-account") { if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||""); let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");} const username=String(body.username||"").trim(); if(!username||username.length>100||/[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||""); const verification=await verifyLocketAccount(username,env); if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||""); return json({success:true,profile:verification.profile,gold_status:null},200,origin||""); }
+      if(request.method==="POST" && url.pathname==="/verify-account") { if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||""); let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");} const username=String(body.username||"").trim(); if(!username||username.length>100||/[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||""); const verification=await verifyLocketAccount(username,env); if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||""); return json({success:true,profile:verification.profile,gold_status:verification.goldStatus||null},200,origin||""); }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
       if(request.method==="POST" && url.pathname==="/admin/install-video") return await saveInstallVideo(request,env,origin);
