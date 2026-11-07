@@ -280,7 +280,7 @@ footer{background:#0c1120!important;color:#a8b0c6!important;border-top:1px solid
  <div class="support-card"><button class="close" type="button" aria-label="Đóng hỗ trợ" onclick="toggleSupport(false)">✕</button>
  <div class="brand-mark">♧</div><h2 id="supportTitle">Hỗ trợ 24/7</h2><p>Chọn kênh bạn tiện liên hệ — đội hỗ trợ sẽ trả lời sớm nhất.</p>
  <a class="support-option" id="zaloSupport" href="#" target="_blank" rel="noopener" aria-label="Liên hệ Zalo"><span class="support-icon">◉</span><span><b>Zalo</b><small>Nhắn tin, gửi ảnh màn hình</small></span><span class="external">↗</span></a>
- <a class="support-option telegram" href="https://t.me/HeyLocket" target="_blank" rel="noopener"><span class="support-icon">➤</span><span><b>Telegram</b><small>t.me/HeyLocket</small></span><span class="external">↗</span></a>
+ <a class="support-option telegram" href="https://t.me/sweep207" target="_blank" rel="noopener"><span class="support-icon">➤</span><span><b>Telegram</b><small>@sweep207</small></span><span class="external">↗</span></a>
  </div>
 </div>
 
@@ -298,7 +298,7 @@ footer{background:#0c1120!important;color:#a8b0c6!important;border-top:1px solid
 <p class="tiny" style="margin-top:12px">Trang tự kiểm tra trạng thái mỗi 3 giây.</p><button class="btn" style="width:100%;margin-top:14px" onclick="closeModal()">Đóng cửa sổ</button></div>
 </div></div>
 <script>
-const API_BASE=window.LOCKET_API_BASE||"https://YOUR-WORKER.workers.dev",SUPPORT_ZALO_URL="";
+const API_BASE=window.LOCKET_API_BASE||"https://locket-plus-api.dangtoanvu07.workers.dev",SUPPORT_ZALO_URL="https://zalo.me/0853261605";
 let plans=[],selected=null,activeOrder=null,poller=null,ticker=null,expiresAt=0,busy=false,purchaseItems=[],purchaseIndex=0,purchaseTimer=null,verifiedProfile=null,verifiedUsername="",activationDateValue=new Date().toISOString().slice(0,10);
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat("vi-VN").format(n)+"đ";
 if($("year"))$("year").textContent=new Date().getFullYear();
