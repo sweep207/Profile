@@ -49,68 +49,86 @@ footer{border-color:#202635}.footer-note,.tiny{color:#8f98a9}.footer-links{color
 @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:620px){.wrap{width:calc(100% - 18px)}header,.nav{height:57px}.navlinks{top:57px;background:#0d111b}.hero{padding:30px 0 24px}.hero p{font-size:11px}.section-head h2{font-size:19px}.step-card{padding:14px}.pricing{grid-template-columns:1fr;max-width:none;gap:10px}.plan{padding:18px 14px}.plan h3{font-size:13px}.plan ul{margin:12px 0 15px;gap:7px}.plan .btn{font-size:11px;padding:11px}.benefits{grid-template-columns:1fr}.support-card{padding:20px 16px}.support-card h2{font-size:21px}#purchaseToast{bottom:14px;left:10px}#supportFab{bottom:18px;right:14px;width:54px;height:54px}}
 
+
+:root{--yellow:#ffc52e;--yellow2:#ffad16;--ink:#f7f8fc;--muted:#a0a8b8;--paper:#090c13;--soft:#101722;--line:#242d3c;--green:#39dca5}
+html,body{background:#05070b;color:var(--ink)}header{background:#171a22;border-bottom:1px solid #242936}
+.brand{font-size:14px}.brand-mark{background:linear-gradient(145deg,#ffe15a,#f39a27);color:#1b1507}
+.brand:after{content:"PREMIUM";font-size:8px;color:#ffcf43;border:1px solid #856514;border-radius:20px;padding:2px 6px}
+.navlinks{color:#e8eaf0}.navlinks.open{background:#171a22}.menu{color:#f7f8fc}
+.btn{background:linear-gradient(110deg,#ffe15a,#ffae16);color:#201600;box-shadow:0 5px 18px #ffba2630}.btn-ghost{background:transparent;color:#f8f8f8;border:1px solid #343a48;box-shadow:none}
+.intro-hero{padding:38px 0 26px;text-align:center;background:radial-gradient(ellipse at 50% 0,#27200c 0,transparent 65%),#05070b}
+.intro-hero .eyebrow{color:#ffca37}.intro-hero h1{max-width:780px;margin:10px auto;font-size:clamp(28px,5vw,46px);line-height:1.08;letter-spacing:-.04em}.intro-hero p{max-width:680px;margin:12px auto;color:#b2bac8;font-size:14px}.hero-actions{display:flex;justify-content:center;gap:10px;margin-top:20px}
+section{padding:27px 0}.section-head{text-align:left;margin:0 0 15px}.section-head h2{font-size:20px;letter-spacing:-.02em;margin:0}
+#pricing{background:#05070b}.price-table-wrap{border:1px solid #283143;border-radius:15px;overflow:hidden;background:#0b111a}
+.price-table{width:100%;border-collapse:collapse;font-size:12px}.price-table th{font-size:10px;font-weight:600;color:#aab3c2;text-align:left;background:#0d1420;padding:11px 13px}.price-table th:last-child,.price-table td:last-child{text-align:right}
+.price-table td{padding:11px 13px;border-top:1px solid #1d2634;color:#e9edf5}.price-table tbody tr{cursor:pointer}.price-table tbody tr:hover{background:#151e2b}.price-table td:last-child{font-weight:900;color:#ffcf35;white-space:nowrap}.price-hint{font-size:10px;color:#818b9c;margin:8px 2px}
+.feature-list,.step-list,.safety-list{display:grid;gap:9px}.feature-card,.step-line,.safety-list article{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid #222c3a;background:#0b1119;border-radius:14px}
+.feature-card>span{font-size:18px;color:#31d9a1;font-weight:900}.feature-card b,.step-line b,.safety-list b{display:block;font-size:12px;color:#f5f6fa}.feature-card p,.step-line p,.safety-list p{font-size:11px;color:#a5afbf;margin:3px 0 0}.feature-card a{display:inline-block;color:#ffd04a;font-size:11px;margin-top:6px}
+.step-line i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#ffae21;color:#251600;font-size:11px;font-style:normal;font-weight:900;flex:none}
+.safety-list{grid-template-columns:repeat(2,minmax(0,1fr))}.safety-list article{display:block}.safety-list article span{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#242316;color:#ffd04a;margin-bottom:9px}
+.closing-card{text-align:center;border:1px solid #283143;background:#0b1119;border-radius:17px;padding:22px}.closing-card h2{font-size:20px;margin:0}.closing-card p{font-size:11px;color:#a4adbb;margin:6px auto 14px}
+footer{border-color:#1f2734}.footer-note,.tiny{color:#8f98a9}.footer-links{color:#d9dde5}
+.modal{background:#000b;backdrop-filter:blur(8px)}.modal-card{background:#111724;color:#f5f6fa;border:1px solid #2a3344;border-radius:22px}.close{background:#202838;color:#fff}.detail{border-color:#293244}.detail span{color:#9ba4b3}.copy{background:#202838;color:#fff;border-color:#3a4559}.status{background:#392f12;color:#ffe08a}.status.success{background:#103326;color:#75e5b8}.status.error{background:#3b1d20;color:#ff9a9a}
+#supportFab{position:fixed;right:16px;bottom:20px;z-index:35;width:52px;height:52px;border:0;border-radius:50%;background:linear-gradient(145deg,#ffe05b,#f5a51e);color:#211700;font-size:23px;box-shadow:0 8px 28px #ffb51f55;cursor:pointer}
+#supportPanel{position:fixed;inset:0;z-index:40;background:#000b;backdrop-filter:blur(9px);display:none;align-items:flex-end;justify-content:center;padding:16px}
+#supportPanel.open{display:flex}.support-card{width:min(520px,100%);background:#111724;border:1px solid #2a3344;border-radius:25px;padding:22px;position:relative;box-shadow:0 20px 70px #0008}.support-card h2{margin:18px 0 4px;font-size:24px}.support-card>p{color:#9ba4b3;margin:8px 0 20px}.support-option{display:flex;align-items:center;gap:14px;padding:15px;border-radius:17px;background:#1a2130;border:1px solid #30394a;margin-top:12px}.support-option .support-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#1b3155;color:#77aaff;font-size:24px}.support-option.telegram .support-icon{background:#17384b;color:#77d1ff}.support-option b{display:block;font-size:17px}.support-option small{display:block;color:#9ba4b3;font-size:12px}.support-option .external{margin-left:auto;color:#8b95a7;font-size:20px}.support-option.disabled{opacity:.55;cursor:not-allowed}
+#purchaseToast{position:fixed;left:12px;bottom:14px;z-index:34;display:none;align-items:center;gap:9px;max-width:min(340px,calc(100vw - 85px));padding:9px 12px;border-radius:16px;background:#121927;border:1px solid #2a3344;box-shadow:0 12px 35px #0008}
+#purchaseToast.show{display:flex}.toast-avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#242d3e;color:#ffd34d;font-weight:900;flex:none}.toast-copy{min-width:0;font-size:11px;line-height:1.35}.toast-copy b{color:#ffcf42}.toast-copy small{display:block;color:#8791a2;margin-top:2px}
+@media(max-width:620px){.wrap{width:calc(100% - 22px)}header,.nav{height:57px}.navlinks{top:57px;background:#171a22}.intro-hero{padding:30px 0 22px}.intro-hero h1{font-size:28px}.intro-hero p{font-size:12px}.hero-actions .btn{font-size:11px;padding:11px 14px}.section-head h2{font-size:18px}.price-table{font-size:10px}.price-table th,.price-table td{padding:10px 9px}.feature-card,.step-line,.safety-list article{padding:12px}.safety-list{grid-template-columns:1fr}.support-card{padding:20px 16px}#purchaseToast{bottom:12px;left:9px}#supportFab{bottom:16px;right:12px;width:50px;height:50px}}
+
 </style>
 </head>
 <body>
 <header><div class="wrap nav">
 <a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a>
-<nav class="navlinks" id="mobileNav"><a href="#order">Trang chủ</a><a href="#faq">Hướng dẫn cài</a><a href="#benefits">Khung widget</a><a href="#benefits">Giới thiệu</a></nav>
+<nav class="navlinks" id="mobileNav"><a href="index.html">Trang chủ</a><a href="#steps">Hướng dẫn cài</a><a href="frames.html">Khung widget</a><a href="#benefits">Giới thiệu</a></nav>
 <button class="menu" aria-label="Mở menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
 </div></header>
 <main>
-<section class="hero">
-<div class="wrap">
-
-<h1>LOCKET GOLD</h1>
-<p>NÂNG CẤP LOCKET GOLD TỰ ĐỘNG · THANH TOÁN VIETQR · HỖ TRỢ CÀI ĐẶT TẬN TÌNH</p>
-<a class="hero-cta" href="#order">Bắt đầu ngay <span>♥</span></a>
-</div>
-</section>
-<section id="order">
-<div class="wrap">
-<div class="section-head"><div class="eyebrow">BẮT ĐẦU NGAY</div><h2>1. Nhập tài khoản Locket cần nâng cấp</h2><p>Không cần mật khẩu</p></div>
-<div class="order-steps">
-<article class="step-card"><h3>Nhập link Locket của bạn</h3><p>Chỉ cần link Locket — không hỏi mật khẩu Locket hay tài khoản iCloud.</p>
-<input class="field" id="username" maxlength="100" placeholder="https://locket.cam/ten_cua_ban" autocomplete="off">
-<button class="btn" type="button" onclick="verifyAccount()">Kiểm tra tài khoản</button>
-<p class="hint" id="accountHint">Không cần mật khẩu · Không yêu cầu iCloud</p></article>
-<article class="step-card"><span class="step-number">2</span><h3>Chọn gói Locket Gold</h3><p>Chọn thời hạn phù hợp, sau đó tạo đơn và quét mã VietQR.</p>
-<div style="background:#fff8e6;border-radius:12px;padding:14px;margin-top:15px;font-size:12px;color:#715400">✦ Các gói dịch vụ sẽ hiển thị ngay bên dưới.</div>
-<a class="btn" style="display:block;text-align:center;margin-top:13px" href="#pricing">Xem các gói Gold</a></article>
-</div>
-</div>
-</section>
-<section id="pricing">
-<div class="wrap">
-<div class="section-head"><div class="eyebrow">BẢNG GIÁ</div><h2>Chọn gói Locket Gold</h2><p>Chọn gói để xem thông tin và tiến hành thanh toán an toàn qua VietQR.</p></div>
-<div id="plans" class="pricing"><div class="plan"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
-</div>
-</section>
-<section id="benefits">
-<div class="wrap">
-<div class="section-head"><div class="eyebrow">QUYỀN LỢI GOLD</div><h2>Trải nghiệm Locket Gold</h2></div>
-<div class="benefits">
-<article class="benefit"><div class="benefit-icon">⚡</div><div><h3>Kích hoạt tự động</h3><p>Thanh toán VietQR, hệ thống tự nhận diện và xử lý đơn ngay sau khi chuyển khoản.</p></div></article>
-<article class="benefit"><div class="benefit-icon">🔑</div><div><h3>Không cần mật khẩu</h3><p>Chỉ cần link Locket — không hỏi mật khẩu Locket hay tài khoản iCloud.</p></div></article>
-<article class="benefit"><div class="benefit-icon">🛡️</div><div><h3>Hỗ trợ cài đặt</h3><p>Có hướng dẫn từng bước, được hỗ trợ trực tiếp khi bạn cần.</p></div></article>
-</div>
-</div>
-</section>
-<section id="faq">
-<div class="wrap">
-<div class="section-head"><div class="eyebrow">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2><p>Giải đáp nhanh trước khi bạn nâng cấp.</p></div>
-<div class="faq">
-<details><summary>Có cần mật khẩu Locket hay tài khoản iCloud không?</summary><p>Không. Chỉ nhập link trang cá nhân Locket công khai hoặc username theo hướng dẫn. Không cung cấp mật khẩu, mã OTP hay thông tin iCloud.</p></details>
-<details><summary>Thanh toán xong bao lâu thì có Gold?</summary><p>Thời gian xử lý phụ thuộc vào trạng thái thanh toán và máy chủ xử lý đơn. Bạn có thể giữ cửa sổ đơn hàng để theo dõi trạng thái cập nhật.</p></details>
-<details><summary>Kích hoạt trên iPhone như thế nào?</summary><p>Sau khi đơn được xử lý, làm theo hướng dẫn cài đặt được cung cấp cho thiết bị của bạn.</p></details>
-<details><summary>Đây có phải website chính thức của Locket không?</summary><p>Không. Đây là website dịch vụ độc lập, không liên kết hoặc được bảo trợ bởi Locket Labs, Inc.</p></details>
-</div>
-</div>
-</section>
+<section class="intro-hero"><div class="wrap">
+ <div class="eyebrow">GIỚI THIỆU</div>
+ <h1>Nâng cấp Locket Gold tự động cùng Locket Gold</h1>
+ <p>Mở khóa đủ tính năng Gold: quay video dài, đăng ảnh riêng tư, đổi biểu tượng, đổi khung widget. Chỉ cần link Locket, thanh toán VietQR, kích hoạt ngay trên web.</p>
+ <div class="hero-actions"><a class="btn" href="#pricing">Nâng cấp ngay</a><a class="btn btn-ghost" href="#steps">Hướng dẫn cài đặt</a></div>
+</div></section>
+<section id="pricing"><div class="wrap">
+ <div class="section-head"><h2>Các gói đang mở bán</h2></div>
+ <div class="price-table-wrap"><table class="price-table"><thead><tr><th>Gói</th><th>Thời hạn</th><th>Giá</th></tr></thead><tbody id="plans"><tr><td colspan="3">Đang tải bảng giá...</td></tr></tbody></table></div>
+ <p class="price-hint">Chạm vào gói bạn muốn mua để xem thông tin và thanh toán.</p>
+</div></section>
+<section id="benefits"><div class="wrap">
+ <div class="section-head"><h2>Bạn nhận được gì?</h2></div>
+ <div class="feature-list">
+  <article class="feature-card"><span>✓</span><div><b>Quay video dài</b><p>Giữ phút quay để quay liên tục rồi gửi ngay cho bạn bè trên widget.</p></div></article>
+  <article class="feature-card"><span>✓</span><div><b>Đăng ảnh riêng tư</b><p>Chọn đúng người được xem từng khoảnh khắc bạn chia sẻ.</p></div></article>
+  <article class="feature-card"><span>✓</span><div><b>Đổi biểu tượng ứng dụng</b><p>Đổi icon Locket trên màn hình chính theo phong cách của bạn.</p></div></article>
+  <article class="feature-card"><span>✓</span><div><b>Đổi khung viền widget</b><p>Thay khung ảnh trên widget Home Screen theo mùa, theo sở thích.</p><a href="frames.html">Khám phá thư viện khung →</a></div></article>
+  <article class="feature-card"><span>✓</span><div><b>Thêm bạn bè không giới hạn</b><p>Kết nối thêm nhiều bạn hơn giới hạn của bản thường.</p></div></article>
+  <article class="feature-card"><span>✓</span><div><b>Viết caption dài</b><p>Thoải mái viết chú thích cho từng bức ảnh.</p></div></article>
+ </div>
+</div></section>
+<section id="steps"><div class="wrap">
+ <div class="section-head"><h2>Nâng cấp trong 3 bước</h2></div>
+ <div class="step-list">
+  <article class="step-line"><i>1</i><div><b>Dán link Locket</b><p>Mở app Locket → Trang cá nhân → Chia sẻ liên kết, dán vào trang chủ để kiểm tra tài khoản.</p></div></article>
+  <article class="step-line"><i>2</i><div><b>Chọn gói và thanh toán</b><p>Quét mã VietQR bằng app ngân hàng, hệ thống tự nhận tiền và kích hoạt.</p></div></article>
+  <article class="step-line"><i>3</i><div><b>Cài hồ sơ DNS trên iPhone</b><p>Mở link cài bằng Safari, cài hồ sơ và bật tin cậy chứng chỉ theo hướng dẫn.</p></div></article>
+ </div>
+</div></section>
+<section id="safety"><div class="wrap">
+ <div class="section-head"><h2>An tâm khi dùng</h2></div>
+ <div class="safety-list">
+  <article><span>♢</span><b>Không cần mật khẩu</b><p>Chỉ cần link Locket — không hỏi mật khẩu Locket hay tài khoản iCloud.</p></article>
+  <article><span>▣</span><b>Không cài app lạ</b><p>Chỉ cần mở một hồ sơ DNS qua Safari, không cần tải ứng dụng thứ ba.</p></article>
+  <article><span>ϟ</span><b>Kích hoạt tự động</b><p>Thanh toán VietQR, hệ thống tự nhận tiền và kích hoạt ngay.</p></article>
+  <article><span>⛨</span><b>Cài lại khi đổi máy</b><p>Còn hạn thì nhập lại link Locket để tải lại hồ sơ, không phải mua lại.</p></article>
+ </div>
+</div></section>
+<section class="closing"><div class="wrap closing-card"><h2>Sẵn sàng nâng cấp?</h2><p>Cần hỗ trợ cài đặt, bấm “Hỗ trợ 24/7” ở góc màn hình.</p><button class="btn" onclick="chooseDefaultPlan()">Chọn gói ngay</button></div></section>
 </main>
 <footer><div class="wrap footer-row">
 <div><a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a><p class="footer-note">Dịch vụ độc lập. Không yêu cầu mật khẩu Locket hoặc thông tin tài khoản iCloud.</p><p class="tiny">© <span id="year"></span> Locket Gold. All rights reserved.</p></div>
-<div class="footer-links"><a href="#order">Đặt hàng</a><a href="#pricing">Bảng giá</a><a href="#benefits">Quyền lợi</a><a href="#faq">Hỗ trợ</a></div>
+<div class="footer-links"><a href="index.html">Trang chủ</a><a href="#steps">Hướng dẫn cài</a><a href="frames.html">Khung widget</a><a href="#benefits">Giới thiệu</a></div>
 </div></footer>
 
 <div id="purchaseToast" role="status" aria-live="polite"><div class="toast-avatar">★</div><div class="toast-copy"><strong><b id="toastBuyer">Khách hàng</b> vừa nâng cấp Gold</strong><small id="toastWhen">Đơn hàng đã xác nhận</small></div></div>
@@ -138,34 +156,24 @@ footer{border-color:#202635}.footer-note,.tiny{color:#8f98a9}.footer-links{color
 </div></div>
 <script>
 
-const API_BASE = "https://YOUR-WORKER.workers.dev"; // Điền URL Worker đang chạy\nconst SUPPORT_ZALO_URL = ""; // Điền link Zalo chính thức để bật nút Zalo
+const API_BASE = "https://YOUR-WORKER.workers.dev"; // Điền URL Worker đang chạy
+const SUPPORT_ZALO_URL = ""; // Điền link Zalo chính thức để bật nút Zalo
 let plans = [], selected = null, activeOrder = null, poller = null, ticker = null, expiresAt = 0, busy = false;
 const money = n => new Intl.NumberFormat("vi-VN").format(n) + "đ";
 const yearNode = document.getElementById("year"); if(yearNode) yearNode.textContent = new Date().getFullYear();
 
 async function loadPlans(){
-  const host = document.getElementById("plans");
-  try{
-    const r = await fetch(API_BASE + "/plans", {cache:"no-store"});
-    if(!r.ok) throw new Error("Không tải được bảng giá");
-    const d = await r.json();
-    plans = d.plans || [];
-    if(!plans.length) throw new Error("Chưa có gói dịch vụ");
-    host.innerHTML = plans.map((p,i)=>`
-      <article class="plan glass ${p.featured ? "popular" : ""}">
-        ${p.badge ? `<span class="ribbon">${escapeHtml(p.badge)}</span>` : ""}
-        <div class="plan-label">${escapeHtml(p.label || "GÓI DỊCH VỤ")}</div>
-        <h3>${escapeHtml(p.name)}</h3>
-        <div class="duration">${escapeHtml(p.duration || "")}</div>
-        <div class="price">${money(p.price)}</div>
-        ${p.compare_at ? `<div class="old-price">${money(p.compare_at)}</div>` : ""}
-        <ul>${(p.features || []).map(f=>`<li>${escapeHtml(f)}</li>`).join("")}</ul>
-        <button class="btn" onclick="openOrder('${escapeAttr(p.id)}')">${escapeHtml(p.button_text || "Chọn gói này")} →</button>
-      </article>`).join("");
-  }catch(e){
-    host.innerHTML = '<div class="glass plan" style="grid-column:1/-1;text-align:center"><b>Chưa tải được bảng giá</b><p class="tiny">Kiểm tra địa chỉ API Worker và thử tải lại trang.</p></div>';
-  }
+ const host=document.getElementById("plans");
+ try{
+  const r=await fetch(API_BASE+"/plans",{cache:"no-store"});
+  if(!r.ok)throw new Error("Không tải được bảng giá");
+  const d=await r.json();plans=d.plans||[];
+  if(!plans.length)throw new Error("Chưa có gói dịch vụ");
+  host.innerHTML=plans.map(p=>`<tr tabindex="0" role="button" onclick="openOrder('${escapeAttr(p.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openOrder('${escapeAttr(p.id)}')}"><td><b>${escapeHtml(p.name)}</b></td><td>${escapeHtml(p.duration||"")}</td><td>${money(p.price)}</td></tr>`).join("");
+ }catch(e){host.innerHTML='<tr><td colspan="3">Chưa tải được bảng giá. Vui lòng kiểm tra Worker.</td></tr>';}
 }
+function chooseDefaultPlan(){if(!plans.length){document.getElementById("pricing").scrollIntoView({behavior:"smooth"});return;}openOrder(plans[0].id);}
+
 function escapeHtml(s){return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function escapeAttr(s){return escapeHtml(s).replace(/"/g,"&quot;");}
 function toggleMenu(){ const nav=document.getElementById("mobileNav"); const btn=document.querySelector(".menu"); const opened=nav.classList.toggle("open"); btn.setAttribute("aria-expanded",String(opened)); }
@@ -249,7 +257,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 
 /* Progressive reveal animation; content remains visible when JS observers are unavailable. */
 (function(){
-  const targets = document.querySelectorAll(".section-head,.feature,.step,.plan,.faq details");
+  const targets = document.querySelectorAll(".section-head,.feature-card,.step-line,.safety-list article");
   targets.forEach((el,i)=>{el.classList.add("reveal");el.style.transitionDelay=(i%3)*70+"ms";});
   if("IntersectionObserver" in window){
     const observer = new IntersectionObserver(entries=>{
@@ -259,7 +267,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
   }else{targets.forEach(el=>el.classList.add("visible"));}
 })();
 
-loadPlans();\ninitRealPurchaseNotifications();\nconst zaloLink=document.getElementById("zaloSupport");\nif(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}
+loadPlans();
+initRealPurchaseNotifications();\nconst zaloLink=document.getElementById("zaloSupport");\nif(zaloLink){if(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}}
 
 function verifyAccount(){
  const value=document.getElementById("username").value.trim();
@@ -338,6 +347,7 @@ function showNextPurchase(){
  toast.classList.remove("show");void toast.offsetWidth;toast.classList.add("show");
  setTimeout(()=>toast.classList.remove("show"),6500);
 }
-\n</script>
+
+</script>
 </body>
 </html>
