@@ -9,7 +9,7 @@ database_name = "locket-plus-orders"
 database_id = "e9f460a6-399f-4a8b-b9a0-6b2e44b18c1d"
 
 [vars]
-ALLOWED_ORIGINS = "https://locket.sweep.id.vn"
+ALLOWED_ORIGINS = "https://sweep207.github.io,https://locket.sweep.id.vn"
 BANK_ID = "MB"
 BANK_ACCOUNT = "0853261605"
 BANK_ACCOUNT_NAME = "DANG TOAN VU"
