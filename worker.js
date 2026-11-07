@@ -125,6 +125,21 @@ async function verifyLocketAccount(username, env) {
   return { ok: true, username: verifiedUsername, profile: { username: verifiedUsername, uid, name: String(profile.name || "").slice(0,100), avatar: String(profile.avatar || "").slice(0,1000) } };
 }
 
+async function lookupInstallLink(request, env, origin) {
+  if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
+  let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin);}
+  const raw=String(body.username||"").trim();
+  if(!raw || raw.length>200 || /[<>]/.test(raw)) return json({success:false,error:"Link Locket không hợp lệ."},400,origin);
+  let username=raw;
+  try { if(/^https?:\/\//i.test(raw)){const u=new URL(raw);if(!/(^|\.)locket\.cam$/i.test(u.hostname)) return json({success:false,error:"Hãy nhập link trang cá nhân locket.cam."},400,origin);username=u.pathname.split("/").filter(Boolean).pop()||"";} } catch { return json({success:false,error:"Link Locket không hợp lệ."},400,origin); }
+  username=username.replace(/^@/,"").trim();
+  if(!username || username.length>100) return json({success:false,error:"Username Locket không hợp lệ."},400,origin);
+  const verification=await verifyLocketAccount(username,env);
+  if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
+  const row=await env.DB.prepare("SELECT install_url,plan,created_at FROM orders WHERE lower(username)=lower(?) AND status='completed' AND install_url IS NOT NULL AND install_url<>'' ORDER BY created_at DESC LIMIT 1").bind(verification.username).first();
+  if(!row) return json({success:false,error:"Không tìm thấy link DNS đã kích hoạt cho tài khoản này. Hãy kiểm tra tài khoản hoặc liên hệ hỗ trợ."},404,origin);
+  return json({success:true,install_url:row.install_url,plan:row.plan,created_at:row.created_at},200,origin);
+}
 async function createOrder(request, env, origin) {
   if(!await rateLimit(request,env)) return json({error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
   let body; try{body=await request.json();}catch{return json({error:"Dữ liệu không hợp lệ"},400,origin);}
@@ -309,6 +324,7 @@ export default {
       if(request.method==="GET" && url.pathname==="/health") return json({ok:Boolean(env.DB),service:"Locket Gold order API",database:Boolean(env.DB)},env.DB?200:503,origin||"");
       if(!env.DB) return json({error:"D1 binding DB chưa được cấu hình."},503,origin||"");
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
+      if(request.method==="POST" && url.pathname==="/lookup-install-link") return await lookupInstallLink(request,env,origin||"");
       if(request.method==="POST" && url.pathname==="/verify-account") { if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||""); let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");} const username=String(body.username||"").trim(); if(!username||username.length>100||/[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||""); const verification=await verifyLocketAccount(username,env); if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||""); return json({success:true,profile:verification.profile,gold_status:null},200,origin||""); }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
