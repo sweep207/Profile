@@ -3,42 +3,10 @@
 // Không đặt API key / webhook secret trong frontend hoặc GitHub.
 
 const PLANS = [
-  {
-    id: "month",
-    label: "LINH HOẠT",
-    name: "Gói 1 Tháng",
-    duration: "30 ngày",
-    price: 30000, // SỬA GIÁ TẠI ĐÂY (VND)
-    compare_at: 49000,
-    badge: "",
-    featured: false,
-    button_text: "Chọn gói 1 tháng",
-    features: ["Thời hạn 30 ngày", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"]
-  },
-  {
-    id: "year",
-    label: "TIẾT KIỆM",
-    name: "Gói 1 Năm",
-    duration: "365 ngày",
-    price: 150000, // SỬA GIÁ TẠI ĐÂY (VND)
-    compare_at: 199000,
-    badge: "ĐƯỢC CHỌN NHIỀU",
-    featured: true,
-    button_text: "Chọn gói 1 năm",
-    features: ["Thời hạn 365 ngày", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"]
-  },
-  {
-    id: "lifetime",
-    label: "TRỌN ĐỜI",
-    name: "Gói Vĩnh Viễn",
-    duration: "Theo điều kiện nhà cung cấp",
-    price: 300000, // SỬA GIÁ TẠI ĐÂY (VND)
-    compare_at: 399000,
-    badge: "",
-    featured: false,
-    button_text: "Chọn gói vĩnh viễn",
-    features: ["Thanh toán một lần", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"]
-  }
+  { id:"trial", label:"DÙNG THỬ", name:"Locket Gold Trial", duration:"1 ngày", price:4000, compare_at:0, badge:"TRIAL", featured:true, button_text:"Đang chọn gói này", features:["Hạn sử dụng: 1 ngày","Quay video 30 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"pro", label:"PRO", name:"Locket Gold Pro", duration:"180 ngày", price:30000, compare_at:0, badge:"PRO", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: 6 tháng","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"premium", label:"PREMIUM", name:"Locket Gold Premium", duration:"365 ngày", price:50000, compare_at:0, badge:"PREMIUM", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: 1 năm","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"forever", label:"FOREVER", name:"Locket Gold Forever", duration:"Trọn đời", price:130000, compare_at:0, badge:"FOREVER", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: Vĩnh viễn","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] }
 ];
 
 const ALLOWED_STATUSES = ["pending","paid","processing","completed","expired","activation_failed"];
