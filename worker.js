@@ -88,22 +88,37 @@ async function checkPayment(request, env, origin) {
   return json({success:true,order_code:row.order_code,amount:row.amount,plan:row.plan,status:row.status,expires_at:row.expires_at},200,origin);
 }
 async function activatePaidOrder(order, env) {
-  if(!env.UPGRADER_API_URL || !env.UPGRADER_API_KEY) return;
-  // Chỉ gọi API kích hoạt do bạn sở hữu hoặc được nhà cung cấp cho phép.
-  await env.DB.prepare("UPDATE orders SET status='processing' WHERE id=? AND status='paid'").bind(order.id).run();
+  if (!env.UPLOCKET_API_KEY) {
+    console.error("UPLOCKET_API_KEY is not configured; order remains paid.");
+    return;
+  }
+  const plan = PLANS.find(p => p.id === order.plan);
+  if (!plan) {
+    await env.DB.prepare("UPDATE orders SET status='activation_failed', provider_error=? WHERE id=? AND status='paid'").bind("Không tìm thấy cấu hình gói dịch vụ.", order.id).run();
+    return;
+  }
+  const claimed = await env.DB.prepare("UPDATE orders SET status='processing' WHERE id=? AND status='paid'").bind(order.id).run();
+  if (claimed.meta?.changes !== 1) return;
+  const durationDays = ({trial:1, pro:180, premium:365, forever:9999})[plan.id];
   try {
-    const r=await fetch(env.UPGRADER_API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":`Bearer ${env.UPGRADER_API_KEY}`},
-      body:JSON.stringify({order_code:order.order_code,username:order.username,plan:order.plan,amount:order.amount})
+    const response = await fetch("https://uplocket.io.vn/api/v1/dns/export", {
+      method: "POST",
+      headers: {"Authorization":"Bearer " + env.UPLOCKET_API_KEY,"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({username:order.username,durationDays,packageName:plan.name})
     });
-    if(!r.ok) throw new Error("Provider returned "+r.status);
-    const data=await r.json();
-    if(data.success!==true) throw new Error("Provider did not confirm success");
-    await env.DB.prepare("UPDATE orders SET status='completed' WHERE id=? AND status='processing'").bind(order.id).run();
-  } catch(e) {
-    console.error("Activation error",e);
-    await env.DB.prepare("UPDATE orders SET status='activation_failed' WHERE id=? AND status='processing'").bind(order.id).run();
+    const raw = await response.text();
+    let data = {};
+    try { data = raw ? JSON.parse(raw) : {}; } catch { throw new Error("Uplocket trả về dữ liệu không hợp lệ (HTTP " + response.status + ")."); }
+    if (!response.ok || data.success !== true || !data.data) {
+      throw new Error("Uplocket: " + String(data.error || data.message || ("HTTP " + response.status)).slice(0, 500));
+    }
+    const d = data.data;
+    await env.DB.prepare("UPDATE orders SET status='completed', provider_activation_id=?, activation_code=?, install_url=?, provider_error=NULL WHERE id=? AND status='processing'")
+      .bind(String(d.id || ""),String(d.activationCode || ""),String(d.installUrl || d.downloadUrl || d.enrollUrl || d.url || ""),order.id).run();
+  } catch (e) {
+    const message = String(e?.message || "Không xác định").slice(0, 500);
+    console.error("Uplocket activation error:", message);
+    await env.DB.prepare("UPDATE orders SET status='activation_failed', provider_error=? WHERE id=? AND status='processing'").bind(message,order.id).run();
   }
 }
 async function verifySePayApiKey(request, env) {
@@ -159,7 +174,7 @@ async function paymentWebhook(request, env, rawBody) {
 
 async function recentPurchases(env, origin) {
   const rows = await env.DB.prepare(
-    "SELECT username, plan, status, created_at FROM orders WHERE status IN ('paid','processing','completed') ORDER BY created_at DESC LIMIT 12"
+    "SELECT username, plan, status, created_at FROM orders WHERE status = 'completed' ORDER BY created_at DESC LIMIT 12"
   ).all();
   const names = Object.fromEntries(PLANS.map(p => [p.id, p.name]));
   const items = (rows.results || []).map(row => {
@@ -253,7 +268,7 @@ async function processUpgrade(request, env) {
 }
 export default {
   async fetch(request,env) {
-    const url=new URL(request.url), origin=allowedOrigin(request,env);
+    const url=new URL(request.url);\n    if (!env.DB && url.pathname !== "/health") return json({error:"D1 binding DB chưa được cấu hình."},503);\n    const origin=allowedOrigin(request,env);
     if(request.method==="OPTIONS"){
       if(origin===null) return new Response(null,{status:403});
       return new Response(null,{status:204,headers:{
@@ -264,7 +279,7 @@ export default {
     const isWebhook=url.pathname==="/webhook/sepay";
     if(!isWebhook && origin===null) return json({error:"Origin not allowed"},403,"");
     try{
-      if(request.method==="GET" && url.pathname==="/health") return json({ok:true});
+      if(request.method==="GET" && url.pathname==="/health") return json({ok:true,service:"Locket Gold order API"});
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/frames") return await listFrames(env,origin);
