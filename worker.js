@@ -138,27 +138,64 @@ async function activatePaidOrder(order, env) {
     await env.DB.prepare("UPDATE orders SET status='activation_failed' WHERE id=? AND status='processing'").bind(order.id).run();
   }
 }
-async function paymentWebhook(request, env) {
-  const secret=request.headers.get("X-Webhook-Secret") || "";
-  if(!env.SEPAY_WEBHOOK_TOKEN || !secureEqual(secret,env.SEPAY_WEBHOOK_TOKEN)) return new Response("Unauthorized",{status:401});
-  let data; try{data=await request.json();}catch{return new Response("Bad JSON",{status:400});}
-  const direction=String(data.transferType||"").toLowerCase();
-  if(direction!=="in") return new Response("Ignored",{status:200});
-  const content=String(data.content||data.code||"").toUpperCase();
-  const match=content.match(/LOCKET[A-F0-9]{12}/);
-  const code=match?.[0], amount=Number(data.transferAmount), tx=String(data.id||"");
-  if(!code || !tx || !Number.isSafeInteger(amount) || amount<=0) return new Response("Invalid transaction",{status:400});
+async function verifySePayHmac(request, rawBody, env) {
+  const secret = env.SEPAY_WEBHOOK_SECRET;
+  const signature = request.headers.get("X-SePay-Signature") || "";
+  const timestamp = request.headers.get("X-SePay-Timestamp") || "";
+  if (!secret || !/^sha256=[a-f0-9]{64}$/i.test(signature) || !/^\\d+$/.test(timestamp)) return false;
+  const ts = Number(timestamp);
+  if (!Number.isSafeInteger(ts) || Math.abs(Math.floor(Date.now()/1000) - ts) > 300) return false;
+  const key = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(secret), {name:"HMAC",hash:"SHA-256"}, false, ["sign"]
+  );
+  const signed = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(timestamp + "." + rawBody));
+  const digest = [...new Uint8Array(signed)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  const expected = "sha256=" + digest;
+  return secureEqual(expected.toLowerCase(), signature.toLowerCase());
+}
+async function paymentWebhook(request, env, rawBody) {
+  if (!await verifySePayHmac(request, rawBody, env)) {
+    return new Response(JSON.stringify({success:false,message:"Invalid signature"}), {
+      status:401, headers:{"Content-Type":"application/json"}
+    });
+  }
+  let data;
+  try { data = JSON.parse(rawBody); }
+  catch { return new Response(JSON.stringify({success:false,message:"Invalid JSON"}), {status:400,headers:{"Content-Type":"application/json"}}); }
 
-  const order=await env.DB.prepare("SELECT * FROM orders WHERE order_code=?").bind(code).first();
-  if(!order || order.amount!==amount) return new Response("No matching order",{status:200});
-  if(order.status!=="pending") return new Response("Already handled",{status:200});
-  if(Date.now()>order.expires_at) return new Response("Order expired",{status:200});
+  const direction = String(data.transferType || "").toLowerCase();
+  if (direction !== "in") return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
 
-  const inserted=await env.DB.prepare("INSERT OR IGNORE INTO payments(transaction_id,order_code,amount) VALUES(?,?,?)").bind(tx,code,amount).run();
-  if(inserted.meta.changes!==1) return new Response("Duplicate transaction",{status:200});
-  const update=await env.DB.prepare("UPDATE orders SET status='paid' WHERE id=? AND status='pending'").bind(order.id).run();
-  if(update.meta.changes===1) await activatePaidOrder(order,env);
-  return new Response("OK",{status:200});
+  const content = String(data.content || data.code || "").toUpperCase();
+  const match = content.match(/LOCKET[A-F0-9]{12}/);
+  const code = match?.[0];
+  const amount = Number(data.transferAmount);
+  const tx = String(data.id ?? "").trim();
+  if (!code || !tx || !Number.isSafeInteger(amount) || amount <= 0) {
+    return new Response(JSON.stringify({success:false,message:"Missing payment fields"}), {status:400,headers:{"Content-Type":"application/json"}});
+  }
+
+  const order = await env.DB.prepare("SELECT * FROM orders WHERE order_code=?").bind(code).first();
+  // Acknowledge unrelated transfers; only exact order code + exact amount can mark an order paid.
+  if (!order || order.amount !== amount) {
+    return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
+  }
+  if (order.status !== "pending" || Date.now() > order.expires_at) {
+    return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
+  }
+
+  const inserted = await env.DB.prepare(
+    "INSERT OR IGNORE INTO payments(transaction_id,order_code,amount) VALUES(?,?,?)"
+  ).bind(tx, code, amount).run();
+  if (inserted.meta.changes !== 1) {
+    return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
+  }
+
+  const update = await env.DB.prepare(
+    "UPDATE orders SET status='paid' WHERE id=? AND status='pending' AND amount=?"
+  ).bind(order.id, amount).run();
+  if (update.meta.changes === 1) await activatePaidOrder(order, env);
+  return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
 }
 async function processUpgrade(request, env) {
   const auth=request.headers.get("Authorization")||"";
@@ -187,7 +224,7 @@ export default {
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="POST" && url.pathname==="/create-order") return await createOrder(request,env,origin||"");
       if(request.method==="GET" && url.pathname==="/check-payment") return await checkPayment(request,env,origin||"");
-      if(request.method==="POST" && url.pathname==="/webhook/sepay") return await paymentWebhook(request,env);
+      if(request.method==="POST" && url.pathname==="/webhook/sepay") { const rawBody=await request.text(); return await paymentWebhook(request,env,rawBody); }
       if(request.method==="POST" && url.pathname==="/process-upgrade") return await processUpgrade(request,env);
       return json({error:"Not found"},404,origin||"");
     }catch(e){console.error("Worker error",e);return json({error:"Internal server error"},500,origin||"");}
