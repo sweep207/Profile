@@ -55,6 +55,67 @@ async function rateLimit(request, env) {
   `).bind(key,1,(bucket+2)*60000).run();
   return true;
 }
+async function verifyLocketAccount(username, env) {
+  if (!env.UPLOCKET_API_KEY) {
+    return { ok: false, status: 503, error: "Máy chủ chưa cấu hình dịch vụ xác minh tài khoản." };
+  }
+
+  let response;
+  try {
+    response = await fetch("https://uplocket.io.vn/api/v1/dns/lookup", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + env.UPLOCKET_API_KEY,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ username }),
+      signal: AbortSignal.timeout(10000)
+    });
+  } catch (error) {
+    console.error("Uplocket account lookup request failed:", String(error?.name || "network error"));
+    return { ok: false, status: 503, error: "Không thể kết nối dịch vụ xác minh Locket. Vui lòng thử lại sau." };
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    console.error("Uplocket account lookup returned invalid JSON; HTTP", response.status);
+    return { ok: false, status: 503, error: "Dịch vụ xác minh Locket trả về dữ liệu không hợp lệ." };
+  }
+
+  if (!response.ok) {
+    if (response.status === 400 || response.status === 404) {
+      return { ok: false, status: 422, error: "Không tìm thấy tài khoản Locket hợp lệ. Hãy kiểm tra lại username hoặc link." };
+    }
+    console.error("Uplocket account lookup HTTP error:", response.status);
+    return { ok: false, status: 503, error: "Dịch vụ xác minh Locket đang bận hoặc không khả dụng. Vui lòng thử lại sau." };
+  }
+
+  if (data?.success !== true) {
+    return { ok: false, status: 422, error: "Uplocket không xác nhận được tài khoản Locket này." };
+  }
+
+  if (data.provisional === true) {
+    return { ok: false, status: 422, error: "Username này chưa được xác nhận là tài khoản Locket thật. Vui lòng kiểm tra lại." };
+  }
+
+  const profile = data.profile;
+  const uid = String(profile?.uid || "").trim();
+  if (!profile || !uid || /^usr_/i.test(uid)) {
+    console.error("Uplocket account lookup returned an incomplete or provisional profile.");
+    return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
+  }
+
+  const verifiedUsername = String(profile.username || username).trim();
+  if (!verifiedUsername || verifiedUsername.length > 100) {
+    return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
+  }
+
+  return { ok: true, username: verifiedUsername };
+}
+
 async function createOrder(request, env, origin) {
   if(!await rateLimit(request,env)) return json({error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
   let body; try{body=await request.json();}catch{return json({error:"Dữ liệu không hợp lệ"},400,origin);}
@@ -64,11 +125,16 @@ async function createOrder(request, env, origin) {
   if(!plan || !Number.isSafeInteger(plan.price) || plan.price<=0) return json({error:"Gói dịch vụ chưa được cấu hình hợp lệ"},400,origin);
   if(!env.BANK_ID || !env.BANK_ACCOUNT || !env.BANK_ACCOUNT_NAME) return json({error:"Máy chủ chưa cấu hình tài khoản nhận tiền"},503,origin);
 
+  // Xác minh tài khoản ở phía Worker trước khi tạo đơn hoặc sinh mã QR.
+  const verification = await verifyLocketAccount(username, env);
+  if (!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
+  const verifiedUsername = verification.username;
+
   const id=crypto.randomUUID(), code=orderCode(), expires=Date.now()+10*60*1000;
   await env.DB.prepare(`
     INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at)
     VALUES(?,?,?,?,?,'pending',?)
-  `).bind(id,code,username,plan.id,plan.price,expires).run();
+  `).bind(id,code,verifiedUsername,plan.id,plan.price,expires).run();
 
   const qr=new URL(`https://img.vietqr.io/image/${encodeURIComponent(env.BANK_ID)}-${encodeURIComponent(env.BANK_ACCOUNT)}-compact2.png`);
   qr.searchParams.set("amount",String(plan.price));
