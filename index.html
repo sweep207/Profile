@@ -184,7 +184,7 @@ function openOrder(id){
   if(!selected) return;
   document.getElementById("selectedPlan").textContent = selected.name;
   document.getElementById("selectedPrice").textContent = money(selected.price);
-  document.getElementById("username").value = "";
+  document.getElementById("orderUsername").value = "";
   document.getElementById("formError").textContent = "";
   document.getElementById("formView").classList.remove("hidden");
   document.getElementById("paymentView").classList.add("hidden");
@@ -196,7 +196,7 @@ function closeModal(){
   stopTimers();
 }
 async function createOrder(){
-  const username = document.getElementById("username").value.trim();
+  const username = document.getElementById("orderUsername").value.trim();
   const error = document.getElementById("formError");
   const btn = document.getElementById("createBtn");
   error.textContent = "";
@@ -273,19 +273,10 @@ initRealPurchaseNotifications();
 const zaloLink=document.getElementById("zaloSupport");
 if(zaloLink){if(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}}
 
-function verifyAccount(){
- const value=document.getElementById("username").value.trim();
- const hint=document.getElementById("accountHint");
- if(!value){hint.textContent="Vui lòng nhập link Locket hoặc username.";hint.style.color="#b22";return;}
- if(value.length<3){hint.textContent="Thông tin quá ngắn, vui lòng kiểm tra lại.";hint.style.color="#b22";return;}
- document.getElementById("orderUsername").value=value;
- hint.textContent="Đã nhận thông tin. Hãy chọn gói Gold bên dưới để tiếp tục.";
- hint.style.color="#2f7b3d";
-}
 function openOrder(id){
  selected=plans.find(p=>p.id===id);
  if(!selected)return;
- const value=document.getElementById("username").value.trim();
+ const value=document.getElementById("orderUsername").value.trim();
  document.getElementById("selectedPlan").textContent=selected.name;
  document.getElementById("selectedPrice").textContent=money(selected.price);
  document.getElementById("orderUsername").value=value;
