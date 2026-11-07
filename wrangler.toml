@@ -1,19 +1,19 @@
 name = "locket-plus-api"
 main = "worker.js"
 compatibility_date = "2026-11-07"
+workers_dev = true
 
 [[d1_databases]]
 binding = "DB"
 database_name = "locket-plus-orders"
 database_id = "REPLACE_WITH_D1_DATABASE_ID"
 
-[vars]
-# Điền domain GitHub Pages của bạn, ví dụ:
-# ALLOWED_ORIGINS = "https://sweep207.github.io"
-# BANK_ID = "MB"
-# BANK_ACCOUNT = "YOUR_ACCOUNT_NUMBER"
-# BANK_ACCOUNT_NAME = "YOUR_ACCOUNT_NAME"
-
 [[r2_buckets]]
 binding = "FRAMES_BUCKET"
 bucket_name = "locket-widget-frames"
+
+[vars]
+ALLOWED_ORIGINS = "https://sweep207.github.io"
+BANK_ID = "REPLACE_WITH_BANK_CODE"
+BANK_ACCOUNT = "REPLACE_WITH_BANK_ACCOUNT"
+BANK_ACCOUNT_NAME = "REPLACE_WITH_ACCOUNT_NAME"
