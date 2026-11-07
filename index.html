@@ -329,8 +329,8 @@ async function checkLocketAccount(){
   verifiedUsername=String(p.username||p.userName||p.handle||d.username||username).replace(/^@/,"").trim();
   if(!verifiedUsername)throw Error("API chưa trả về username hợp lệ.");
   const status=String(d.gold_status||d.goldStatus||p.gold_status||p.goldStatus||"").trim().toUpperCase();
-  const goldLabel=status==="GOLD"||status==="ACTIVE"||status==="PREMIUM"?"GOLD":status==="BẢN FREE"||status==="FREE"?"BẢN FREE":"CHƯA RÕ TRẠNG THÁI";
-  hint.textContent=goldLabel==="CHƯA RÕ TRẠNG THÁI"?"Đã xác minh tài khoản. API chưa trả trường trạng thái Gold; vui lòng kiểm tra lại dữ liệu API.":"Đã xác minh tài khoản · "+goldLabel;
+  const goldLabel=status==="GOLD"||status==="ACTIVE"||status==="PREMIUM"?"GOLD":"BẢN FREE";
+  hint.textContent="Đã xác minh tài khoản · "+goldLabel;
   hint.style.color="#38d7a5";
   const box=$("verifiedProfile"),avatar=String(p.avatar||p.avatarUrl||p.photoURL||p.photo_url||p.picture||"");
   box.replaceChildren();
