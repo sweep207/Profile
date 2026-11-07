@@ -72,3 +72,14 @@ Website dự kiến: `https://sweep207.github.io/Profile/`.
 - Mỗi giao dịch được chống xử lý lặp theo `transaction_id`.
 - Nếu chưa cấu hình API nâng cấp hợp pháp từ nhà cung cấp, đơn chỉ được ghi nhận thanh toán hoặc chờ xử lý; không có cơ chế tự nâng cấp Locket.
 - Không gửi mật khẩu, OTP ngân hàng, token Cloudflare hay API key trong chat.
+
+
+## 7. Thư viện Khung widget (tự thêm ảnh)
+1. Tạo R2 bucket tên `locket-widget-frames` trong Cloudflare.
+2. Trong Worker settings → Variables and Secrets, thêm secret `FRAME_ADMIN_TOKEN` với một mật khẩu dài, khó đoán. Không ghi token vào mã nguồn.
+3. Chạy migration D1 sau khi cập nhật `schema.sql`:
+```bash
+npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
+```
+4. Deploy Worker. Trang `frames.html` có nút **Quản lý khung**; nhập token, chọn ảnh JPG/PNG/WEBP (tối đa 5 MB), tên và danh mục rồi lưu. Ảnh được lưu trong R2, thông tin khung lưu trong D1.
+5. Giá gói chỉnh trong mảng `PLANS` ở đầu `worker.js`, sau đó deploy Worker lại. Không cần sửa HTML.
