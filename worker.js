@@ -413,7 +413,7 @@ export default {
         if(!username||username.length>100) return json({success:false,error:"Username Locket không hợp lệ."},400,origin||"");
         const verification=await verifyLocketAccount(username,env);
         if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||"");
-        return json({success:true,profile:verification.profile,gold_status:verification.goldStatus||null,gold_checked:true},200,origin||"");
+        return json({success:true,profile:verification.profile,gold_status:verification.goldStatus,gold_checked:true},200,origin||"");
       }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
