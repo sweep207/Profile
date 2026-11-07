@@ -1,8 +1,19 @@
 name = "locket-plus-api"
 main = "worker.js"
 compatibility_date = "2026-11-07"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "locket-plus-orders"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[[r2_buckets]]
+binding = "FRAMES_BUCKET"
+bucket_name = "locket-widget-frames"
 
 [vars]
-# Danh sách origin được phép gọi Worker, phân tách bằng dấu phẩy.
-# Ví dụ GitHub Pages: "https://sweep207.github.io"
 ALLOWED_ORIGINS = "https://sweep207.github.io"
+BANK_ID = "REPLACE_WITH_BANK_CODE"
+BANK_ACCOUNT = "REPLACE_WITH_BANK_ACCOUNT"
+BANK_ACCOUNT_NAME = "REPLACE_WITH_ACCOUNT_NAME"
