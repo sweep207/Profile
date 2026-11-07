@@ -1,144 +1,100 @@
-# Hướng dẫn triển khai Locket Plus
+# Locket Gold — triển khai với Uplocket Reseller API
 
-## 1. Chuẩn bị
-- Tài khoản Cloudflare có quyền tạo Workers và D1.
-- Tài khoản SePay đã liên kết tài khoản ngân hàng và bật webhook.
-- GitHub Pages đã bật cho repository này.
+Website sử dụng API gốc `https://uplocket.io.vn`. Cloudflare Worker đóng vai trò proxy bảo mật để API key không xuất hiện trong HTML hoặc trình duyệt.
 
-## 2. Tạo D1
-Trong thư mục dự án, chạy:
+## Chức năng đang được tích hợp
+
+- Tra cứu hồ sơ Locket công khai: `POST /api/locket/lookup` (không cần API key theo tài liệu).
+- Tra cứu DNS: `GET/POST /api/v1/dns/lookup`.
+- Tạo/cập nhật hồ sơ DNS: `POST /api/v1/dns/export` (trừ 1 credit theo quy định API).
+- Danh sách hồ sơ: `GET /api/v1/dns/activations`.
+- Gia hạn: `POST /api/v1/dns/activations/{id}/renew` (trừ 1 credit).
+- Bật/tắt DNS: `POST /api/v1/dns/activations/{id}/toggle` (không trừ credit).
+- Số dư và credit: `GET /api/v1/credits`.
+
+## 1. Cài Wrangler
+
+Cài Node.js LTS, mở Terminal tại thư mục repo và chạy:
+
 ```bash
-npx wrangler d1 create locket-plus-orders
+npm install -g wrangler
+wrangler login
 ```
-Sao chép `database_id` Cloudflare trả về vào `wrangler.toml` tại trường `database_id`.
 
-Tạo bảng:
+## 2. Cấu hình Worker
+
+File `wrangler.toml` đã được tối giản, không cần D1, R2, SePay hoặc Firebase cho API Uplocket.
+
+Đặt API key mới dưới dạng Cloudflare Worker Secret:
+
 ```bash
-npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
+wrangler secret put UPLOCKET_API_KEY
 ```
 
-## 3. Cấu hình Worker
-Sửa `wrangler.toml`:
-- `database_id`: ID D1 vừa tạo.
-- `ALLOWED_ORIGINS`: origin GitHub Pages, ví dụ `https://sweep207.github.io` (không thêm đường dẫn `/Profile`).
-- `BANK_ID`: mã ngân hàng theo VietQR, ví dụ `MB`.
-- `BANK_ACCOUNT`: số tài khoản nhận tiền.
-- `BANK_ACCOUNT_NAME`: tên chủ tài khoản viết đúng như ngân hàng.
+Khi terminal yêu cầu, dán API key Uplocket mới. Không ghi key vào `index.html`, `wrangler.toml`, GitHub hoặc tin nhắn.
 
-Không đưa access token, API key hoặc secret vào `wrangler.toml`, HTML hay GitHub.
+## 3. Deploy Worker
 
-## 4. Thêm SePay API Key dưới dạng Secret
-Worker hiện dùng kiểu xác thực webhook SePay **API Key**. Trong SePay, tạo webhook:
-- URL: `https://locket-plus-api.<subdomain>.workers.dev/webhook/sepay`
-- Sự kiện: chỉ tiền vào.
-- Xác thực: API Key.
-- Định dạng: JSON.
-- Bật xác thực giao dịch nếu tài khoản SePay có tùy chọn này.
-
-Sau đó đặt cùng API Key ở Cloudflare Worker:
 ```bash
-npx wrangler secret put SEPAY_API_KEY
+wrangler deploy
 ```
-Dán giá trị API Key khi terminal yêu cầu. SePay gửi header `Authorization: Apikey <API_KEY>`; Worker xác thực header này trước khi đọc giao dịch.
 
-## 5. Deploy Worker
-```bash
-npx wrangler deploy
+Sau khi deploy, bạn sẽ nhận được URL dạng:
+
 ```
-Sau khi deploy, sao chép URL Worker và mở `index.html`, thay:
+https://locket-plus-api.<ten-tai-khoan>.workers.dev
+```
+
+Kiểm tra:
+
+```
+https://TEN-WORKER.workers.dev/health
+```
+
+Kết quả mong đợi có `ok: true` và `configured: true`.
+
+## 4. Gắn URL Worker vào trang chủ
+
+Mở `index.html`, tìm:
+
 ```js
-const API_BASE = "https://YOUR-WORKER.workers.dev";
+const API_BASE="https://YOUR-WORKER.workers.dev";
 ```
-bằng URL thật, rồi commit thay đổi.
 
-## 6. GitHub Pages
-Trong GitHub:
-1. Settings → Pages.
-2. Chọn Deploy from a branch.
-3. Branch `main`, folder `/ (root)`.
+Thay bằng URL Worker thật rồi commit lên GitHub.
+
+Trong `wrangler.toml`, `ALLOWED_ORIGINS` phải là origin của website, không kèm đường dẫn `/Profile/`. Với GitHub Pages thường là:
+
+```
+https://sweep207.github.io
+```
+
+Nếu website dùng domain riêng, thay bằng domain đó.
+
+## 5. Bật GitHub Pages
+
+GitHub → repository `sweep207/Profile` → Settings → Pages:
+1. Source: Deploy from a branch.
+2. Branch: `main`.
+3. Folder: `/(root)`.
 4. Save.
 
 Website dự kiến: `https://sweep207.github.io/Profile/`.
 
-## 7. Kiểm tra
-- Mở `https://<worker-url>/health`, kết quả mong đợi: `{"ok":true}`.
-- Mở `https://<worker-url>/plans`, kiểm tra danh sách giá.
-- Dùng tính năng gửi thử webhook của SePay trước.
-- Sau đó mới chuyển khoản thử số tiền nhỏ và kiểm tra log webhook + trạng thái đơn.
+## 6. Kiểm tra sau deploy
 
-## Lưu ý quan trọng
-- Mức giá nằm ở mảng `PLANS` đầu file `worker.js`. Sửa `price` rồi deploy lại Worker.
-- Không đánh dấu đơn đã thanh toán bằng thao tác thủ công từ trình duyệt.
-- Mỗi giao dịch được chống xử lý lặp theo `transaction_id`.
-- Nếu chưa cấu hình API nâng cấp hợp pháp từ nhà cung cấp, đơn chỉ được ghi nhận thanh toán hoặc chờ xử lý; không có cơ chế tự nâng cấp Locket.
-- Không gửi mật khẩu, OTP ngân hàng, token Cloudflare hay API key trong chat.
+- Mở trang chủ trên điện thoại và laptop.
+- Kiểm tra thông tin credit.
+- Tra cứu username Locket.
+- Thử tra cứu DNS.
+- Chỉ thử kích hoạt khi bạn hiểu thao tác sẽ trừ 1 credit.
+- Kiểm tra danh sách hồ sơ, gia hạn và bật/tắt DNS.
 
+## Lưu ý về tài liệu API và các tính năng cũ
 
-## 7. Thư viện Khung widget (tự thêm ảnh)
-1. Tạo R2 bucket tên `locket-widget-frames` trong Cloudflare.
-2. Trong Worker settings → Variables and Secrets, thêm secret `FRAME_ADMIN_TOKEN` với một mật khẩu dài, khó đoán. Không ghi token vào mã nguồn.
-3. Chạy migration D1 sau khi cập nhật `schema.sql`:
-```bash
-npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
-```
-4. Deploy Worker. Trang `frames.html` có nút **Quản lý khung**; nhập token, chọn ảnh JPG/PNG/WEBP (tối đa 5 MB), tên và danh mục rồi lưu. Ảnh được lưu trong R2, thông tin khung lưu trong D1.
-5. Giá gói chỉnh trong mảng `PLANS` ở đầu `worker.js`, sau đó deploy Worker lại. Không cần sửa HTML.
-
-
-## 8. Thư viện khung widget (quản trị viên)
-Worker đã có API quản lý khung. Để bật tính năng tải ảnh khung:
-1. Tạo R2 bucket đúng tên trong `wrangler.toml`:
-   ```bash
-   npx wrangler r2 bucket create locket-widget-frames
-   ```
-2. Đảm bảo D1 đã chạy `schema.sql` (bảng `frames` đã được khai báo trong file này).
-3. Đặt mã quản lý bí mật dưới dạng Worker Secret, không ghi mã này vào HTML hoặc GitHub:
-   ```bash
-   npx wrangler secret put FRAME_ADMIN_TOKEN
-   ```
-4. Nhập một chuỗi dài, khó đoán khi terminal hỏi. Sau đó deploy:
-   ```bash
-   npx wrangler deploy
-   ```
-5. Mở `frames.html`, nhập mã quản lý trong mục “Thêm khung mới / Quản lý thư viện”. Ảnh JPG, PNG, WEBP tối đa 5 MB. Khung mới sẽ hiển thị công khai trong thư viện; chỉ người có mã quản lý mới được thêm/xoá.
-6. Thay `API_BASE` trong cả `index.html` và `frames.html` bằng cùng URL Worker đã deploy.
-
-## 9. Thay đổi giá
-Sửa các trường `price`, `duration`, `features` trong mảng `PLANS` ở đầu `worker.js`, sau đó chạy `npx wrangler deploy`. Trang chủ lấy bảng giá trực tiếp từ `GET /plans`, không cần sửa HTML.
-
-
-## 10. Cấu trúc website nhiều trang
-- `index.html`: trang chủ đặt hàng, chọn gói, tạo đơn VietQR, xem thông báo mua hàng và mở hỗ trợ.
-- `about.html`: trang giới thiệu riêng, quyền lợi, bảng giá lấy động từ `GET /plans`.
-- `install.html`: trang hướng dẫn cài đặt DNS iPhone riêng, gồm 4 bước và FAQ.
-- `frames.html`: thư viện khung widget và phần quản trị thêm/xoá khung.
-- Menu đầu trang và chân trang liên kết qua lại giữa các trang.
-
-Sau khi deploy Worker, thay `https://YOUR-WORKER.workers.dev` bằng URL Worker thật trong `index.html`, `about.html` và `frames.html`. Không cần API cho `install.html`.
-
-**Lưu ý:** Nút trên trang chủ hiện kiểm tra định dạng và tên miền của link Locket ở trình duyệt; nó chưa gọi API xác minh tài khoản trực tiếp với Locket. Không hiển thị thông báo rằng tài khoản đã được xác minh thành công nếu chưa có endpoint xác minh thực tế.
-
-
-## 11. Quản lý khung widget và video hướng dẫn qua API
-
-### Khung widget
-- Tạo R2 bucket tên `locket-widget-frames` và giữ binding `FRAMES_BUCKET` trong `wrangler.toml`.
-- Chạy lại schema để tạo bảng `frames` và `site_settings` (các lệnh `CREATE TABLE IF NOT EXISTS` không làm mất dữ liệu cũ):
-  ```bash
-  npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
-  ```
-- Đặt mã quản trị bí mật:
-  ```bash
-  npx wrangler secret put FRAME_ADMIN_TOKEN
-  ```
-- Mở `frames.html`, mở mục **Tự thêm khung mới qua API**, nhập mã quản trị, tên, danh mục, mô tả và chọn ảnh JPG/PNG/WEBP tối đa 5 MB. Trang gửi ảnh đến `POST /admin/frames`; thư viện công khai lấy dữ liệu từ `GET /frames`. Xoá khung gọi `DELETE /admin/frames/:id`.
-
-### Video hướng dẫn cài đặt
-- Mở `install.html`, phần **Quản lý video hướng dẫn**.
-- Nhập cùng mã `FRAME_ADMIN_TOKEN` và dán link HTTPS YouTube, Vimeo hoặc MP4.
-- Trang lưu link qua `POST /admin/install-video`; khách xem video từ `GET /install-video`. Bấm **Gỡ video** để xoá video hiện tại.
-
-### Sau khi cập nhật
-- Thay `https://YOUR-WORKER.workers.dev` trong `frames.html` và `install.html` bằng URL Worker đang chạy.
-- Deploy lại Worker sau khi cập nhật mã nguồn: `npx wrangler deploy`.
-- Không nhập API key thật vào HTML/GitHub. Mã `FRAME_ADMIN_TOKEN` chỉ lưu trong Cloudflare Worker Secret và chỉ nhập khi quản trị.
+- API Uplocket trong tài liệu không có endpoint thanh toán VietQR/SePay, quản lý giá, quản lý khung widget hoặc quản lý video hướng dẫn. Vì vậy website không được giả lập các chức năng này hoặc gọi endpoint tự đặt.
+- Giá bán cho khách không thể tự đồng bộ từ API này vì tài liệu không cung cấp endpoint quản lý giá. API chỉ trả số credit và số dư hoa hồng.
+- Khung widget và video hướng dẫn nếu vẫn cần thì phải dùng một hệ thống lưu trữ/quản trị riêng; không thể gắn vào API Uplocket bằng cách đoán endpoint.
+- Thông báo mua hàng chỉ được hiển thị khi có nguồn giao dịch thật. Không tạo tên người mua hoặc thời gian mua giả.
+- HTTP 402 là không đủ credit; HTTP 409 có thể là hồ sơ còn hạn đang thuộc CTV khác; HTTP 401 thường là API key thiếu hoặc sai; HTTP 502 là upstream không đồng bộ được.
+- Nếu API key cũ từng xuất hiện trong ảnh/chia sẻ, hãy thu hồi và tạo key mới.
