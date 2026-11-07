@@ -109,11 +109,19 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 503, error: "Dịch vụ xác minh Locket đang bận hoặc không khả dụng. Vui lòng thử lại sau." };
   }
 
-  if (data?.success !== true) {
-    return { ok: false, status: 422, error: "Uplocket không xác nhận được tài khoản Locket này." };
+  // Uplocket có thể trả success/ok hoặc status=success tuỳ phiên bản API.
+  // Chỉ từ chối rõ ràng khi provider báo thất bại; không coi trường provisional bị
+  // lược bỏ là bằng chứng tài khoản giả.
+  const lookupSucceeded =
+    data?.success === true ||
+    data?.ok === true ||
+    ["ok", "success"].includes(String(data?.status || "").trim().toLowerCase());
+  if (!lookupSucceeded || data?.success === false || data?.ok === false) {
+    console.error("Uplocket account lookup did not confirm success; HTTP", response.status);
+    return { ok: false, status: 503, error: "Uplocket chưa xác nhận được tài khoản. Vui lòng thử lại sau." };
   }
 
-  if (data.provisional !== false) {
+  if (data?.provisional === true || data?.data?.provisional === true || data?.result?.provisional === true) {
     return { ok: false, status: 422, error: "Username này chưa được xác nhận là tài khoản Locket thật. Vui lòng kiểm tra lại." };
   }
 
@@ -126,10 +134,10 @@ async function verifyLocketAccount(username, env) {
   ].filter(x => x && typeof x === "object");
   let profile = profileCandidates.find(x => x.uid || x.userId || x.user_id || x.id);
   if (!profile) {
-    profile = envelopes.find(x => x.uid || x.userId || x.user_id) || null;
+    profile = envelopes.find(x => x.uid || x.userId || x.user_id || x.id) || null;
   }
   const uid = String(profile?.uid || profile?.userId || profile?.user_id || profile?.id || "").trim();
-  if (!profile || !uid || /^usr_/i.test(uid)) {
+  if (!profile || !uid) {
     console.error("Uplocket account lookup returned an incomplete or provisional profile.");
     return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
   }
