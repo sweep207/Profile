@@ -119,7 +119,7 @@ export default {
     if (!isWebhook && origin && !allowed.includes(origin)) return reply({ success: false, error: "Origin not allowed." }, 403, "", env);
     try {
       if (request.method === "GET" && url.pathname === "/health") return reply({ ok: true, service: "Sweep207 Locket API" }, 200, origin, env);
-      if (request.method === "GET" && url.pathname === "/plans") return reply({ plans: PLANS }, 200, origin, env);
+      if (request.method === "GET" && url.pathname === "/plans") return reply({ plans: PLANS }, 200, origin, env);\n      if (request.method === "GET" && url.pathname === "/recent-purchases") return await recentPurchases(env);
       if (request.method === "POST" && url.pathname === "/create-order") return await createOrder(request, env, origin);
       if (request.method === "GET" && url.pathname === "/check-payment") return await checkPayment(request, env, origin);
       if (request.method === "POST" && isWebhook) return await sepayWebhook(request, env);
