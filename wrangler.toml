@@ -6,7 +6,7 @@ workers_dev = true
 [[d1_databases]]
 binding = "DB"
 database_name = "locket-plus-orders"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "e9f460a6-399f-4a8b-b9a0-6b2e44b18c1d"
 
 [[r2_buckets]]
 binding = "FRAMES_BUCKET"
