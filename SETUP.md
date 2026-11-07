@@ -24,7 +24,7 @@ Không tạo bucket R2, không cần R2 API token và không cần binding R2.
 
 ## 4. Cấu hình wrangler.toml
 - database_id: D1 ID của bạn.
-- ALLOWED_ORIGINS: https://sweep207.github.io (không thêm /Profile).
+- ALLOWED_ORIGINS: `https://sweep207.github.io,https://locket.sweep.id.vn` (chỉ origin, không thêm `/Profile` hoặc dấu `/` cuối). Nếu dùng tên miền khác, thêm origin chính xác vào danh sách.
 - BANK_ID, BANK_ACCOUNT, BANK_ACCOUNT_NAME: thông tin nhận tiền.
 
 ## 5. Worker Secrets
@@ -53,6 +53,8 @@ Không commit các giá trị secret vào GitHub hoặc gửi qua chat.
 
 ## 7. Video YouTube
 Tải video lên YouTube, sao chép link, sau đó cấu hình qua endpoint POST /admin/install-video. Header Authorization: Bearer <SITE_ADMIN_TOKEN>. JSON body: {"video_url":"https://youtu.be/VIDEO_ID"}. Trang install.html sẽ nhúng video.
+
+**Quan trọng:** Nếu sửa biến trong `wrangler.toml` nhưng deploy bằng Cloudflare Dashboard, hãy vào Worker → Settings → Variables and Secrets và cập nhật `ALLOWED_ORIGINS` thành `https://sweep207.github.io,https://locket.sweep.id.vn`, sau đó deploy lại. Biến cấu hình trên Dashboard có thể khác file trong GitHub.
 
 ## 8. Deploy Worker
 Trên Windows, cài Node.js LTS, mở PowerShell trong thư mục repo rồi chạy:
