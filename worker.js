@@ -124,7 +124,7 @@ async function activatePaidOrder(order, env) {
 async function verifySePayApiKey(request, env) {
   // SePay API Key webhook sends: Authorization: Apikey YOUR_API_KEY
   const authorization = request.headers.get("Authorization") || "";
-  const match = authorization.match(/^Apikey\\s+(.+)$/i);
+  const match = authorization.match(/^Apikey\s+(.+)$/i);
   return Boolean(env.SEPAY_API_KEY && match && secureEqual(match[1].trim(), env.SEPAY_API_KEY));
 }
 async function paymentWebhook(request, env, rawBody) {
