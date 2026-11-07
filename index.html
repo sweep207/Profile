@@ -20,14 +20,47 @@ footer{padding:35px 0 45px;background:var(--cream);color:#2a2418;font-size:11px}
 .modal{position:fixed;inset:0;z-index:30;background:#17130add;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:23px;background:var(--cream);position:relative;max-height:calc(100vh - 36px);overflow:auto;box-shadow:0 25px 80px #0004}.close{position:absolute;right:17px;top:14px;border:0;background:#f2e7ce;color:#2b2417;border-radius:10px;width:34px;height:34px;cursor:pointer}.field{display:block;width:100%;padding:14px 15px;border-radius:13px;border:1px solid #e7d9ba;background:white;color:#17130a;outline:none}.field:focus{border-color:var(--gold)}.label{display:block;font-size:13px;color:#574c37;margin:15px 0 7px}.qr-wrap{background:white;border-radius:16px;padding:10px;width:220px;margin:18px auto}.qr-wrap img{width:100%;display:block;border-radius:8px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eadfc8;font-size:13px}.detail span{color:#786d58}.detail strong{text-align:right;overflow-wrap:anywhere}.status{margin-top:16px;padding:13px;border-radius:13px;background:#fff0c9;color:#765100;font-size:13px}.status.success{background:#e7f5d9;color:#376b24}.status.error{background:#ffe5dc;color:#a33120}.timer{text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;margin:4px 0 12px}.copy{border:1px solid #eadfc8;background:#fff8e9;color:#5a4a2c;border-radius:9px;padding:5px 9px;font-size:11px;cursor:pointer}.tiny{font-size:11px;color:#827761}.hidden{display:none!important}
 @media(min-width:700px){header{height:64px}.nav{height:64px}.menu{display:none}.navlinks{display:flex}.nav>.btn{display:block}.hero{padding-bottom:60px;background:linear-gradient(var(--gold) 0 260px,var(--cream) 260px)}.hero-screen{height:360px}.hero-inner{width:min(850px,calc(100% - 40px))}.features{grid-template-columns:repeat(2,1fr);gap:16px}.feature{min-height:220px;padding:28px}.feature-icon{height:110px;font-size:58px}.feature h3{font-size:16px}.feature p{font-size:13px}.steps{grid-template-columns:repeat(3,1fr)}.pricing{justify-content:center;overflow:visible;padding:0 0 12px}.plan{flex:1 1 0;max-width:330px;padding:20px}.plan h3{font-size:16px}.plan ul{font-size:11px}.price{font-size:32px}.footer-row{grid-template-columns:1.2fr 1fr}.footer-tag{font-size:32px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Uplocket-inspired mobile layout refinements */
+:root{--gold:#ffb900;--gold2:#f0a000;--cream:#fffdf1;--cream2:#fff7e7;--ink:#17130a;--muted:#756b57}
+body{background:var(--cream)}
+header{height:56px;background:#ffb900}.nav{height:56px}
+.hero{padding-bottom:48px;background:linear-gradient(#ffb900 0 200px,var(--cream) 200px)}
+.hero-screen{width:min(100%,620px);height:272px;box-shadow:none}
+.hero-screen:before{right:9%;top:34%;width:22px;height:22px;box-shadow:0 0 0 3px #fff}
+.hero-brand{bottom:42px;color:#211900}.hero-caption{background:#ffbd39e8}
+.features{gap:10px}.feature{min-height:176px;border-radius:24px;background:#fff7e7;padding:22px 18px 17px}
+.feature-icon{height:96px;font-size:48px}.feature h3{font-size:13px}.feature p{font-size:11px}
+.section-head{margin:10px auto 20px}.section-head h2{font-size:22px}
+#pricing{padding-top:16px}.pricing{gap:12px;padding-left:18px;padding-right:18px}
+.plan{flex-basis:270px;border-radius:19px;background:#fff5dc}.plan.popular{background:#fff2d0;border:1.5px solid #f0a300}
+.plan ul{gap:7px}.plan .btn{background:#ffb900}
+footer{padding:35px 0 45px}.footer-tag{text-decoration-color:#ffb900}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.menu{border:0;background:transparent;color:#211900;cursor:pointer;padding:5px 0 5px 12px}
+.navlinks{display:none;position:absolute;top:56px;left:0;right:0;padding:15px 20px;background:#ffb900;box-shadow:0 8px 14px #0001;flex-direction:column;gap:12px}
+.navlinks.open{display:flex}
+.chat-bubble{position:fixed;right:14px;bottom:14px;width:42px;height:42px;border-radius:50%;background:#087cff;color:white;display:grid;place-items:center;font-size:19px;font-weight:900;box-shadow:0 3px 12px #087cff55;z-index:10}
+@media(min-width:700px){
+ .navlinks{display:flex;position:static;padding:0;background:transparent;box-shadow:none;flex-direction:row;gap:24px}
+ .menu{display:none}.hero-screen{height:360px}
+ .features{grid-template-columns:repeat(2,1fr);gap:16px}
+ .feature{min-height:220px;padding:28px}.feature-icon{height:110px;font-size:58px}
+ .feature h3{font-size:16px}.feature p{font-size:13px}
+ .pricing{justify-content:center;overflow:visible;padding:0 0 12px}
+ .plan{flex:1 1 0;max-width:330px}
+}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
 </style>
 </head>
 <body>
 
 <header><div class="wrap nav">
 <a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket</span></a>
-<nav class="navlinks"><a href="#benefits">Quyền lợi</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
-<span class="menu" aria-label="Menu">≡</span>
+<nav class="navlinks" id="mobileNav"><a href="#benefits">Quyền lợi</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
+<button class="menu" aria-label="Mở menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
 </div></header>
 <main>
 <div class="hero"><div class="hero-inner">
@@ -62,6 +95,7 @@ footer{padding:35px 0 45px;background:var(--cream);color:#2a2418;font-size:11px}
 <div class="footer-links"><a href="#pricing">Mua Gold</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">Đánh giá</a><a href="#how">Cài DNS</a><a href="#how">Cài DNS</a><a href="#faq">Tùy chỉnh khung</a><a href="#faq">Về Uplocket</a><a href="#faq">Giới thiệu</a></div>
 <div class="footer-tag">BEST FRIENDS FIRST</div>
 </div></footer>
+<a class="chat-bubble" href="#faq" aria-label="Liên hệ hỗ trợ">•••</a>
 <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-card glass">
 <button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
@@ -90,7 +124,7 @@ footer{padding:35px 0 45px;background:var(--cream);color:#2a2418;font-size:11px}
 const API_BASE = "https://YOUR-WORKER.workers.dev"; // Thay bằng URL Cloudflare Worker
 let plans = [], selected = null, activeOrder = null, poller = null, ticker = null, expiresAt = 0, busy = false;
 const money = n => new Intl.NumberFormat("vi-VN").format(n) + "đ";
-document.getElementById("year").textContent = new Date().getFullYear();
+const yearNode = document.getElementById("year"); if(yearNode) yearNode.textContent = new Date().getFullYear();
 
 async function loadPlans(){
   const host = document.getElementById("plans");
@@ -117,6 +151,8 @@ async function loadPlans(){
 }
 function escapeHtml(s){return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function escapeAttr(s){return escapeHtml(s).replace(/"/g,"&quot;");}
+function toggleMenu(){ const nav=document.getElementById("mobileNav"); const btn=document.querySelector(".menu"); const opened=nav.classList.toggle("open"); btn.setAttribute("aria-expanded",String(opened)); }
+document.querySelectorAll("#mobileNav a").forEach(a=>a.addEventListener("click",()=>{document.getElementById("mobileNav").classList.remove("open");document.querySelector(".menu").setAttribute("aria-expanded","false");}));
 function openOrder(id){
   selected = plans.find(p=>p.id===id);
   if(!selected) return;
