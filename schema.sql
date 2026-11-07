@@ -36,3 +36,5 @@ CREATE TABLE IF NOT EXISTS frames (
   created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
 );
 CREATE INDEX IF NOT EXISTS idx_frames_active_created ON frames(active, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS site_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL);
