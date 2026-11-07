@@ -36,8 +36,17 @@ function secureEqual(a,b) {
   let diff=0; for(let i=0;i<a.length;i++) diff|=a.charCodeAt(i)^b.charCodeAt(i);
   return diff===0;
 }
-function orderCode() {
-  return "LOCKET" + crypto.randomUUID().replaceAll("-","").slice(0,12).toUpperCase();
+async function orderCode(env) {
+  // Mã ngắn: LOCKET + 6 chữ số. Kiểm tra trước để tránh trùng mã trong D1.
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const bytes = new Uint32Array(1);
+    crypto.getRandomValues(bytes);
+    const digits = String(bytes[0] % 1000000).padStart(6, "0");
+    const code = "LOCKET" + digits;
+    const existing = await env.DB.prepare("SELECT 1 AS found FROM orders WHERE order_code=?").bind(code).first();
+    if (!existing) return code;
+  }
+  throw new Error("Không thể tạo mã đơn hàng duy nhất. Vui lòng thử lại.");
 }
 function publicPlans() {
   return PLANS.map(({id,label,name,duration,price,compare_at,badge,featured,button_text,features}) =>
@@ -130,7 +139,7 @@ async function createOrder(request, env, origin) {
   if (!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
   const verifiedUsername = verification.username;
 
-  const id=crypto.randomUUID(), code=orderCode(), expires=Date.now()+10*60*1000;
+  const id=crypto.randomUUID(), code=await orderCode(env), expires=Date.now()+10*60*1000;
   await env.DB.prepare(`
     INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at)
     VALUES(?,?,?,?,?,'pending',?)
@@ -144,7 +153,7 @@ async function createOrder(request, env, origin) {
 }
 async function checkPayment(request, env, origin) {
   const code=new URL(request.url).searchParams.get("order_code");
-  if(!code || !/^LOCKET[A-F0-9]{12}$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
+  if(!code || !/^LOCKET(?:\\d{6}|[A-F0-9]{12})$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
   const row=await env.DB.prepare("SELECT order_code,amount,plan,status,expires_at,install_url,activation_code,provider_error FROM orders WHERE order_code=?").bind(code).first();
   if(!row) return json({error:"Không tìm thấy đơn hàng"},404,origin);
   if(row.status==="pending" && Date.now()>row.expires_at){
@@ -207,7 +216,7 @@ async function paymentWebhook(request, env, rawBody) {
   if (direction !== "in") return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
 
   const content = String(data.content || data.code || "").toUpperCase();
-  const match = content.match(/LOCKET[A-F0-9]{12}/);
+  const match = content.match(/LOCKET(?:\\d{6}|[A-F0-9]{12})/);
   const code = match?.[0];
   const amount = Number(data.transferAmount);
   const tx = String(data.id ?? "").trim();
