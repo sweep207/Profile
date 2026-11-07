@@ -113,7 +113,7 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
   }
 
-  return { ok: true, username: verifiedUsername };
+  return { ok: true, username: verifiedUsername, profile: { username: verifiedUsername, uid, name: String(profile.name || "").slice(0,100), avatar: String(profile.avatar || "").slice(0,1000) } };
 }
 
 async function createOrder(request, env, origin) {
@@ -300,6 +300,7 @@ export default {
       if(request.method==="GET" && url.pathname==="/health") return json({ok:Boolean(env.DB),service:"Locket Gold order API",database:Boolean(env.DB)},env.DB?200:503,origin||"");
       if(!env.DB) return json({error:"D1 binding DB chưa được cấu hình."},503,origin||"");
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
+      if(request.method==="POST" && url.pathname==="/verify-account") { if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||""); let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");} const username=String(body.username||"").trim(); if(!username||username.length>100||/[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||""); const verification=await verifyLocketAccount(username,env); if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||""); return json({success:true,profile:verification.profile,gold_status:null},200,origin||""); }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
       if(request.method==="POST" && url.pathname==="/admin/install-video") return await saveInstallVideo(request,env,origin);
