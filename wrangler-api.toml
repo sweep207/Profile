@@ -1,0 +1,13 @@
+name = "sweep207-locket-api"
+main = "worker-api.js"
+compatibility_date = "2026-11-07"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sweep207-locket-orders"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[vars]
+ALLOWED_ORIGINS = "https://sweep207.github.io"
+BANK_ID = "REPLACE_WITH_BANK_CODE"
+# BANK_ACCOUNT and BANK_ACCOUNT_NAME can be set as dashboard variables.
