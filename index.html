@@ -140,7 +140,8 @@ footer{border-color:#1f2734}.footer-note,.tiny{color:#8f98a9}.footer-links{color
  <a class="support-option telegram" href="https://t.me/HeyLocket" target="_blank" rel="noopener"><span class="support-icon">➤</span><span><b>Telegram</b><small>t.me/HeyLocket</small></span><span class="external">↗</span></a>
  </div>
 </div>
-\n<div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+<div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-card">
 <button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
 <div id="formView"><div class="eyebrow">TẠO ĐƠN HÀNG</div><h2 id="modalTitle" style="margin:8px 0 2px">Thông tin đặt hàng</h2><p class="tiny">Chỉ nhập username hoặc link công khai cần thiết.</p>
@@ -268,7 +269,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 })();
 
 loadPlans();
-initRealPurchaseNotifications();\nconst zaloLink=document.getElementById("zaloSupport");\nif(zaloLink){if(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}}
+initRealPurchaseNotifications();
+const zaloLink=document.getElementById("zaloSupport");
+if(zaloLink){if(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}}
 
 function verifyAccount(){
  const value=document.getElementById("username").value.trim();
