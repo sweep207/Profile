@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS orders (
   amount INTEGER NOT NULL CHECK(amount > 0),
   status TEXT NOT NULL DEFAULT 'pending',
   expires_at INTEGER NOT NULL,
+  activation_date TEXT,
   provider_activation_id TEXT,
   activation_code TEXT,
   install_url TEXT,
