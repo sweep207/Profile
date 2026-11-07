@@ -25,15 +25,15 @@ footer{text-align:center;color:#727d8f;font-size:10px;padding:18px 0 30px}
  <div class="intro"><div class="eyebrow">THƯ VIỆN KHUNG</div><h1>Đổi khung viền widget</h1><p>Chọn khung, xem trước, rồi gửi cho tài khoản Gold của bạn. Không cần đăng nhập.</p></div>
  <section class="panel"><h2>Link hoặc username Locket để kích hoạt Gold</h2><p class="sub">Nhập link Locket của bạn (không bắt buộc để xem thư viện).</p><div class="row"><input id="locketUser" class="field" placeholder="https://locket.cam/username" autocomplete="off"><button class="btn" onclick="saveLocketUser()">Tiếp tục</button></div><p id="userStatus" class="status"></p></section>
  <section class="panel"><h2>Chọn khung</h2><p class="sub"><span id="frameCount">Đang tải...</span> · Chạm vào khung để xem lựa chọn</p><div id="filters" class="filterbar"></div><div id="frameGrid" class="grid"><div class="empty">Đang tải thư viện khung...</div></div><div id="selection" class="selection"><div><b id="selectedTitle"></b><small id="selectedNote"></small></div><div class="row"><button class="btn secondary" onclick="copySelection()">Sao chép tên khung</button><button class="btn danger" onclick="deleteFrame()">Xoá khung</button></div></div></section>
- <section class="panel"><button class="admin-toggle" onclick="document.getElementById('adminBody').classList.toggle('open')"><span>＋ Thêm khung mới / Quản lý thư viện</span><span>⌄</span></button><div id="adminBody" class="admin-body">
-  <p class="sub">Chỉ người quản trị có mã bí mật mới được thêm hoặc xoá khung. Ảnh được lưu trên Cloudflare R2.</p>
+ <section class="panel"><button class="admin-toggle" onclick="document.getElementById('adminBody').classList.toggle('open')"><span>＋ Tự thêm khung mới qua API / Quản lý thư viện</span><span>⌄</span></button><div id="adminBody" class="admin-body">
+  <p class="sub">Bạn tự thêm khung qua API quản trị: chọn ảnh, nhập tên và danh mục rồi tải lên. Ảnh được lưu trên Cloudflare R2; chỉ người có mã quản trị mới được thêm hoặc xoá.</p>
   <label style="display:block;font-size:10px;color:#aab4c4;margin-bottom:5px" for="adminToken">Mã quản lý</label><input id="adminToken" class="field" type="password" autocomplete="off" placeholder="Nhập FRAME_ADMIN_TOKEN">
   <div class="admin-grid" style="margin-top:12px">
    <div><label for="frameTitle">Tên khung</label><input id="frameTitle" class="field" maxlength="80" placeholder="Ví dụ: Khung hoa"></div>
    <div><label for="frameCategory">Danh mục</label><input id="frameCategory" class="field" maxlength="40" placeholder="Ví dụ: Dễ thương"></div>
    <div class="wide"><label for="frameNote">Mô tả ngắn</label><input id="frameNote" class="field" maxlength="120" placeholder="Ghi chú hiển thị dưới tên khung"></div>
    <div class="wide"><label for="frameImage">Ảnh khung (JPG, PNG, WEBP · tối đa 5 MB)</label><input id="frameImage" class="field" type="file" accept="image/jpeg,image/png,image/webp"></div>
-   <div class="wide"><button class="btn" style="width:100%" onclick="addFrame()">Tải khung lên thư viện</button></div>
+   <div class="wide"><button class="btn" style="width:100%" onclick="addFrame()">Thêm khung qua API</button></div>
   </div><div id="adminStatus" class="status"></div>
  </div></section>
 </main><a href="https://t.me/HeyLocket" target="_blank" rel="noopener" aria-label="Hỗ trợ 24/7" style="position:fixed;right:16px;bottom:18px;z-index:10;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffe05b,#f5a51e);color:#211700;font-size:22px;box-shadow:0 8px 28px #ffb51f55">♧</a><footer class="wrap">Locket Gold là dịch vụ độc lập, không liên kết với Locket Labs, Inc.</footer>
