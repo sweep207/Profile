@@ -260,11 +260,12 @@ async function processUpgrade(request, env) {
   const auth=request.headers.get("Authorization")||"";
   if(!env.INTERNAL_SECRET || !secureEqual(auth,`Bearer ${env.INTERNAL_SECRET}`)) return json({error:"Unauthorized"},401,"");
   let body; try{body=await request.json();}catch{return json({error:"Bad JSON"},400,"");}
-  const order=await env.DB.prepare("SELECT * FROM orders WHERE order_code=? AND status='paid'").bind(String(body.order_code||"")).first();
+  const order=await env.DB.prepare("SELECT * FROM orders WHERE order_code=? AND status IN ('paid','activation_failed')").bind(String(body.order_code||"")).first();
   if(!order) return json({error:"Đơn chưa thanh toán hoặc không tồn tại"},400,"");
+  if(order.status==="activation_failed") await env.DB.prepare("UPDATE orders SET status='paid', provider_error=NULL WHERE id=? AND status='activation_failed'").bind(order.id).run();
   await activatePaidOrder(order,env);
-  const after=await env.DB.prepare("SELECT status FROM orders WHERE id=?").bind(order.id).first();
-  return json({success:true,status:after?.status||"paid"});
+  const after=await env.DB.prepare("SELECT status,provider_error FROM orders WHERE id=?").bind(order.id).first();
+  return json({success:after?.status==="completed",status:after?.status||"paid",error:after?.provider_error||null});
 }
 export default {
   async fetch(request,env) {
