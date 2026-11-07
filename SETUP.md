@@ -83,3 +83,25 @@ npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
 ```
 4. Deploy Worker. Trang `frames.html` có nút **Quản lý khung**; nhập token, chọn ảnh JPG/PNG/WEBP (tối đa 5 MB), tên và danh mục rồi lưu. Ảnh được lưu trong R2, thông tin khung lưu trong D1.
 5. Giá gói chỉnh trong mảng `PLANS` ở đầu `worker.js`, sau đó deploy Worker lại. Không cần sửa HTML.
+
+
+## 8. Thư viện khung widget (quản trị viên)
+Worker đã có API quản lý khung. Để bật tính năng tải ảnh khung:
+1. Tạo R2 bucket đúng tên trong `wrangler.toml`:
+   ```bash
+   npx wrangler r2 bucket create locket-widget-frames
+   ```
+2. Đảm bảo D1 đã chạy `schema.sql` (bảng `frames` đã được khai báo trong file này).
+3. Đặt mã quản lý bí mật dưới dạng Worker Secret, không ghi mã này vào HTML hoặc GitHub:
+   ```bash
+   npx wrangler secret put FRAME_ADMIN_TOKEN
+   ```
+4. Nhập một chuỗi dài, khó đoán khi terminal hỏi. Sau đó deploy:
+   ```bash
+   npx wrangler deploy
+   ```
+5. Mở `frames.html`, nhập mã quản lý trong mục “Thêm khung mới / Quản lý thư viện”. Ảnh JPG, PNG, WEBP tối đa 5 MB. Khung mới sẽ hiển thị công khai trong thư viện; chỉ người có mã quản lý mới được thêm/xoá.
+6. Thay `API_BASE` trong cả `index.html` và `frames.html` bằng cùng URL Worker đã deploy.
+
+## 9. Thay đổi giá
+Sửa các trường `price`, `duration`, `features` trong mảng `PLANS` ở đầu `worker.js`, sau đó chạy `npx wrangler deploy`. Trang chủ lấy bảng giá trực tiếp từ `GET /plans`, không cần sửa HTML.
