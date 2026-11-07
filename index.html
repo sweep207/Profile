@@ -53,6 +53,29 @@ footer{padding:35px 0 45px}.footer-tag{text-decoration-color:#ffb900}
 }
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
+
+/* Hero rebuilt to match the supplied Uplocket first-screen reference */
+.hero{padding:34px 0 74px;background:radial-gradient(ellipse at 50% 27%,#fff0c3 0,#ffedbb 37%,#fff9e9 68%,var(--cream) 100%);overflow:hidden}
+.hero-inner{width:min(720px,calc(100% - 36px))}
+.hero-device{height:440px;width:min(100%,465px);margin:0 auto;position:relative;border:1px solid #c9d0d8;border-radius:58px 58px 22px 22px;background:linear-gradient(145deg,#dce5ef 0%,#c9d4e2 45%,#eef0ef 100%);box-shadow:0 16px 38px #8d7c5420;overflow:hidden;padding:28px 24px}
+.device-status{display:flex;justify-content:space-between;color:#fff;font-weight:800;font-size:13px;margin:0 5px 30px}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px 12px;align-items:center}
+.photo-tile{grid-column:span 2;grid-row:span 2;height:150px;border-radius:28px;background:linear-gradient(180deg,#f1a7a2 0%,#f7c58a 34%,#4b6c73 68%,#182d30 100%);box-shadow:0 5px 12px #0002;display:flex;flex-direction:column;justify-content:space-between;padding:10px;color:white;overflow:hidden}
+.photo-sun{font-size:38px;text-shadow:0 2px 8px #0005}.photo-tile small{font-size:10px;background:#17130a77;border-radius:20px;padding:4px 7px;align-self:flex-start}
+.app-icon{aspect-ratio:1;border-radius:18px;display:grid;place-items:center;font-size:34px;font-weight:900;color:white;box-shadow:0 3px 7px #0001}
+.heart-app{background:#ffb000;color:#a95e00}.book-app{background:#f3a85b}.calendar-app{background:#f5f5f5;color:#7d8590;font-size:28px}.rings-app{background:#4b4655;color:#ff56b5}.camera-app{background:#b7b8bc;color:#555}.store-app{background:#54b6ec}.podcast-app{background:#bd84d4}.notes-app{background:#f6edcf;color:#b6a77c}
+.floating-heart{position:absolute;right:8%;top:47%;font-size:54px;color:#ffb000;-webkit-text-stroke:5px white;filter:drop-shadow(0 3px 2px #0002)}
+.best-friends{position:absolute;left:-5px;top:70%;background:#ffb900;color:#1b1507;border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.05;font-weight:1000;transform:rotate(-17deg);box-shadow:0 3px 8px #0002}
+.hero-copy{position:relative;margin:-3px auto 0;max-width:520px}
+.hero-logo{display:flex;align-items:center;justify-content:center;gap:14px;font-size:52px;font-weight:1000;letter-spacing:-.055em;line-height:1.2}
+.hero-logo .brand-mark{width:70px;height:70px;border-radius:17px;font-size:42px;color:#a45e00;background:#ffb000}
+.hero-subtitle{font-size:20px;line-height:1.35;font-weight:800;color:#918b7c;margin:22px 0 28px}
+.hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:17px 34px;border-radius:999px;background:#ffb000;color:#211700;font-size:20px;font-weight:900;box-shadow:0 7px 0 #e99b00}
+.cta-heart{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:#17130a;color:#ffb000;font-size:27px}
+.down{display:block;color:#a9a69c;font-size:45px;line-height:1;margin:32px auto 0;text-decoration:none;font-weight:900}
+@media(max-width:520px){.hero{padding-top:26px;padding-bottom:62px}.hero-device{height:390px;width:88%;border-radius:48px 48px 20px 20px;padding:23px 18px}.device-status{margin-bottom:25px}.app-grid{gap:12px 9px}.photo-tile{height:130px}.app-icon{border-radius:15px;font-size:28px}.hero-logo{font-size:44px;gap:10px}.hero-logo .brand-mark{width:58px;height:58px;font-size:35px}.hero-subtitle{font-size:18px;margin:18px 0 25px}.hero-cta{font-size:18px;padding:13px 24px}.cta-heart{width:38px;height:38px}.down{margin-top:27px}}
+@media(min-width:700px){.hero{padding-top:42px;padding-bottom:85px}.hero-device{height:490px}.hero-logo{font-size:58px}}
+
 </style>
 </head>
 <body>
@@ -64,8 +87,23 @@ footer{padding:35px 0 45px}.footer-tag{text-decoration-color:#ffb900}
 </div></header>
 <main>
 <div class="hero"><div class="hero-inner">
-<div class="hero-screen"><div class="hero-brand"><span class="brand-mark">♥</span>Locket</div></div>
-<div class="hero-caption">Mua Gold　♥　Locket</div><span class="down">⌄</span>
+<div class="hero-device" aria-hidden="true">
+  <div class="device-status"><span>9:41</span><span>▮▮▮　◉　▰</span></div>
+  <div class="app-grid">
+    <div class="photo-tile"><span class="photo-sun">🌅</span><small>♥　7:11 PM</small></div>
+    <div class="app-icon heart-app">♥</div><div class="app-icon book-app">▤</div>
+    <div class="app-icon calendar-app">1</div><div class="app-icon rings-app">◎</div>
+    <div class="app-icon camera-app">◉</div><div class="app-icon store-app">A</div>
+    <div class="app-icon podcast-app">◉</div><div class="app-icon notes-app">▤</div>
+  </div>
+  <span class="floating-heart">♥</span><span class="best-friends">BEST<br>FRIENDS<br>FIRST</span>
+</div>
+<div class="hero-copy">
+  <div class="hero-logo"><span class="brand-mark">♥</span><span>Locket</span></div>
+  <p class="hero-subtitle">Nâng cấp Locket Gold,<br>dùng ngay trên điện thoại</p>
+  <a class="hero-cta" href="#pricing">Mua Gold <span class="cta-heart">♥</span> Locket</a>
+</div>
+<a class="down" href="#benefits" aria-label="Cuộn xuống">⌄</a>
 </div></div>
 <section id="benefits"><div class="wrap features">
 <article class="feature"><div class="feature-icon">💬🧡</div><h3>Không tải app thứ 3</h3><p>Những gì bạn nhận được khi nâng cấp Gold</p></article>
