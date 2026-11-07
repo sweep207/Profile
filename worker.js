@@ -56,13 +56,19 @@ async function rateLimit(request, env) {
   const ip=request.headers.get("CF-Connecting-IP") || "unknown";
   const bucket=Math.floor(Date.now()/60000);
   const key=ip+":"+bucket;
-  const row=await env.DB.prepare("SELECT hits FROM rate_limits WHERE rate_key=?").bind(key).first();
-  if(row && row.hits>=8) return false;
-  await env.DB.prepare(`
-    INSERT INTO rate_limits(rate_key,hits,expires_at) VALUES(?,?,?)
-    ON CONFLICT(rate_key) DO UPDATE SET hits=hits+1
-  `).bind(key,1,(bucket+2)*60000).run();
-  return true;
+  try {
+    const row=await env.DB.prepare("SELECT hits FROM rate_limits WHERE rate_key=?").bind(key).first();
+    if(row && row.hits>=8) return false;
+    await env.DB.prepare(`
+      INSERT INTO rate_limits(rate_key,hits,expires_at) VALUES(?,?,?)
+      ON CONFLICT(rate_key) DO UPDATE SET hits=hits+1
+    `).bind(key,1,(bucket+2)*60000).run();
+    return true;
+  } catch (error) {
+    // A missing rate_limits table must not break account verification.
+    console.error("Rate limit storage error:", String(error?.message || error));
+    return true;
+  }
 }
 async function verifyLocketAccount(username, env) {
   if (!env.UPLOCKET_API_KEY) {
@@ -117,11 +123,23 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
   }
 
-  const goldStatusValue = data.gold_status ?? data.goldStatus ?? data.is_gold ?? data.isGold ?? profile.gold_status ?? profile.goldStatus ?? profile.is_gold ?? profile.isGold;
+  // Uplocket may expose the Gold state at the top level or inside data/result/profile.
+  const nested = data?.data || data?.result || {};
+  const nestedProfile = nested?.profile || nested?.account || {};
+  const goldStatusValue = data.gold_status ?? data.goldStatus ?? data.is_gold ?? data.isGold ??
+    nested.gold_status ?? nested.goldStatus ?? nested.is_gold ?? nested.isGold ??
+    profile.gold_status ?? profile.goldStatus ?? profile.is_gold ?? profile.isGold ??
+    nestedProfile.gold_status ?? nestedProfile.goldStatus ?? nestedProfile.is_gold ?? nestedProfile.isGold ??
+    data.subscription?.gold ?? nested.subscription?.gold;
   let goldStatus = null;
-  if (goldStatusValue === true) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
-  else if (goldStatusValue === false) goldStatus = "CHƯA CÓ GOLD";
-  else if (typeof goldStatusValue === "string" && goldStatusValue.trim()) goldStatus = goldStatusValue.trim().slice(0,80);
+  if (goldStatusValue === true || goldStatusValue === 1) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
+  else if (goldStatusValue === false || goldStatusValue === 0) goldStatus = "CHƯA CÓ GOLD";
+  else if (typeof goldStatusValue === "string" && goldStatusValue.trim()) {
+    const state = goldStatusValue.trim().toLowerCase();
+    if (["true","1","active","gold","premium","subscribed","enabled"].includes(state)) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
+    else if (["false","0","inactive","none","no gold","not gold","not_subscribed","expired"].includes(state)) goldStatus = "CHƯA CÓ GOLD";
+    else goldStatus = goldStatusValue.trim().slice(0,80);
+  }
   const verifiedUsername = String(profile.username || username).trim();
   if (!verifiedUsername || verifiedUsername.length > 100) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
@@ -330,7 +348,25 @@ export default {
       if(!env.DB) return json({error:"D1 binding DB chưa được cấu hình."},503,origin||"");
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="POST" && url.pathname==="/lookup-install-link") return await lookupInstallLink(request,env,origin||"");
-      if(request.method==="POST" && url.pathname==="/verify-account") { if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||""); let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");} const username=String(body.username||"").trim(); if(!username||username.length>100||/[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||""); const verification=await verifyLocketAccount(username,env); if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||""); return json({success:true,profile:verification.profile,gold_status:verification.goldStatus||null},200,origin||""); }
+      if(request.method==="POST" && url.pathname==="/verify-account") {
+        if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin||"");
+        let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin||"");}
+        const raw=String(body.username||"").trim();
+        if(!raw||raw.length>200||/[<>]/.test(raw)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||"");
+        let username=raw;
+        try {
+          if(/^https?:\\/\\//i.test(raw)) {
+            const u=new URL(raw);
+            if(!/(^|\\.)locket\\.cam$/i.test(u.hostname)) return json({success:false,error:"Hãy nhập username hoặc link trang cá nhân locket.cam."},400,origin||"");
+            username=u.pathname.split("/").filter(Boolean).pop()||"";
+          }
+        } catch { return json({success:false,error:"Link Locket không hợp lệ."},400,origin||""); }
+        username=username.replace(/^@/,"").trim();
+        if(!username||username.length>100) return json({success:false,error:"Username Locket không hợp lệ."},400,origin||"");
+        const verification=await verifyLocketAccount(username,env);
+        if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||"");
+        return json({success:true,profile:verification.profile,gold_status:verification.goldStatus||null,gold_checked:true},200,origin||"");
+      }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
       if(request.method==="POST" && url.pathname==="/admin/install-video") return await saveInstallVideo(request,env,origin);
