@@ -1,0 +1,36 @@
+name: Validate website and Worker
+
+on:
+  push:
+    branches: [main, "repair/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check Worker and shared config syntax
+        run: |
+          node --check worker.js
+          node --check config.js
+      - name: Check inline JavaScript in HTML pages
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          for (const file of ['index.html', 'about.html', 'install.html', 'frames.html']) {
+            const html = fs.readFileSync(file, 'utf8');
+            const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
+              .map(match => match[1]).filter(code => code.trim());
+            for (const [index, code] of scripts.entries()) {
+              try { new Function(code); }
+              catch (error) { throw new Error(file + ' inline script #' + (index + 1) + ': ' + error.message); }
+            }
+            if (!html.includes('./config.js')) throw new Error(file + ' does not load config.js');
+            console.log('OK:', file);
+          }
+          NODE
