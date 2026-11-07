@@ -255,7 +255,24 @@ footer{background:#0c1120!important;color:#a8b0c6!important;border-top:1px solid
 @media(prefers-reduced-motion:reduce){.plan{transition:none!important}}
 /* Recover DNS for an already activated account */
 .gold-recovery{max-width:620px;margin:12px auto 16px;padding:12px;border:1px solid #3a4564;border-radius:17px;background:linear-gradient(145deg,#171e31,#111625);text-align:center;box-shadow:0 8px 20px #0002}.gold-recovery h2{margin:0 0 9px;font-size:20px;color:#e7e9f2}.recovery-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.recovery-btn{min-height:48px;padding:9px 12px;border:1px solid #4b4660;border-radius:26px;background:linear-gradient(145deg,#292844,#1a2032);color:#f7f4ff;font-size:clamp(13px,3.5vw,16px);font-weight:900;cursor:pointer;touch-action:manipulation}.recovery-btn:first-child{background:linear-gradient(145deg,#ffe08a,#ffbf42);color:#241900;border-color:#eac25c}.recovery-btn:active{transform:scale(.98)}.recovery-modal{display:none;position:fixed;inset:0;z-index:50;padding:18px;background:#000b;backdrop-filter:blur(9px);align-items:center;justify-content:center}.recovery-modal.open{display:flex}.recovery-card{width:min(520px,100%);padding:24px 20px;border:1px solid #454b61;border-radius:28px;background:linear-gradient(145deg,#fffaf0,#fff5dc);color:#21190d;text-align:center;position:relative}.recovery-close{position:absolute;right:13px;top:13px;width:36px;height:36px;border:0;border-radius:50%;background:#fff8e8;color:#6c5d45;font-size:22px}.recovery-tag{display:inline-block;border-radius:20px;background:#fff1c9;color:#a97813;padding:7px 15px;font-weight:850}.recovery-card h2{font-size:clamp(21px,5vw,28px);line-height:1.2;margin:15px 0 7px}.recovery-card p{color:#554632;font-size:14px;margin:0 0 16px}.recovery-input{width:100%;min-height:62px;padding:14px 18px;border:2px solid #f3c64d;border-radius:24px;background:#fff3d5;color:#2b2112;font-size:17px;font-weight:700;outline:none}.recovery-submit{width:100%;min-height:62px;margin-top:14px;border:0;border-radius:24px;background:linear-gradient(110deg,#ffe08a,#ffc84d);color:#715522;font-size:17px;font-weight:900}.recovery-submit:disabled{opacity:.55}.recovery-result{margin-top:12px;font-size:13px;overflow-wrap:anywhere}.recovery-result a{display:block;margin-top:9px;padding:15px;border-radius:17px;background:linear-gradient(110deg,#ffe08a,#ffbf42);color:#241900!important;font-weight:900;font-size:16px}.recovery-result.error{color:#b42318}.recovery-result.success{color:#176b42}@media(max-width:480px){.gold-recovery{padding:10px;margin:10px auto 14px}.gold-recovery h2{font-size:18px;margin-bottom:8px}.recovery-actions{grid-template-columns:1fr 1fr;gap:7px}.recovery-btn{min-height:44px;padding:8px 5px;font-size:13px;border-radius:22px}.recovery-card{padding:25px 17px}}
-\n/* Nút cài DNS độc lập, cùng kiểu nút Đóng cửa sổ */\n.dns-install-wrap{display:flex;width:100%;justify-content:center;margin:16px 0 10px;clear:both}.dns-install-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:76px;padding:20px 26px;margin:0;box-sizing:border-box;text-align:center;text-decoration:none;font-size:clamp(20px,4.5vw,24px);font-weight:900;line-height:1.35;border-radius:14px}\n</style>
+\n/* Nút cài DNS độc lập, cùng kiểu nút Đóng cửa sổ */\n.dns-install-wrap{display:flex;width:100%;justify-content:center;margin:16px 0 10px;clear:both}.dns-install-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:76px;padding:20px 26px;margin:0;box-sizing:border-box;text-align:center;text-decoration:none;font-size:clamp(20px,4.5vw,24px);font-weight:900;line-height:1.35;border-radius:14px}\n
+/* Canh thẳng hàng dấu tích trong toàn bộ 4 gói */
+#plans .plan ul li{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  line-height:1.55;
+}
+#plans .plan ul li::before{
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 16px;
+  width:16px;
+  height:16px;
+  margin:3px 0 0;
+  line-height:1;
+}
+</style>
 </head>
 <body>
 <header><div class="wrap nav">
