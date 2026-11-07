@@ -174,13 +174,13 @@ async function createOrder(request, env, origin) {
 async function checkPayment(request, env, origin) {
   const code=new URL(request.url).searchParams.get("order_code");
   if(!code || !/^LOCKET(?:\d{6}|[A-F0-9]{12})$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
-  const row=await env.DB.prepare("SELECT order_code,amount,plan,status,expires_at,install_url,activation_code,provider_error FROM orders WHERE order_code=?").bind(code).first();
+  const row=await env.DB.prepare("SELECT order_code,amount,plan,status,expires_at,install_url,activation_code,provider_error,activation_date FROM orders WHERE order_code=?").bind(code).first();
   if(!row) return json({error:"Không tìm thấy đơn hàng"},404,origin);
   if(row.status==="pending" && Date.now()>row.expires_at){
     await env.DB.prepare("UPDATE orders SET status='expired' WHERE order_code=? AND status='pending'").bind(code).run();
     row.status="expired";
   }
-  return json({success:true,order_code:row.order_code,amount:row.amount,plan:row.plan,status:row.status,expires_at:row.expires_at,install_url:row.install_url||null,activation_code:row.activation_code||null,provider_error:row.provider_error||null},200,origin);
+  return json({success:true,order_code:row.order_code,amount:row.amount,plan:row.plan,status:row.status,expires_at:row.expires_at,install_url:row.install_url||null,activation_code:row.activation_code||null,provider_error:row.provider_error||null,activation_date:row.activation_date||null},200,origin);
 }
 async function activatePaidOrder(order, env) {
   if (!env.UPLOCKET_API_KEY) {
