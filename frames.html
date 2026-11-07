@@ -18,7 +18,21 @@ main{padding:24px 0 70px}.intro{text-align:center;margin:10px auto 24px}.eyebrow
 .admin-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:#dce2ed;padding:0;font-weight:800;cursor:pointer}.admin-body{display:none;margin-top:14px}.admin-body.open{display:block}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.admin-grid .wide{grid-column:1/-1}.admin-grid label{display:block;font-size:10px;color:#aab4c4;margin-bottom:5px}.status{font-size:11px;color:var(--gold);margin-top:10px;min-height:16px}
 footer{text-align:center;color:#727d8f;font-size:10px;padding:18px 0 30px}
 @media(max-width:620px){.navlinks{display:none;position:absolute;top:58px;left:0;right:0;background:#171a22;padding:14px 20px;flex-direction:column}.navlinks.open{display:flex}.menu{display:block}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.frame-info{padding:7px}.panel{padding:12px}.admin-grid{grid-template-columns:1fr}.admin-grid .wide{grid-column:auto}.row{flex-direction:column}.selection.show{align-items:flex-start;flex-direction:column}.selection .btn{width:100%}}
-@media(min-width:621px) and (max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:420px){.intro h1{font-size:25px}.grid{gap:7px}.frame-title{font-size:10px}.selection{bottom:8px}}\nhtml,body{max-width:100%;overflow-x:hidden}body{background:radial-gradient(ellipse at 50% -15%,#1a2030 0,transparent 48%),var(--bg)}img{max-width:100%}.panel,.frame{min-width:0}\n</style></head>
+@media(min-width:621px) and (max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:420px){.intro h1{font-size:25px}.grid{gap:7px}.frame-title{font-size:10px}.selection{bottom:8px}}\nhtml,body{max-width:100%;overflow-x:hidden}body{background:radial-gradient(ellipse at 50% -15%,#1a2030 0,transparent 48%),var(--bg)}img{max-width:100%}.panel,.frame{min-width:0}\n/* Galaxy styling for frame browser page */
+:root{--bg:#090d18;--panel:#141b2b;--line:#303951;--text:#f1f3fb;--muted:#a8b0c6;--gold:#ffd15c}
+html,body{background:radial-gradient(ellipse at 12% 8%,#25245a 0%,transparent 34%),radial-gradient(ellipse at 88% 30%,#182e55 0%,transparent 38%),linear-gradient(160deg,#080b14,#0c1020 52%,#090d18)!important;color:#f1f3fb!important}
+nav,.nav{background:#0b101def!important;border-color:#29334b!important;backdrop-filter:blur(16px)}
+.brand-mark,.premium{background:linear-gradient(145deg,#ffd76b,#a98aff)!important;color:#171325!important}
+.navlinks a{color:#cbd4ef!important}
+.intro{color:#f1f3fb!important}.intro h1{color:#f1f3fb!important}.eyebrow{color:#ffdc78!important}
+.panel,.filterbar,.grid .frame,.frame-info,.selection,.empty,.chip{background:linear-gradient(145deg,#151d30,#101522)!important;color:#f1f3fb!important;border-color:#303951!important;box-shadow:0 5px 20px #0003!important}
+.frame-title{color:#f1f3fb!important}.frame-note,.sub{color:#a8b0c6!important}
+.btn:not(.secondary){background:linear-gradient(110deg,#ffd66c,#ffb83d)!important;color:#241b0b!important;border-color:#e8b44c!important}
+.btn.secondary,.chip{color:#e4eaff!important;border-color:#3b4b6a!important}
+.frame.selected,.frame.active,.frame:has(input:checked){border-color:#ffd15c!important;box-shadow:0 0 0 1px #ffd15c35,0 8px 25px #0004!important}
+footer{background:#0c1120!important;color:#a8b0c6!important;border-color:#29334b!important}
+
+</style></head>
 <body>
 <header><div class="wrap nav"><a class="brand" href="index.html"><span class="brand-mark">♛</span><span>Locket Gold <span class="premium">PREMIUM</span><small style="display:block;color:#9ca5b4;font-size:9px;font-weight:500">Kích hoạt tự động 24/7</small></span></a><nav class="navlinks" id="navlinks"><a href="index.html">Trang chủ</a><a href="install.html">Hướng dẫn cài</a><a href="frames.html">Khung widget</a><a href="about.html">Giới thiệu</a></nav><button class="menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button></div></header>
 <main class="wrap">
