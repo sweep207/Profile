@@ -229,11 +229,17 @@ async function createOrder(request, env, origin) {
     if (!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
     const verifiedUsername = verification.username;
 
-    // Tự bổ sung cột ngày kích hoạt cho D1 cũ nếu database chưa có cột này.
-    const columns = await env.DB.prepare("PRAGMA table_info(orders)").all();
-    const hasActivationDate = (columns.results || []).some(col => col.name === "activation_date");
-    if (!hasActivationDate) {
+    // Tương thích database cũ: thêm cột nếu chưa có.
+    // Không dùng PRAGMA table_info trong request tạo đơn vì một số cấu hình D1
+    // không hỗ trợ câu lệnh PRAGMA qua prepared statement.
+    try {
       await env.DB.prepare("ALTER TABLE orders ADD COLUMN activation_date TEXT").run();
+    } catch (migrationError) {
+      const migrationMessage = String(migrationError?.message || migrationError);
+      if (!/duplicate column name|already exists/i.test(migrationMessage)) {
+        console.error("Orders schema compatibility check failed:", migrationMessage);
+        throw migrationError;
+      }
     }
 
     const id=crypto.randomUUID();
@@ -262,7 +268,7 @@ async function createOrder(request, env, origin) {
       : /UPLOCKET|Uplocket|lookup|fetch failed|timed out/i.test(message)
         ? "Dịch vụ xác minh Locket đang lỗi. Vui lòng thử lại sau."
         : "Không thể tạo đơn hàng lúc này. Vui lòng thử lại sau.";
-    return json({success:false,error:publicMessage},500,origin);
+    return json({success:false,error:publicMessage,debug:message.slice(0,180)},500,origin);
   }
 }
 
