@@ -246,7 +246,7 @@ async function createOrder(request, env, origin) {
     const code=await orderCode(env);
     const expires=Date.now()+10*60*1000;
     const activationDate=String(body.activationDate||"").trim();
-    if (activationDate && !/^\\d{4}-\\d{2}-\\d{2}$/.test(activationDate)) {
+    if (activationDate && !/^\d{4}-\d{2}-\d{2}$/.test(activationDate)) {
       return json({success:false,error:"Ngày kích hoạt không hợp lệ."},400,origin);
     }
     await env.DB.prepare(`
@@ -438,9 +438,9 @@ export default {
         if(!raw||raw.length>200||/[<>]/.test(raw)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin||"");
         let username=raw;
         try {
-          if(/^https?:\\/\\//i.test(raw)) {
+          if(/^https?:\/\//i.test(raw)) {
             const u=new URL(raw);
-            if(!/(^|\\.)locket\\.cam$/i.test(u.hostname)) return json({success:false,error:"Hãy nhập username hoặc link trang cá nhân locket.cam."},400,origin||"");
+            if(!/(^|\.)locket\.cam$/i.test(u.hostname)) return json({success:false,error:"Hãy nhập username hoặc link trang cá nhân locket.cam."},400,origin||"");
             username=u.pathname.split("/").filter(Boolean).pop()||"";
           }
         } catch { return json({success:false,error:"Link Locket không hợp lệ."},400,origin||""); }
