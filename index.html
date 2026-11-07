@@ -313,7 +313,47 @@ function toggleMenu(){const nav=$("mobileNav"),btn=document.querySelector(".menu
 document.querySelectorAll("#mobileNav a").forEach(a=>a.addEventListener("click",()=>$("mobileNav").classList.remove("open")));
 async function loadPlans(){const host=$("plans");try{const r=await fetch(API_BASE+"/plans",{cache:"no-store"});if(!r.ok)throw Error("Không tải được bảng giá");const d=await r.json();plans=d.plans||[];if(!plans.length)throw Error("Chưa có gói dịch vụ");host.innerHTML=plans.map(p=>'<article class="plan '+(p.featured?"popular":"")+'" data-plan="'+esc(p.id)+'">'+(p.badge?'<span class="ribbon">'+esc(p.badge)+'</span>':'')+'<div class="duration">✦ '+esc(p.duration||"")+'</div><h3>'+esc(p.name)+'</h3><div class="price">'+(Number(p.price)===0?"Miễn phí":money(p.price))+'</div><ul>'+(p.features||[]).map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul><button class="btn" type="button">'+esc(p.button_text||"Chọn gói này")+'</button></article>').join("");host.querySelectorAll(".plan").forEach(card=>{const id=card.dataset.plan;card.onclick=()=>selectPlan(id);const b=card.querySelector(".btn");if(b)b.onclick=e=>{e.stopPropagation();selectPlan(id);};});}catch(e){host.innerHTML='<article class="plan"><p>Chưa tải được bảng giá. Kiểm tra cấu hình Worker.</p></article>';}}
 function cleanLocketUsername(raw){let value=String(raw||"").trim();try{if(/^https?:\/\//i.test(value)){const u=new URL(value);value=u.pathname.split("/").filter(Boolean).pop()||"";}}catch{}return value.replace(/^@/,"").trim();}
-async function checkLocketAccount(){const raw=$("accountLink").value.trim(),hint=$("accountHint"),btn=$("verifyBtn");if(!raw){hint.textContent="Vui lòng nhập username hoặc link Locket.";hint.style.color="#ff9c73";return false;}const username=cleanLocketUsername(raw);if(!username){hint.textContent="Username/link chưa đúng định dạng.";hint.style.color="#ff9c73";return false;}btn.disabled=true;btn.textContent="Đang xác minh phía máy chủ...";hint.textContent="Đang kết nối dịch vụ xác minh Locket.";hint.style.color="#a0a8b8";try{const r=await fetch(API_BASE+"/verify-account",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username}),cache:"no-store"});const d=await r.json();if(!r.ok||!d.success)throw Error(d.error||"Không thể xác minh tài khoản.");verifiedProfile=d.profile||{};verifiedUsername=String(verifiedProfile.username||username);hint.textContent=d.gold_status?"Đã xác minh tài khoản và nhận trạng thái Gold từ API.":"Đã xác minh tài khoản. API hiện chưa trả về trạng thái Gold.";hint.style.color="#38d7a5";const box=$("verifiedProfile"),avatar=verifiedProfile.avatar;box.innerHTML=(avatar?'<img src="'+esc(avatar)+'" alt="Ảnh đại diện" referrerpolicy="no-referrer">':'<div class="profile-avatar">♥</div>')+'<div class="profile-meta"><strong>'+esc(verifiedProfile.name||verifiedUsername)+'</strong><span>@'+esc(verifiedUsername)+'</span></div><span class="gold-status">'+(d.gold_status?esc(d.gold_status):"API CHƯA CUNG CẤP TRẠNG THÁI GOLD")+'</span>';box.classList.remove("hidden");$("activationDateBox").classList.remove("hidden");$("payContinueBtn").disabled=!selected;$("pricing").scrollIntoView({behavior:"smooth",block:"start"});return true;}catch(e){verifiedProfile=null;verifiedUsername="";$("verifiedProfile").classList.add("hidden");$("activationDateBox").classList.add("hidden");$("payContinueBtn").disabled=true;hint.textContent=e.message;hint.style.color="#ff9c73";return false;}finally{btn.disabled=false;btn.textContent="⌕  Kiểm tra tài khoản";}}
+async function checkLocketAccount(){
+ const raw=$("accountLink").value.trim(),hint=$("accountHint"),btn=$("verifyBtn");
+ if(!raw){hint.textContent="Vui lòng nhập username hoặc link Locket.";hint.style.color="#ff9c73";return false;}
+ const username=cleanLocketUsername(raw);
+ if(!username){hint.textContent="Username/link chưa đúng định dạng.";hint.style.color="#ff9c73";return false;}
+ btn.disabled=true;btn.textContent="Đang xác minh phía máy chủ...";
+ hint.textContent="Đang kết nối dịch vụ xác minh Locket.";hint.style.color="#a0a8b8";
+ try{
+  const r=await fetch(API_BASE+"/verify-account",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username}),cache:"no-store"});
+  let d={};try{d=await r.json();}catch{throw Error("Máy chủ trả về dữ liệu không hợp lệ.");}
+  if(!r.ok||!d.success)throw Error(d.error||"Không thể xác minh tài khoản.");
+  const p=d.profile||d.data?.profile||d.result?.profile||{};
+  verifiedProfile=p;
+  verifiedUsername=String(p.username||p.userName||p.handle||d.username||username).replace(/^@/,"").trim();
+  if(!verifiedUsername)throw Error("API chưa trả về username hợp lệ.");
+  const status=String(d.gold_status||d.goldStatus||p.gold_status||p.goldStatus||"").trim().toUpperCase();
+  const goldLabel=status==="GOLD"||status==="ACTIVE"||status==="PREMIUM"?"GOLD":status==="BẢN FREE"||status==="FREE"?"BẢN FREE":"CHƯA RÕ TRẠNG THÁI";
+  hint.textContent=goldLabel==="CHƯA RÕ TRẠNG THÁI"?"Đã xác minh tài khoản. API chưa trả trường trạng thái Gold; vui lòng kiểm tra lại dữ liệu API.":"Đã xác minh tài khoản · "+goldLabel;
+  hint.style.color="#38d7a5";
+  const box=$("verifiedProfile"),avatar=String(p.avatar||p.avatarUrl||p.photoURL||p.photo_url||p.picture||"");
+  box.replaceChildren();
+  if(avatar){const img=document.createElement("img");img.src=avatar;img.alt="Ảnh đại diện";img.referrerPolicy="no-referrer";img.onerror=()=>img.remove();box.appendChild(img);}
+  else{const placeholder=document.createElement("div");placeholder.className="profile-avatar";placeholder.textContent="♥";box.appendChild(placeholder);}
+  const meta=document.createElement("div");meta.className="profile-meta";
+  const name=document.createElement("strong");name.textContent=String(p.name||p.displayName||p.fullName||verifiedUsername);
+  const handle=document.createElement("span");handle.textContent="@"+verifiedUsername;
+  meta.append(name,handle);box.appendChild(meta);
+  const badge=document.createElement("span");badge.className="gold-status";badge.textContent=goldLabel;box.appendChild(badge);
+  box.classList.remove("hidden");
+  $("activationDateBox").classList.remove("hidden");
+  $("payContinueBtn").disabled=!selected;
+  $("payContinueBtn").textContent=selected?"Tiến hành thanh toán ("+money(selected.price)+")":"Chọn gói dịch vụ để tiếp tục";
+  $("pricing").scrollIntoView({behavior:"smooth",block:"start"});
+  return true;
+ }catch(e){
+  verifiedProfile=null;verifiedUsername="";
+  $("verifiedProfile").classList.add("hidden");$("activationDateBox").classList.add("hidden");
+  $("payContinueBtn").disabled=true;hint.textContent=e.message||"Không thể xác minh tài khoản.";hint.style.color="#ff9c73";
+  return false;
+ }finally{btn.disabled=false;btn.textContent="⌕  Kiểm tra tài khoản";}
+}
 function chooseActivationDate(mode){const custom=mode==="custom";document.querySelectorAll(".date-choice").forEach((b,i)=>b.classList.toggle("active",i===(custom?1:0)));$("activationDate").classList.toggle("hidden",!custom);if(!custom){activationDateValue=localDateISO();$("activationDateHint").textContent="Ngày đã chọn: Hôm nay";}else{if(!$("activationDate").value)$("activationDate").value=activationDateValue;$("activationDateHint").textContent="Chọn ngày trên lịch.";}}
 function setCustomActivationDate(){activationDateValue=$("activationDate").value||new Date().toISOString().slice(0,10);$("activationDateHint").textContent="Ngày đã chọn: "+activationDateValue;}
 function continueToOrder(){if(!verifiedProfile||!verifiedUsername){$("accountLink").focus();$("accountHint").textContent="Hãy xác minh tài khoản trước khi tiến hành thanh toán.";return;}if(!selected){$("accountHint").textContent="Vui lòng chọn một gói dịch vụ bên dưới.";return;}openOrder(selected.id);}
