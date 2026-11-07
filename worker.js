@@ -480,7 +480,27 @@ export default {
         if(!username||username.length>100) return json({success:false,error:"Username Locket không hợp lệ."},400,origin||"");
         const verification=await verifyLocketAccount(username,env);
         if(!verification.ok) return json({success:false,error:verification.error},verification.status,origin||"");
-        return json({success:true,profile:verification.profile,gold_status:verification.goldStatus,gold_checked:true},200,origin||"");
+
+        // Reflect successful Gold activations from this site's completed orders.
+        // Uplocket lookup may not expose its membership flag consistently.
+        let paidGoldActive = false;
+        try {
+          const completedOrders = await env.DB.prepare(
+            "SELECT plan, created_at FROM orders WHERE lower(username)=lower(?) AND status='completed' ORDER BY created_at DESC LIMIT 10"
+          ).bind(verification.username).all();
+          const durationByPlan = {trial:3, pro:180, premium:365, forever:9999};
+          const now = Date.now();
+          paidGoldActive = (completedOrders.results || []).some(order => {
+            const days = durationByPlan[String(order.plan || "").toLowerCase()];
+            const createdAt = Date.parse(String(order.created_at || ""));
+            return Number.isFinite(days) && Number.isFinite(createdAt) &&
+              createdAt + days * 86400000 > now;
+          });
+        } catch (dbError) {
+          console.error("Gold order status lookup failed:", String(dbError?.message || dbError));
+        }
+        const goldStatus = verification.goldStatus === "GOLD" || paidGoldActive ? "GOLD" : "BẢN FREE";
+        return json({success:true,profile:verification.profile,gold_status:goldStatus,gold_checked:true},200,origin||"");
       }
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
