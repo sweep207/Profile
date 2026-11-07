@@ -97,7 +97,7 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 422, error: "Uplocket không xác nhận được tài khoản Locket này." };
   }
 
-  if (data.provisional === true) {
+  if (data.provisional !== false) {
     return { ok: false, status: 422, error: "Username này chưa được xác nhận là tài khoản Locket thật. Vui lòng kiểm tra lại." };
   }
 
