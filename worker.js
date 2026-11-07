@@ -153,7 +153,7 @@ async function createOrder(request, env, origin) {
 }
 async function checkPayment(request, env, origin) {
   const code=new URL(request.url).searchParams.get("order_code");
-  if(!code || !/^LOCKET(?:\\d{6}|[A-F0-9]{12})$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
+  if(!code || !/^LOCKET(?:\d{6}|[A-F0-9]{12})$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
   const row=await env.DB.prepare("SELECT order_code,amount,plan,status,expires_at,install_url,activation_code,provider_error FROM orders WHERE order_code=?").bind(code).first();
   if(!row) return json({error:"Không tìm thấy đơn hàng"},404,origin);
   if(row.status==="pending" && Date.now()>row.expires_at){
@@ -216,7 +216,7 @@ async function paymentWebhook(request, env, rawBody) {
   if (direction !== "in") return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
 
   const content = String(data.content || data.code || "").toUpperCase();
-  const match = content.match(/LOCKET(?:\\d{6}|[A-F0-9]{12})/);
+  const match = content.match(/LOCKET(?:\d{6}|[A-F0-9]{12})/);
   const code = match?.[0];
   const amount = Number(data.transferAmount);
   const tx = String(data.id ?? "").trim();
