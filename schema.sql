@@ -30,15 +30,4 @@ CREATE INDEX IF NOT EXISTS idx_orders_code ON orders(order_code);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_rate_limits_expiry ON rate_limits(expires_at);
 
-CREATE TABLE IF NOT EXISTS frames (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  category TEXT NOT NULL DEFAULT 'Khung mới',
-  note TEXT NOT NULL DEFAULT '',
-  image_key TEXT NOT NULL,
-  active INTEGER NOT NULL DEFAULT 1,
-  created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
-);
-CREATE INDEX IF NOT EXISTS idx_frames_active_created ON frames(active, created_at DESC);
-
 CREATE TABLE IF NOT EXISTS site_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL);

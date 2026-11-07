@@ -8,10 +8,6 @@ binding = "DB"
 database_name = "locket-plus-orders"
 database_id = "e9f460a6-399f-4a8b-b9a0-6b2e44b18c1d"
 
-[[r2_buckets]]
-binding = "FRAMES_BUCKET"
-bucket_name = "locket-widget-frames"
-
 [vars]
 ALLOWED_ORIGINS = "https://sweep207.github.io"
 BANK_ID = "REPLACE_WITH_BANK_CODE"

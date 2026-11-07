@@ -27,18 +27,16 @@ footer{text-align:center;color:#727d8f;font-size:10px;padding:18px 0 30px}
  <section class="panel"><h2>Chọn khung</h2><p class="sub"><span id="frameCount">Đang tải...</span> · Chạm vào khung để xem lựa chọn</p><div id="filters" class="filterbar"></div><div id="frameGrid" class="grid"><div class="empty">Đang tải thư viện khung...</div></div><div id="selection" class="selection"><div><b id="selectedTitle"></b><small id="selectedNote"></small></div><button class="btn secondary" onclick="copySelection()">Sao chép tên khung</button></div></section>
 </main><a href="https://t.me/HeyLocket" target="_blank" rel="noopener" aria-label="Hỗ trợ 24/7" style="position:fixed;right:16px;bottom:18px;z-index:10;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffe05b,#f5a51e);color:#211700;font-size:22px;box-shadow:0 8px 28px #ffb51f55">♧</a><footer class="wrap">Locket Gold là dịch vụ độc lập, không liên kết với Locket Labs, Inc.</footer>
 <script>
-const API_BASE=window.LOCKET_API_BASE||"https://YOUR-WORKER.workers.dev"; // Cùng URL Worker với trang chủ
+const MANIFEST_URL="./frames.json"; // Danh sách ảnh khung lưu trong GitHub
 let allFrames=[],activeCategory="Tất cả",selectedFrame=null;
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 async function loadFrames(){
- if(API_BASE.includes("YOUR-WORKER")){$("frameGrid").innerHTML='<div class="empty">Chưa cấu hình URL Worker trong frames.html.</div>';return;}
  try{
-  const r=await fetch(API_BASE+"/frames",{cache:"no-store"});const d=await r.json();
-  if(!r.ok)throw new Error(d.error||"Không tải được thư viện");
-  allFrames=Array.isArray(d.frames)?d.frames:[];
+  const r=await fetch(MANIFEST_URL,{cache:'no-cache'});if(!r.ok)throw new Error('Không đọc được frames.json');
+  const d=await r.json();allFrames=Array.isArray(d.frames)?d.frames:[];
   renderFilters();renderFrames();
- }catch(e){$("frameGrid").innerHTML='<div class="empty">'+esc(e.message)+'</div>';$("frameCount").textContent="Không tải được";}
+ }catch(e){$('frameGrid').innerHTML='<div class="empty">'+esc(e.message)+'</div>';$('frameCount').textContent='Không tải được';}
 }
 function renderFilters(){
  const cats=["Tất cả",...new Set(allFrames.map(f=>f.category||"Khung mới"))];
@@ -49,7 +47,7 @@ function renderFrames(){
  const items=allFrames.filter(f=>activeCategory==="Tất cả"||(f.category||"Khung mới")===activeCategory);
  $("frameCount").textContent=allFrames.length+" mẫu";
  if(!items.length){$("frameGrid").innerHTML='<div class="empty">Chưa có khung nào trong danh mục này.</div>';return;}
- $("frameGrid").innerHTML=items.map(f=>'<article class="frame '+(selectedFrame?.id===f.id?"selected":"")+'" onclick="selectFrame(\''+esc(f.id)+'\')"><img loading="lazy" src="'+API_BASE+esc(f.image_url)+'" alt="'+esc(f.title)+'"><div class="frame-info"><div class="frame-title">'+esc(f.title)+'</div><div class="frame-note">'+esc(f.note||f.category||"Khung widget")+'</div></div></article>').join("");
+ $("frameGrid").innerHTML=items.map(f=>'<article class="frame '+(selectedFrame?.id===f.id?"selected":"")+'" onclick="selectFrame(\''+esc(f.id)+'\')"><img loading="lazy" src="'+esc(f.image)+'" alt="'+esc(f.title)+'"><div class="frame-info"><div class="frame-title">'+esc(f.title)+'</div><div class="frame-note">'+esc(f.note||f.category||"Khung widget")+'</div></div></article>').join("");
 }
 function selectFrame(id){selectedFrame=allFrames.find(f=>f.id===id)||null;if(!selectedFrame)return;$("selectedTitle").textContent=selectedFrame.title;$("selectedNote").textContent=selectedFrame.note||selectedFrame.category||"Khung đã chọn";$("selection").classList.add("show");renderFrames();}
 async function copySelection(){if(!selectedFrame)return;try{await navigator.clipboard.writeText(selectedFrame.title);$("selectedNote").textContent="Đã sao chép tên khung. Liên hệ hỗ trợ để được hướng dẫn áp dụng.";}catch{$("selectedNote").textContent="Khung đã chọn: "+selectedFrame.title;}}
