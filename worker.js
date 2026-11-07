@@ -19,7 +19,7 @@ function json(data, status=200, origin="") {
       "Cache-Control": "no-store",
       "Access-Control-Allow-Origin": origin || "null",
       "Vary": "Origin",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, X-Webhook-Secret, Authorization",
       "Access-Control-Max-Age": "86400"
     }
@@ -213,6 +213,21 @@ async function removeFrame(request, id, env, origin) {
   if(env.FRAMES_BUCKET && row.image_key) await env.FRAMES_BUCKET.delete(row.image_key);
   return json({success:true},200,origin||"");
 }
+async function getInstallVideo(env, origin) {
+  const row = await env.DB.prepare("SELECT value FROM site_settings WHERE key='install_video_url'").first();
+  return json({video_url: row?.value || ""}, 200, origin || "");
+}
+function validInstallVideoUrl(value) {
+  try { const u = new URL(value); return u.protocol === "https:" && (["youtube.com","www.youtube.com","youtu.be","www.youtu.be","vimeo.com","www.vimeo.com","player.vimeo.com"].includes(u.hostname) || /\.mp4$/i.test(u.pathname)); } catch { return false; }
+}
+async function saveInstallVideo(request, env, origin) {
+  if (!hasFrameAdmin(request, env)) return json({error:"Mã quản lý không đúng."},401,origin||"");
+  let body; try { body = await request.json(); } catch { return json({error:"Dữ liệu JSON không hợp lệ."},400,origin||""); }
+  const value = String(body.video_url || "").trim();
+  if (value && !validInstallVideoUrl(value)) return json({error:"Chỉ nhận link HTTPS YouTube, Vimeo hoặc MP4."},400,origin||"");
+  await env.DB.prepare("INSERT INTO site_settings(key,value,updated_at) VALUES('install_video_url',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at").bind(value,Date.now()).run();
+  return json({success:true,video_url:value},200,origin||"");
+}
 async function serveFrameImage(id, env) {
   if(!env.FRAMES_BUCKET) return new Response("Frames storage is not configured",{status:503});
   const row=await env.DB.prepare("SELECT image_key FROM frames WHERE id=? AND active=1").bind(id).first();
@@ -253,6 +268,8 @@ export default {
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/frames") return await listFrames(env,origin);
+      if(request.method==="GET" && url.pathname==="/install-video") return await getInstallVideo(env,origin);
+      if(request.method==="POST" && url.pathname==="/admin/install-video") return await saveInstallVideo(request,env,origin);
       if(request.method==="POST" && url.pathname==="/admin/frames") return await addFrame(request,env,origin);
       if(request.method==="DELETE" && url.pathname.startsWith("/admin/frames/")) return await removeFrame(request,url.pathname.split("/").pop(),env,origin);
       if(request.method==="GET" && url.pathname.startsWith("/frame-image/")) return await serveFrameImage(url.pathname.split("/").pop(),env);
