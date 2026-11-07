@@ -185,7 +185,8 @@ async function verifyLocketAccount(username, env) {
     return null;
   }
   const goldActive = envelopes.reduce((found, root) => found !== null ? found : findGoldFlag(root), null);
-  // Chỉ có hai nhãn hiển thị: có Gold xác nhận thì GOLD, còn lại là BẢN FREE (chưa xác nhận Gold).\n  const goldStatus = goldActive === true ? "GOLD" : "BẢN FREE";
+  // Chỉ có hai nhãn hiển thị: có Gold xác nhận thì GOLD, còn lại là BẢN FREE (chưa xác nhận Gold).
+  const goldStatus = goldActive === true ? "GOLD" : "BẢN FREE";
   const verifiedUsername = String(profile.username || profile.userName || profile.handle || username).trim().replace(/^@/,"");
   if (!verifiedUsername || verifiedUsername.length > 100) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
