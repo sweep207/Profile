@@ -123,23 +123,42 @@ async function verifyLocketAccount(username, env) {
     return { ok: false, status: 503, error: "Uplocket chưa trả về hồ sơ xác minh đầy đủ. Chưa thể tạo đơn lúc này." };
   }
 
-  // Uplocket may expose the Gold state at the top level or inside data/result/profile.
-  const nested = data?.data || data?.result || {};
-  const nestedProfile = nested?.profile || nested?.account || {};
-  const goldStatusValue = data.gold_status ?? data.goldStatus ?? data.is_gold ?? data.isGold ??
-    nested.gold_status ?? nested.goldStatus ?? nested.is_gold ?? nested.isGold ??
-    profile.gold_status ?? profile.goldStatus ?? profile.is_gold ?? profile.isGold ??
-    nestedProfile.gold_status ?? nestedProfile.goldStatus ?? nestedProfile.is_gold ?? nestedProfile.isGold ??
-    data.subscription?.gold ?? nested.subscription?.gold;
-  let goldStatus = null;
-  if (goldStatusValue === true || goldStatusValue === 1) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
-  else if (goldStatusValue === false || goldStatusValue === 0) goldStatus = "CHƯA CÓ GOLD";
-  else if (typeof goldStatusValue === "string" && goldStatusValue.trim()) {
-    const state = goldStatusValue.trim().toLowerCase();
-    if (["true","1","active","gold","premium","subscribed","enabled"].includes(state)) goldStatus = "GOLD ĐANG HOẠT ĐỘNG";
-    else if (["false","0","inactive","none","no gold","not gold","not_subscribed","expired"].includes(state)) goldStatus = "CHƯA CÓ GOLD";
-    else goldStatus = goldStatusValue.trim().slice(0,80);
+  // Detect Gold entitlement across common Uplocket response shapes.
+  const roots = [data, data?.data, data?.result, data?.profile, data?.account, data?.data?.profile, data?.result?.profile].filter(Boolean);
+  const goldKeys = /(gold|premium|subscription|entitlement)/i;
+  const normalizeGold = value => {
+    if (value === true || value === 1) return true;
+    if (value === false || value === 0) return false;
+    if (typeof value !== "string") return null;
+    const state = value.trim().toLowerCase();
+    if (["true","1","active","gold","premium","subscribed","enabled","valid","đang hoạt động"].includes(state)) return true;
+    if (["false","0","inactive","none","free","no gold","not gold","not_subscribed","expired","disabled","bản free","chưa có gold"].includes(state)) return false;
+    if (/\b(active|enabled|subscribed|premium|gold)\b/.test(state) && !/\b(free|inactive|expired|not|no)\b/.test(state)) return true;
+    if (/\b(free|inactive|expired|not_gold|no_gold|disabled)\b/.test(state)) return false;
+    return null;
+  };
+  function findGoldFlag(value, depth=0) {
+    if (!value || typeof value !== "object" || depth > 6) return null;
+    for (const [key, child] of Object.entries(value)) {
+      if (goldKeys.test(key)) {
+        const direct = normalizeGold(child);
+        if (direct !== null) return direct;
+        if (child && typeof child === "object") {
+          const nestedFlag = findGoldFlag(child, depth+1);
+          if (nestedFlag !== null) return nestedFlag;
+        }
+      }
+    }
+    for (const child of Object.values(value)) {
+      if (child && typeof child === "object") {
+        const nestedFlag = findGoldFlag(child, depth+1);
+        if (nestedFlag !== null) return nestedFlag;
+      }
+    }
+    return null;
   }
+  const goldActive = roots.reduce((found, root) => found !== null ? found : findGoldFlag(root), null);
+  const goldStatus = goldActive === true ? "GOLD" : goldActive === false ? "BẢN FREE" : null;
   const verifiedUsername = String(profile.username || username).trim();
   if (!verifiedUsername || verifiedUsername.length > 100) {
     return { ok: false, status: 503, error: "Dữ liệu hồ sơ xác minh từ Uplocket không hợp lệ." };
