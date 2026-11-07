@@ -71,6 +71,7 @@ async function rateLimit(request, env) {
   }
 }
 async function verifyLocketAccount(username, env) {
+  try {
   if (!env.UPLOCKET_API_KEY) {
     return { ok: false, status: 503, error: "Máy chủ chưa cấu hình dịch vụ xác minh tài khoản." };
   }
@@ -194,8 +195,20 @@ async function verifyLocketAccount(username, env) {
       avatar: String(avatarUrl).slice(0,1000)
     }
   };
+  } catch (error) {
+    // Log diagnostic details without username, API key, or response payload.
+    console.error("verifyLocketAccount unexpected error:", {
+      name: String(error?.name || "Error"),
+      message: String(error?.message || error).slice(0, 300),
+      stack: String(error?.stack || "").split("\n").slice(0, 5).join("\n")
+    });
+    return {
+      ok: false,
+      status: 503,
+      error: "Không thể xác minh tài khoản lúc này. Dịch vụ đang gặp lỗi xử lý; vui lòng thử lại sau."
+    };
+  }
 }
-
 async function lookupInstallLink(request, env, origin) {
   if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
   let body; try{body=await request.json();}catch{return json({success:false,error:"Dữ liệu không hợp lệ."},400,origin);}
