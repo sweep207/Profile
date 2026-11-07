@@ -3,185 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ffb900">
-<meta name="description" content="Trang đặt dịch vụ Locket với bảng giá minh bạch và thanh toán QR.">
-<title>Locket — Mua Gold</title>
+<meta name="theme-color" content="#ffbd00">
+<meta name="description" content="Locket Gold — chọn gói dịch vụ, thanh toán VietQR và theo dõi đơn hàng.">
+<title>Locket Gold — Kích hoạt tự động</title>
 <style>
-:root{--gold:#ffb900;--gold2:#f5a900;--cream:#fffdf1;--cream2:#fff7e6;--ink:#17130a;--muted:#756b57;--line:#f3e8cf}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
-header{height:56px;background:var(--gold);position:relative;z-index:5}.nav{height:56px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:8px;font-weight:950;font-size:17px}.brand-mark{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#e9a500;color:#8c5c00;font-size:17px}.navlinks{display:flex;gap:24px;font-size:13px;font-weight:700}.nav>.btn{display:none}.menu{font-size:22px;font-weight:700}
-.btn{border:0;border-radius:999px;padding:13px 22px;background:var(--gold);color:#201700;font-weight:850;cursor:pointer;transition:.2s}.btn:hover{background:#f3a900;transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:not-allowed}
-.hero{position:relative;padding:0 0 46px;text-align:center;background:linear-gradient(var(--gold) 0 200px,var(--cream) 200px)}.hero-inner{width:min(720px,calc(100% - 36px));margin:auto}.hero-screen{height:272px;background:#000;color:#fff;position:relative;display:flex;align-items:flex-end;justify-content:center;margin:0 auto;width:min(100%,620px);box-shadow:0 3px 9px #0002}.hero-screen:before{content:"";position:absolute;right:9%;top:34%;width:23px;height:23px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px #fff}.hero-screen:after{content:"BEST FRIENDS FIRST";position:absolute;left:6%;top:47%;background:var(--gold);color:#161000;font-weight:1000;font-size:9px;padding:6px;border-radius:50%;transform:rotate(-15deg)}.hero-brand{position:absolute;bottom:42px;left:0;right:0;font-size:25px;font-weight:950;color:#1d1707}.hero-brand .brand-mark{display:inline-grid;vertical-align:middle;width:28px;height:28px;margin-right:8px}.hero-caption{position:relative;margin-top:-13px;display:inline-flex;align-items:center;gap:7px;background:#ffbd39e8;padding:6px 17px;border-radius:30px;font-size:12px;font-weight:700}.down{display:block;color:#bdb7a7;font-size:27px;line-height:1;margin-top:8px}
-section{padding:18px 0}.features{display:grid;grid-template-columns:1fr;gap:10px;margin-top:0}.feature{min-height:176px;padding:23px 18px 17px;border-radius:24px;background:var(--cream2);display:flex;flex-direction:column;justify-content:flex-end}.feature-icon{height:92px;display:grid;place-items:center;font-size:49px;line-height:1;margin-bottom:7px}.feature h3{font-size:13px;line-height:1.3;margin:0 0 4px;font-weight:950}.feature p{font-size:11px;color:var(--muted);margin:0}.section-head{text-align:center;margin:10px auto 20px}.kicker{font-size:9px;color:#8b806d;letter-spacing:.2em;font-weight:800}.section-head h2{font-size:22px;line-height:1.12;letter-spacing:-.04em;margin:4px 0 0;font-weight:1000}.section-head p{color:var(--muted);font-size:12px;margin:8px auto 0;max-width:500px}
-.steps{display:grid;grid-template-columns:1fr;gap:10px}.step{padding:22px;border-radius:22px;background:var(--cream2)}.num{font-size:11px;color:#b17b00;font-weight:950}.step h3{margin:8px 0 4px;font-size:15px}.step p{margin:0;color:var(--muted);font-size:12px}
-#pricing{padding-top:16px}.pricing{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 max(18px,calc((100vw - 1120px)/2)) 12px;scrollbar-width:none}.pricing::-webkit-scrollbar{display:none}.plan{scroll-snap-align:center;flex:0 0 270px;min-width:0;border:1px solid var(--gold2);border-radius:19px;background:#fff5dc;padding:15px 13px 13px;display:flex;flex-direction:column;position:relative;box-shadow:0 5px 20px #d89a0010}.plan.popular{border:1.5px solid #f0a300;background:#fff2d0}.ribbon{position:absolute;top:-10px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--gold);border-radius:99px;padding:3px 12px;font-size:9px;font-weight:950;color:#211700}.plan-label{font-size:10px;font-weight:950}.plan h3{font-size:13px;line-height:1.2;margin:2px 0}.duration{font-size:9px;color:var(--muted)}.price{font-size:26px;font-weight:1000;letter-spacing:-.04em;margin:3px 0}.old-price{font-size:9px;color:#8b806d;text-decoration:line-through}.plan ul{list-style:none;padding:0;margin:12px 0 14px;display:grid;gap:7px;color:#352c1b;font-size:9px;line-height:1.35}.plan li:before{content:"✓";display:inline-grid;place-items:center;width:12px;height:12px;margin-right:6px;border-radius:50%;background:var(--gold);font-size:8px;font-weight:1000}.plan .btn{width:100%;margin-top:auto;padding:9px 12px;font-size:11px}.note{text-align:center;color:#8b806d;font-size:9px;margin:10px auto 0}
-.faq{max-width:760px;margin:auto;display:grid;gap:9px}.faq details{padding:14px 16px;border-radius:16px;background:var(--cream2)}.faq summary{font-weight:800;font-size:12px;cursor:pointer}.faq p{color:var(--muted);font-size:11px;margin:8px 0 0}
-footer{padding:35px 0 45px;background:var(--cream);color:#2a2418;font-size:11px}.footer-row{display:grid;grid-template-columns:1fr 1fr;gap:22px}.footer-brand{font-size:18px;font-weight:950;margin-bottom:7px}.footer-links{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-weight:650}.footer-links a{display:block}.footer-tag{grid-column:1/-1;font-size:20px;font-weight:1000;text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:5px;margin-top:18px;white-space:nowrap}
-.modal{position:fixed;inset:0;z-index:30;background:#17130add;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:23px;background:var(--cream);position:relative;max-height:calc(100vh - 36px);overflow:auto;box-shadow:0 25px 80px #0004}.close{position:absolute;right:17px;top:14px;border:0;background:#f2e7ce;color:#2b2417;border-radius:10px;width:34px;height:34px;cursor:pointer}.field{display:block;width:100%;padding:14px 15px;border-radius:13px;border:1px solid #e7d9ba;background:white;color:#17130a;outline:none}.field:focus{border-color:var(--gold)}.label{display:block;font-size:13px;color:#574c37;margin:15px 0 7px}.qr-wrap{background:white;border-radius:16px;padding:10px;width:220px;margin:18px auto}.qr-wrap img{width:100%;display:block;border-radius:8px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eadfc8;font-size:13px}.detail span{color:#786d58}.detail strong{text-align:right;overflow-wrap:anywhere}.status{margin-top:16px;padding:13px;border-radius:13px;background:#fff0c9;color:#765100;font-size:13px}.status.success{background:#e7f5d9;color:#376b24}.status.error{background:#ffe5dc;color:#a33120}.timer{text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;margin:4px 0 12px}.copy{border:1px solid #eadfc8;background:#fff8e9;color:#5a4a2c;border-radius:9px;padding:5px 9px;font-size:11px;cursor:pointer}.tiny{font-size:11px;color:#827761}.hidden{display:none!important}
-@media(min-width:700px){header{height:64px}.nav{height:64px}.menu{display:none}.navlinks{display:flex}.nav>.btn{display:block}.hero{padding-bottom:60px;background:linear-gradient(var(--gold) 0 260px,var(--cream) 260px)}.hero-screen{height:360px}.hero-inner{width:min(850px,calc(100% - 40px))}.features{grid-template-columns:repeat(2,1fr);gap:16px}.feature{min-height:220px;padding:28px}.feature-icon{height:110px;font-size:58px}.feature h3{font-size:16px}.feature p{font-size:13px}.steps{grid-template-columns:repeat(3,1fr)}.pricing{justify-content:center;overflow:visible;padding:0 0 12px}.plan{flex:1 1 0;max-width:330px;padding:20px}.plan h3{font-size:16px}.plan ul{font-size:11px}.price{font-size:32px}.footer-row{grid-template-columns:1.2fr 1fr}.footer-tag{font-size:32px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-
-/* Uplocket-inspired mobile layout refinements */
-:root{--gold:#ffb900;--gold2:#f0a000;--cream:#fffdf1;--cream2:#fff7e7;--ink:#17130a;--muted:#756b57}
-body{background:var(--cream)}
-header{height:56px;background:#ffb900}.nav{height:56px}
-.hero{padding-bottom:48px;background:linear-gradient(#ffb900 0 200px,var(--cream) 200px)}
-.hero-screen{width:min(100%,620px);height:272px;box-shadow:none}
-.hero-screen:before{right:9%;top:34%;width:22px;height:22px;box-shadow:0 0 0 3px #fff}
-.hero-brand{bottom:42px;color:#211900}.hero-caption{background:#ffbd39e8}
-.features{gap:10px}.feature{min-height:176px;border-radius:24px;background:#fff7e7;padding:22px 18px 17px}
-.feature-icon{height:96px;font-size:48px}.feature h3{font-size:13px}.feature p{font-size:11px}
-.section-head{margin:10px auto 20px}.section-head h2{font-size:22px}
-#pricing{padding-top:16px}.pricing{gap:12px;padding-left:18px;padding-right:18px}
-.plan{flex-basis:270px;border-radius:19px;background:#fff5dc}.plan.popular{background:#fff2d0;border:1.5px solid #f0a300}
-.plan ul{gap:7px}.plan .btn{background:#ffb900}
-footer{padding:35px 0 45px}.footer-tag{text-decoration-color:#ffb900}
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.menu{border:0;background:transparent;color:#211900;cursor:pointer;padding:5px 0 5px 12px}
-.navlinks{display:none;position:absolute;top:56px;left:0;right:0;padding:15px 20px;background:#ffb900;box-shadow:0 8px 14px #0001;flex-direction:column;gap:12px}
-.navlinks.open{display:flex}
-.chat-bubble{position:fixed;right:14px;bottom:14px;width:42px;height:42px;border-radius:50%;background:#087cff;color:white;display:grid;place-items:center;font-size:19px;font-weight:900;box-shadow:0 3px 12px #087cff55;z-index:10}
-@media(min-width:700px){
- .navlinks{display:flex;position:static;padding:0;background:transparent;box-shadow:none;flex-direction:row;gap:24px}
- .menu{display:none}.hero-screen{height:360px}
- .features{grid-template-columns:repeat(2,1fr);gap:16px}
- .feature{min-height:220px;padding:28px}.feature-icon{height:110px;font-size:58px}
- .feature h3{font-size:16px}.feature p{font-size:13px}
- .pricing{justify-content:center;overflow:visible;padding:0 0 12px}
- .plan{flex:1 1 0;max-width:330px}
-}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
-
-
-/* Hero rebuilt to match the supplied Uplocket first-screen reference */
-.hero{padding:34px 0 74px;background:radial-gradient(ellipse at 50% 27%,#fff0c3 0,#ffedbb 37%,#fff9e9 68%,var(--cream) 100%);overflow:hidden}
-.hero-inner{width:min(720px,calc(100% - 36px))}
-.hero-device{height:440px;width:min(100%,465px);margin:0 auto;position:relative;border:1px solid #c9d0d8;border-radius:58px 58px 22px 22px;background:linear-gradient(145deg,#dce5ef 0%,#c9d4e2 45%,#eef0ef 100%);box-shadow:0 16px 38px #8d7c5420;overflow:hidden;padding:28px 24px}
-.device-status{display:flex;justify-content:space-between;color:#fff;font-weight:800;font-size:13px;margin:0 5px 30px}
-.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px 12px;align-items:center}
-.photo-tile{grid-column:span 2;grid-row:span 2;height:150px;border-radius:28px;background:linear-gradient(180deg,#f1a7a2 0%,#f7c58a 34%,#4b6c73 68%,#182d30 100%);box-shadow:0 5px 12px #0002;display:flex;flex-direction:column;justify-content:space-between;padding:10px;color:white;overflow:hidden}
-.photo-sun{font-size:38px;text-shadow:0 2px 8px #0005}.photo-tile small{font-size:10px;background:#17130a77;border-radius:20px;padding:4px 7px;align-self:flex-start}
-.app-icon{aspect-ratio:1;border-radius:18px;display:grid;place-items:center;font-size:34px;font-weight:900;color:white;box-shadow:0 3px 7px #0001}
-.heart-app{background:#ffb000;color:#a95e00}.book-app{background:#f3a85b}.calendar-app{background:#f5f5f5;color:#7d8590;font-size:28px}.rings-app{background:#4b4655;color:#ff56b5}.camera-app{background:#b7b8bc;color:#555}.store-app{background:#54b6ec}.podcast-app{background:#bd84d4}.notes-app{background:#f6edcf;color:#b6a77c}
-.floating-heart{position:absolute;right:8%;top:47%;font-size:54px;color:#ffb000;-webkit-text-stroke:5px white;filter:drop-shadow(0 3px 2px #0002)}
-.best-friends{position:absolute;left:-5px;top:70%;background:#ffb900;color:#1b1507;border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.05;font-weight:1000;transform:rotate(-17deg);box-shadow:0 3px 8px #0002}
-.hero-copy{position:relative;margin:-3px auto 0;max-width:520px}
-.hero-logo{display:flex;align-items:center;justify-content:center;gap:14px;font-size:52px;font-weight:1000;letter-spacing:-.055em;line-height:1.2}
-.hero-logo .brand-mark{width:70px;height:70px;border-radius:17px;font-size:42px;color:#a45e00;background:#ffb000}
-.hero-subtitle{font-size:20px;line-height:1.35;font-weight:800;color:#918b7c;margin:22px 0 28px}
-.hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:17px 34px;border-radius:999px;background:#ffb000;color:#211700;font-size:20px;font-weight:900;box-shadow:0 7px 0 #e99b00}
-.cta-heart{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:#17130a;color:#ffb000;font-size:27px}
-.down{display:block;color:#a9a69c;font-size:45px;line-height:1;margin:32px auto 0;text-decoration:none;font-weight:900}
-@media(max-width:520px){.hero{padding-top:26px;padding-bottom:62px}.hero-device{height:390px;width:88%;border-radius:48px 48px 20px 20px;padding:23px 18px}.device-status{margin-bottom:25px}.app-grid{gap:12px 9px}.photo-tile{height:130px}.app-icon{border-radius:15px;font-size:28px}.hero-logo{font-size:44px;gap:10px}.hero-logo .brand-mark{width:58px;height:58px;font-size:35px}.hero-subtitle{font-size:18px;margin:18px 0 25px}.hero-cta{font-size:18px;padding:13px 24px}.cta-heart{width:38px;height:38px}.down{margin-top:27px}}
-@media(min-width:700px){.hero{padding-top:42px;padding-bottom:85px}.hero-device{height:490px}.hero-logo{font-size:58px}}
-
-
-/* Benefit cards: proportions and typography from the additional mobile references */
-header{position:sticky;top:0;z-index:20;box-shadow:0 4px 14px #4e37000a}
-.features{gap:16px}
-.feature{min-height:292px;height:292px;border-radius:42px;background:#fff7e2;padding:24px 31px 30px;justify-content:flex-end;position:relative}
-.feature-icon{height:168px;flex:0 0 168px;display:grid;place-items:center;font-size:76px;line-height:1;margin:0 0 18px}
-.feature h3{font-size:19px;line-height:1.3;margin:0 0 7px;letter-spacing:-.035em}
-.feature p{font-size:15px;line-height:1.45;color:#89816f;margin:0;letter-spacing:-.02em}
-.chat-bubble{font-size:0}
-.chat-bubble:after{content:"Zalo";font-size:10px;font-weight:800;background:white;color:#1768e9;border-radius:12px;padding:4px 6px}
-@media(max-width:520px){
- .features{gap:16px}
- .feature{height:292px;min-height:292px;border-radius:42px;padding:23px 31px 30px}
- .feature-icon{height:165px;flex-basis:165px;font-size:78px;margin-bottom:18px}
- .feature h3{font-size:19px}
- .feature p{font-size:15px}
-}
-@media(min-width:700px){
- .feature{height:330px;min-height:330px;border-radius:36px;padding:28px 32px}
- .feature-icon{height:190px;flex-basis:190px;font-size:84px}
- .feature h3{font-size:20px}.feature p{font-size:15px}
-}
-
+:root{--yellow:#ffbd00;--yellow2:#f6aa00;--ink:#171717;--muted:#777;--paper:#fff;--soft:#fff9e9;--line:#eee7d8;--green:#2f7b3d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1080px,calc(100% - 36px));margin:auto}
+header{height:64px;background:var(--yellow);position:sticky;top:0;z-index:10}.nav{height:64px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:950;font-size:21px;letter-spacing:-.7px;display:flex;align-items:center;gap:9px}.brand-mark{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#171717;color:var(--yellow);font-size:18px}.navlinks{display:flex;gap:28px;font-size:13px;font-weight:750}.navlinks a:hover{text-decoration:underline;text-underline-offset:5px}.menu{display:none;border:0;background:transparent;font-size:23px}
+.btn{border:0;border-radius:12px;background:var(--yellow);color:#171717;font-weight:850;padding:13px 18px;cursor:pointer;transition:.18s}.btn:hover{background:var(--yellow2);transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:wait}
+.hero{background:var(--yellow);padding:65px 0 58px;text-align:center}.hero h1{font-size:clamp(38px,7vw,66px);line-height:1.02;letter-spacing:-.055em;margin:0;font-weight:1000}.hero p{font-size:16px;color:#4f3c00;margin:15px auto 0;max-width:560px}.hero .hero-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid #1d1a10;border-radius:99px;padding:7px 13px;font-size:11px;font-weight:850;margin-bottom:20px}.hero .hero-cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:#171717;color:white;border-radius:12px;padding:14px 20px;font-weight:850}.hero .hero-cta span{color:var(--yellow)}
+main{padding-bottom:25px}section{padding:55px 0}.section-head{text-align:center;margin:0 auto 28px}.eyebrow{font-size:10px;letter-spacing:.18em;font-weight:900;color:#9b7400}.section-head h2{font-size:clamp(27px,4vw,38px);line-height:1.1;letter-spacing:-.045em;margin:8px 0 0}.section-head p{color:var(--muted);font-size:13px;margin:10px auto 0;max-width:520px}
+.order-steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:850px;margin:auto}.step-card{border:1px solid var(--line);border-radius:20px;padding:23px;background:#fff;box-shadow:0 8px 26px #00000008}.step-number{display:inline-grid;place-items:center;width:29px;height:29px;border-radius:9px;background:var(--yellow);font-size:12px;font-weight:950}.step-card h3{font-size:17px;margin:12px 0 4px}.step-card p{font-size:12px;color:var(--muted);margin:0 0 15px}.field{width:100%;border:1px solid #ddd5c6;border-radius:11px;padding:13px 14px;outline:none;background:#fff}.field:focus{border-color:#d49b00;box-shadow:0 0 0 3px #ffbd0030}.step-card .btn{width:100%;margin-top:10px}.hint{font-size:10px;color:#898989;margin:8px 0 0}
+#pricing{background:#fffaf0}.pricing{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.plan{border:1px solid #e9dfc9;border-radius:18px;background:white;padding:19px 16px;display:flex;flex-direction:column;position:relative;min-width:0;box-shadow:0 8px 25px #00000007}.plan.popular{border:2px solid var(--yellow);background:#fffdf5}.ribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--yellow);padding:4px 11px;border-radius:99px;font-size:9px;font-weight:950}.plan-label{font-size:10px;letter-spacing:.1em;font-weight:950;color:#9b7400}.plan h3{font-size:16px;margin:5px 0 0}.duration{font-size:11px;color:var(--muted);margin:3px 0}.price{font-size:29px;letter-spacing:-.05em;font-weight:1000;margin:12px 0 0}.old-price{font-size:10px;color:#999;text-decoration:line-through}.plan ul{list-style:none;padding:0;margin:17px 0 18px;display:grid;gap:9px;font-size:11px;color:#4d4d4d}.plan li:before{content:"✓";display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#fff0bf;color:#735300;font-weight:950;margin-right:7px}.plan .btn{width:100%;margin-top:auto;font-size:12px}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.benefit{padding:22px;border:1px solid var(--line);border-radius:17px}.benefit-icon{font-size:27px}.benefit h3{font-size:14px;margin:12px 0 5px}.benefit p{font-size:11px;color:var(--muted);margin:0}
+.faq{max-width:760px;margin:auto;display:grid;gap:10px}.faq details{border:1px solid var(--line);border-radius:13px;padding:15px 17px}.faq summary{font-size:13px;font-weight:800;cursor:pointer}.faq p{font-size:12px;color:var(--muted);margin:9px 0 0}
+footer{border-top:1px solid var(--line);padding:28px 0 40px}.footer-row{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.footer-note{font-size:11px;color:var(--muted);max-width:400px;margin-top:8px}.footer-links{display:flex;flex-wrap:wrap;gap:17px;font-size:11px;font-weight:750}
+.modal{position:fixed;inset:0;z-index:30;background:#111c;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:20px;background:white;position:relative;max-height:calc(100vh - 36px);overflow:auto;box-shadow:0 25px 80px #0004}.close{position:absolute;right:16px;top:14px;border:0;background:#f2f2f2;border-radius:9px;width:33px;height:33px;cursor:pointer}.label{display:block;font-size:12px;font-weight:750;margin:15px 0 7px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eee;font-size:12px}.detail span{color:#777}.detail strong{text-align:right;overflow-wrap:anywhere}.qr-wrap{background:#fff;border:1px solid #eee;border-radius:14px;padding:9px;width:210px;margin:16px auto}.qr-wrap img{width:100%;display:block}.copy{border:1px solid #ddd;background:#fafafa;border-radius:7px;padding:4px 7px;font-size:10px;cursor:pointer}.status{margin-top:15px;padding:12px;border-radius:11px;background:#fff4d7;color:#795600;font-size:12px}.status.success{background:#e9f7e8;color:#286b30}.status.error{background:#ffebe7;color:#a33120}.timer{text-align:center;font-size:27px;font-weight:950;font-variant-numeric:tabular-nums;margin:4px 0 10px}.tiny{font-size:10px;color:#888}.hidden{display:none!important}.reveal{opacity:0;transform:translateY(10px);transition:.45s}.reveal.visible{opacity:1;transform:none}
+@media(max-width:850px){.pricing{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){header,.nav{height:57px}.wrap{width:calc(100% - 30px)}.navlinks{display:none;position:absolute;top:57px;left:0;right:0;background:var(--yellow);padding:15px 20px;flex-direction:column;gap:14px}.navlinks.open{display:flex}.menu{display:block}.hero{padding:52px 0 48px}.hero p{font-size:14px}.order-steps{grid-template-columns:1fr}.step-card{padding:19px}.pricing{grid-template-columns:1fr;max-width:420px;margin:auto}.plan{padding:20px}.benefits{grid-template-columns:1fr}.benefit{display:flex;gap:13px;align-items:flex-start}.benefit-icon{min-width:32px}.footer-row{display:block}.footer-links{margin-top:20px;gap:12px 18px}section{padding:42px 0}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-
 <header><div class="wrap nav">
-<a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket</span></a>
-<nav class="navlinks" id="mobileNav"><a href="#benefits">Quyền lợi</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
+<a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a>
+<nav class="navlinks" id="mobileNav"><a href="#pricing">Bảng giá</a><a href="#benefits">Quyền lợi</a><a href="#faq">Câu hỏi thường gặp</a></nav>
 <button class="menu" aria-label="Mở menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
 </div></header>
 <main>
-<div class="hero"><div class="hero-inner">
-<div class="hero-device" aria-hidden="true">
-  <div class="device-status"><span>9:41</span><span>▮▮▮　◉　▰</span></div>
-  <div class="app-grid">
-    <div class="photo-tile"><span class="photo-sun">🌅</span><small>♥　7:11 PM</small></div>
-    <div class="app-icon heart-app">♥</div><div class="app-icon book-app">▤</div>
-    <div class="app-icon calendar-app">1</div><div class="app-icon rings-app">◎</div>
-    <div class="app-icon camera-app">◉</div><div class="app-icon store-app">A</div>
-    <div class="app-icon podcast-app">◉</div><div class="app-icon notes-app">▤</div>
-  </div>
-  <span class="floating-heart">♥</span><span class="best-friends">BEST<br>FRIENDS<br>FIRST</span>
+<section class="hero">
+<div class="wrap">
+<div class="hero-tag">✦ DỊCH VỤ LOCKET GOLD</div>
+<h1>Locket Gold</h1>
+<p>Nâng cấp Locket Gold tự động · Thanh toán VietQR · Hỗ trợ cài đặt tận tình</p>
+<a class="hero-cta" href="#order">Bắt đầu ngay <span>♥</span></a>
 </div>
-<div class="hero-copy">
-  <div class="hero-logo"><span class="brand-mark">♥</span><span>Locket</span></div>
-  <p class="hero-subtitle">Nâng cấp Locket Gold,<br>dùng ngay trên điện thoại</p>
-  <a class="hero-cta" href="#pricing">Mua Gold <span class="cta-heart">♥</span> Locket</a>
+</section>
+<section id="order">
+<div class="wrap">
+<div class="section-head"><div class="eyebrow">BẮT ĐẦU ĐƠN GIẢN</div><h2>Nâng cấp chỉ với vài bước</h2><p>Không cần cung cấp mật khẩu Locket hoặc tài khoản iCloud.</p></div>
+<div class="order-steps">
+<article class="step-card"><span class="step-number">1</span><h3>Nhập tài khoản Locket cần nâng cấp</h3><p>Chỉ cần link trang cá nhân Locket công khai hoặc username.</p>
+<input class="field" id="username" maxlength="100" placeholder="https://locket.cam/ten_cua_ban" autocomplete="off">
+<button class="btn" type="button" onclick="verifyAccount()">Kiểm tra tài khoản</button>
+<p class="hint" id="accountHint">Không cần mật khẩu · Không yêu cầu iCloud</p></article>
+<article class="step-card"><span class="step-number">2</span><h3>Chọn gói Locket Gold</h3><p>Chọn thời hạn phù hợp, sau đó tạo đơn và quét mã VietQR.</p>
+<div style="background:#fff8e6;border-radius:12px;padding:14px;margin-top:15px;font-size:12px;color:#715400">✦ Các gói dịch vụ sẽ hiển thị ngay bên dưới.</div>
+<a class="btn" style="display:block;text-align:center;margin-top:13px" href="#pricing">Xem các gói Gold</a></article>
 </div>
-<a class="down" href="#benefits" aria-label="Cuộn xuống">⌄</a>
-</div></div>
-<section id="benefits"><div class="wrap features">
-<article class="feature"><div class="feature-icon">💬🧡</div><h3>Không tải app thứ 3</h3><p>Những gì bạn nhận được khi nâng cấp Gold</p></article>
-<article class="feature"><div class="feature-icon">🧍🛡️</div><h3>Không đụng tới iCloud</h3><p>Chọn gói và nâng cấp ngay trên trang</p></article>
-<article class="feature"><div class="feature-icon">🧩🧡</div><h3>Không cần tài khoản, mật khẩu</h3><p>Khách đã nâng cấp Gold nói gì</p></article>
-<article class="feature"><div class="feature-icon">📱</div><h3>Chỉ dùng 5 bước</h3><p>Hướng dẫn cài DNS để dùng Gold</p></article>
-</div></section>
-<section id="pricing"><div class="wrap">
-<div class="section-head"><div class="kicker">BẢNG GIÁ</div><h2>Chọn gói,<br>nâng cấp ngay</h2></div>
-<div id="plans" class="pricing"><div class="plan popular"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
-<p class="note">Đã có Gold?</p>
-<div style="display:flex;justify-content:center;gap:8px;margin:8px auto 0"><a class="btn" style="font-size:10px;padding:9px 16px" href="#how">Cài lại DNS</a><a class="btn" style="font-size:10px;padding:9px 16px" href="#faq">Đổi khung viên</a></div>
-</div></section>
-<section id="how"><div class="wrap"><div class="section-head"><div class="kicker">HƯỚNG DẪN</div><h2>Cách sử dụng</h2></div><div class="steps">
-<article class="step"><div class="num">BƯỚC 01</div><h3>Chọn gói dịch vụ</h3><p>Chọn gói phù hợp và nhập thông tin cần thiết.</p></article>
-<article class="step"><div class="num">BƯỚC 02</div><h3>Thanh toán QR</h3><p>Quét mã và chuyển đúng số tiền, nội dung đơn hàng.</p></article>
-<article class="step"><div class="num">BƯỚC 03</div><h3>Theo dõi đơn hàng</h3><p>Kiểm tra trạng thái đơn ngay trên website.</p></article>
-</div></div></section>
-<section id="faq"><div class="wrap"><div class="section-head"><div class="kicker">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2></div><div class="faq">
-<details><summary>Tôi có cần cung cấp mật khẩu Locket không?</summary><p>Không. Không nhập mật khẩu, OTP hay thông tin đăng nhập.</p></details>
-<details><summary>Thanh toán xong bao lâu thì đơn được xác nhận?</summary><p>Trạng thái phụ thuộc vào xác nhận thanh toán và cấu hình máy chủ.</p></details>
-<details><summary>Website có phải trang chính thức của Locket không?</summary><p>Đây là website dịch vụ độc lập, không phải website chính thức của Locket.</p></details>
-</div></div></section>
+</div>
+</section>
+<section id="pricing">
+<div class="wrap">
+<div class="section-head"><div class="eyebrow">BẢNG GIÁ</div><h2>Chọn gói Locket Gold</h2><p>Chọn gói để xem thông tin và tiến hành thanh toán an toàn qua VietQR.</p></div>
+<div id="plans" class="pricing"><div class="plan"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
+</div>
+</section>
+<section id="benefits">
+<div class="wrap">
+<div class="section-head"><div class="eyebrow">TRẢI NGHIỆM GOLD</div><h2>Những gì bạn nhận được</h2></div>
+<div class="benefits">
+<article class="benefit"><div class="benefit-icon">🎥</div><div><h3>Quay video dài hơn</h3><p>Trải nghiệm quay video với thời lượng mở rộng theo gói Gold.</p></div></article>
+<article class="benefit"><div class="benefit-icon">🖼️</div><div><h3>Tải ảnh và video</h3><p>Chia sẻ ảnh và video từ thư viện của bạn.</p></div></article>
+<article class="benefit"><div class="benefit-icon">✨</div><div><h3>Khung và hiệu ứng</h3><p>Khám phá widget, photobooth và các tuỳ chọn cá nhân hoá.</p></div></article>
+</div>
+</div>
+</section>
+<section id="faq">
+<div class="wrap">
+<div class="section-head"><div class="eyebrow">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2><p>Thông tin cần biết trước khi bạn nâng cấp.</p></div>
+<div class="faq">
+<details><summary>Có cần mật khẩu Locket hay tài khoản iCloud không?</summary><p>Không. Chỉ nhập link trang cá nhân Locket công khai hoặc username theo hướng dẫn. Không cung cấp mật khẩu, mã OTP hay thông tin iCloud.</p></details>
+<details><summary>Thanh toán xong bao lâu thì có Gold?</summary><p>Thời gian xử lý phụ thuộc vào trạng thái thanh toán và máy chủ xử lý đơn. Bạn có thể giữ cửa sổ đơn hàng để theo dõi trạng thái cập nhật.</p></details>
+<details><summary>Kích hoạt trên iPhone như thế nào?</summary><p>Sau khi đơn được xử lý, làm theo hướng dẫn cài đặt được cung cấp cho thiết bị của bạn.</p></details>
+<details><summary>Đây có phải website chính thức của Locket không?</summary><p>Không. Đây là website dịch vụ độc lập, không liên kết hoặc được bảo trợ bởi Locket Labs, Inc.</p></details>
+</div>
+</div>
+</section>
 </main>
 <footer><div class="wrap footer-row">
-<div><div class="footer-brand"><span class="brand-mark" style="display:inline-grid">♥</span> Locket</div><div class="tiny">© 2026 Uplocket</div></div>
-<div class="footer-links"><a href="#pricing">Mua Gold</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">Đánh giá</a><a href="#how">Cài DNS</a><a href="#how">Cài DNS</a><a href="#faq">Tùy chỉnh khung</a><a href="#faq">Về Uplocket</a><a href="#faq">Giới thiệu</a></div>
-<div class="footer-tag">BEST FRIENDS FIRST</div>
+<div><a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a><p class="footer-note">Dịch vụ độc lập. Không yêu cầu mật khẩu Locket hoặc thông tin tài khoản iCloud.</p><p class="tiny">© <span id="year"></span> Locket Gold. All rights reserved.</p></div>
+<div class="footer-links"><a href="#order">Đặt hàng</a><a href="#pricing">Bảng giá</a><a href="#benefits">Quyền lợi</a><a href="#faq">Hỗ trợ</a></div>
 </div></footer>
-<a class="chat-bubble" href="#faq" aria-label="Liên hệ hỗ trợ">•••</a>
 <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-<div class="modal-card glass">
+<div class="modal-card">
 <button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
-<div id="formView">
-<div class="kicker">TẠO ĐƠN HÀNG</div><h2 id="modalTitle" style="margin:8px 0 2px">Thông tin đặt hàng</h2><p class="tiny">Chỉ nhập username hoặc link công khai cần thiết.</p>
-<label class="label" for="username">Link Locket hoặc Username</label><input class="field" id="username" maxlength="100" placeholder="Nhập username hoặc link Locket" autocomplete="off">
-<div class="detail" style="margin:14px 0"><span>Gói đã chọn</span><strong id="selectedPlan">—</strong></div>
-<div class="detail"><span>Thành tiền</span><strong id="selectedPrice">—</strong></div>
-<p id="formError" class="tiny" style="color:#ff8994;min-height:18px"></p>
-<button id="createBtn" class="btn" style="width:100%" onclick="createOrder()">Tạo đơn & thanh toán</button>
-</div>
-<div id="paymentView" class="hidden">
-<div class="kicker">THANH TOÁN ĐƠN HÀNG</div><h2 style="margin:8px 0 0">Quét mã VietQR</h2><p class="tiny">Chuyển đúng số tiền và giữ nguyên nội dung chuyển khoản.</p>
+<div id="formView"><div class="eyebrow">TẠO ĐƠN HÀNG</div><h2 id="modalTitle" style="margin:8px 0 2px">Thông tin đặt hàng</h2><p class="tiny">Chỉ nhập username hoặc link công khai cần thiết.</p>
+<label class="label" for="orderUsername">Link Locket hoặc Username</label><input class="field" id="orderUsername" maxlength="100" placeholder="Nhập username hoặc link Locket" autocomplete="off">
+<div class="detail" style="margin:14px 0"><span>Gói đã chọn</span><strong id="selectedPlan">—</strong></div><div class="detail"><span>Thành tiền</span><strong id="selectedPrice">—</strong></div>
+<p id="formError" class="tiny" style="color:#b22;min-height:18px"></p><button id="createBtn" class="btn" style="width:100%" onclick="createOrder()">Tạo đơn & thanh toán</button></div>
+<div id="paymentView" class="hidden"><div class="eyebrow">THANH TOÁN ĐƠN HÀNG</div><h2 style="margin:8px 0 0">Quét mã VietQR</h2><p class="tiny">Chuyển đúng số tiền và giữ nguyên nội dung chuyển khoản.</p>
 <div class="qr-wrap"><img id="qrImage" alt="Mã QR thanh toán"></div>
-<div class="detail"><span>Mã đơn</span><strong id="orderCode"></strong></div>
-<div class="detail"><span>Số tiền</span><strong id="orderAmount"></strong></div>
+<div class="detail"><span>Mã đơn</span><strong id="orderCode"></strong></div><div class="detail"><span>Số tiền</span><strong id="orderAmount"></strong></div>
 <div class="detail"><span>Nội dung CK</span><strong><span id="transferContent"></span> <button class="copy" onclick="copyOrderCode()">Sao chép</button></strong></div>
-<p class="tiny" style="text-align:center;margin-top:13px">Thời gian giữ đơn còn lại</p><div id="countdown" class="timer">10:00</div>
-<div id="paymentStatus" class="status">◷ Đang chờ thanh toán...</div>
-<p class="tiny" style="margin-top:12px">Trang tự kiểm tra trạng thái mỗi 3 giây. Không đóng trang nếu muốn tiếp tục theo dõi.</p>
-<button class="btn btn-outline" style="width:100%;margin-top:14px" onclick="closeModal()">Đóng cửa sổ</button>
-</div>
+<p class="tiny" style="text-align:center;margin-top:13px">Thời gian giữ đơn còn lại</p><div id="countdown" class="timer">10:00</div><div id="paymentStatus" class="status">◷ Đang chờ thanh toán...</div>
+<p class="tiny" style="margin-top:12px">Trang tự kiểm tra trạng thái mỗi 3 giây.</p><button class="btn" style="width:100%;margin-top:14px" onclick="closeModal()">Đóng cửa sổ</button></div>
 </div></div>
-
 <script>
+
 const API_BASE = "https://YOUR-WORKER.workers.dev"; // Thay bằng URL Cloudflare Worker
 let plans = [], selected = null, activeOrder = null, poller = null, ticker = null, expiresAt = 0, busy = false;
 const money = n => new Intl.NumberFormat("vi-VN").format(n) + "đ";
@@ -304,6 +223,52 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 })();
 
 loadPlans();
+
+function verifyAccount(){
+ const value=document.getElementById("username").value.trim();
+ const hint=document.getElementById("accountHint");
+ if(!value){hint.textContent="Vui lòng nhập link Locket hoặc username.";hint.style.color="#b22";return;}
+ if(value.length<3){hint.textContent="Thông tin quá ngắn, vui lòng kiểm tra lại.";hint.style.color="#b22";return;}
+ document.getElementById("orderUsername").value=value;
+ hint.textContent="Đã nhận thông tin. Hãy chọn gói Gold bên dưới để tiếp tục.";
+ hint.style.color="#2f7b3d";
+}
+function openOrder(id){
+ selected=plans.find(p=>p.id===id);
+ if(!selected)return;
+ const value=document.getElementById("username").value.trim();
+ document.getElementById("selectedPlan").textContent=selected.name;
+ document.getElementById("selectedPrice").textContent=money(selected.price);
+ document.getElementById("orderUsername").value=value;
+ document.getElementById("formError").textContent="";
+ document.getElementById("formView").classList.remove("hidden");
+ document.getElementById("paymentView").classList.add("hidden");
+ document.getElementById("orderModal").classList.add("open");
+}
+async function createOrder(){
+ const username=document.getElementById("orderUsername").value.trim();
+ const error=document.getElementById("formError"),btn=document.getElementById("createBtn");
+ error.textContent="";
+ if(!username){error.textContent="Vui lòng nhập username hoặc link Locket.";return;}
+ if(!selected)return;
+ btn.disabled=true;btn.textContent="Đang tạo đơn...";
+ try{
+  const r=await fetch(API_BASE+"/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,plan:selected.id})});
+  const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||"Không thể tạo đơn.");
+  activeOrder=d.order_code;expiresAt=d.expires_at;
+  document.getElementById("qrImage").src=d.qr_url;
+  document.getElementById("orderCode").textContent=d.order_code;
+  document.getElementById("transferContent").textContent=d.order_code;
+  document.getElementById("orderAmount").textContent=money(d.amount);
+  document.getElementById("formView").classList.add("hidden");document.getElementById("paymentView").classList.remove("hidden");
+  startCountdown();startPolling();
+ }catch(e){error.textContent=e.message;}
+ finally{btn.disabled=false;btn.textContent="Tạo đơn & thanh toán";}
+}
+function toggleMenu(){const nav=document.getElementById("mobileNav"),btn=document.querySelector(".menu"),opened=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(opened));}
+document.querySelectorAll("#mobileNav a").forEach(a=>a.addEventListener("click",()=>{document.getElementById("mobileNav").classList.remove("open");document.querySelector(".menu").setAttribute("aria-expanded","false");}));
+document.getElementById("orderModal").addEventListener("click",e=>{if(e.target.id==="orderModal")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 </script>
 </body>
 </html>
