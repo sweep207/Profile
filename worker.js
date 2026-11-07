@@ -170,7 +170,62 @@ async function recentPurchases(env, origin) {
   });
   return json({ items }, 200, origin || "");
 }
-\nasync function processUpgrade(request, env) {
+\n
+function hasFrameAdmin(request, env) {
+  const auth = request.headers.get("Authorization") || "";
+  return !!env.FRAME_ADMIN_TOKEN && secureEqual(auth, "Bearer " + env.FRAME_ADMIN_TOKEN);
+}
+async function listFrames(env, origin) {
+  const result = await env.DB.prepare("SELECT id,title,category,note,created_at FROM frames WHERE active=1 ORDER BY created_at DESC").all();
+  return json({frames:(result.results||[]).map(row=>({...row,image_url:"/frame-image/"+row.id}))},200,origin||"");
+}
+async function addFrame(request, env, origin) {
+  if (!hasFrameAdmin(request,env)) return json({error:"Mã quản lý không đúng."},401,origin||"");
+  if (!env.FRAMES_BUCKET) return json({error:"Chưa cấu hình R2 bucket FRAMES_BUCKET."},503,origin||"");
+  const form=await request.formData();
+  const title=String(form.get("title")||"").trim().slice(0,80);
+  const category=String(form.get("category")||"Khung mới").trim().slice(0,40);
+  const note=String(form.get("note")||"").trim().slice(0,120);
+  const file=form.get("image");
+  if(!title || !(file instanceof File) || !file.size) return json({error:"Nhập tên khung và chọn ảnh."},400,origin||"");
+  if(file.size>5*1024*1024) return json({error:"Ảnh tối đa 5 MB."},400,origin||"");
+  const allowed={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"};
+  const ext=allowed[file.type];
+  if(!ext) return json({error:"Chỉ nhận ảnh JPG, PNG hoặc WEBP."},400,origin||"");
+  const id=crypto.randomUUID();
+  const key="frames/"+id+"."+ext;
+  await env.FRAMES_BUCKET.put(key,file.stream(),{httpMetadata:{contentType:file.type}});
+  try {
+    await env.DB.prepare("INSERT INTO frames(id,title,category,note,image_key,active,created_at) VALUES(?,?,?,?,?,1,?)")
+      .bind(id,title,category,note,key,Date.now()).run();
+  } catch(e) {
+    await env.FRAMES_BUCKET.delete(key);
+    throw e;
+  }
+  return json({success:true,id},201,origin||"");
+}
+async function removeFrame(request, id, env, origin) {
+  if (!hasFrameAdmin(request,env)) return json({error:"Mã quản lý không đúng."},401,origin||"");
+  const row=await env.DB.prepare("SELECT image_key FROM frames WHERE id=?").bind(id).first();
+  if(!row) return json({error:"Không tìm thấy khung."},404,origin||"");
+  await env.DB.prepare("DELETE FROM frames WHERE id=?").bind(id).run();
+  if(env.FRAMES_BUCKET && row.image_key) await env.FRAMES_BUCKET.delete(row.image_key);
+  return json({success:true},200,origin||"");
+}
+async function serveFrameImage(id, env) {
+  if(!env.FRAMES_BUCKET) return new Response("Frames storage is not configured",{status:503});
+  const row=await env.DB.prepare("SELECT image_key FROM frames WHERE id=? AND active=1").bind(id).first();
+  if(!row) return new Response("Not found",{status:404});
+  const object=await env.FRAMES_BUCKET.get(row.image_key);
+  if(!object) return new Response("Not found",{status:404});
+  const headers=new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set("Cache-Control","public, max-age=86400");
+  headers.set("X-Content-Type-Options","nosniff");
+  return new Response(object.body,{headers});
+}
+
+async function processUpgrade(request, env) {
   const auth=request.headers.get("Authorization")||"";
   if(!env.INTERNAL_SECRET || !secureEqual(auth,`Bearer ${env.INTERNAL_SECRET}`)) return json({error:"Unauthorized"},401,"");
   let body; try{body=await request.json();}catch{return json({error:"Bad JSON"},400,"");}
@@ -194,7 +249,12 @@ export default {
     if(!isWebhook && origin===null) return json({error:"Origin not allowed"},403,"");
     try{
       if(request.method==="GET" && url.pathname==="/health") return json({ok:true});
-      if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");\n      if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
+      if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
+      if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
+      if(request.method==="GET" && url.pathname==="/frames") return await listFrames(env,origin);
+      if(request.method==="POST" && url.pathname==="/admin/frames") return await addFrame(request,env,origin);
+      if(request.method==="DELETE" && url.pathname.startsWith("/admin/frames/")) return await removeFrame(request,url.pathname.split("/").pop(),env,origin);
+      if(request.method==="GET" && url.pathname.startsWith("/frame-image/")) return await serveFrameImage(url.pathname.split("/").pop(),env);
       if(request.method==="POST" && url.pathname==="/create-order") return await createOrder(request,env,origin||"");
       if(request.method==="GET" && url.pathname==="/check-payment") return await checkPayment(request,env,origin||"");
       if(request.method==="POST" && url.pathname==="/webhook/sepay") { const rawBody=await request.text(); return await paymentWebhook(request,env,rawBody); }
