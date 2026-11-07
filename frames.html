@@ -18,24 +18,13 @@ main{padding:24px 0 70px}.intro{text-align:center;margin:10px auto 24px}.eyebrow
 .admin-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:#dce2ed;padding:0;font-weight:800;cursor:pointer}.admin-body{display:none;margin-top:14px}.admin-body.open{display:block}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.admin-grid .wide{grid-column:1/-1}.admin-grid label{display:block;font-size:10px;color:#aab4c4;margin-bottom:5px}.status{font-size:11px;color:var(--gold);margin-top:10px;min-height:16px}
 footer{text-align:center;color:#727d8f;font-size:10px;padding:18px 0 30px}
 @media(max-width:620px){.navlinks{display:none;position:absolute;top:58px;left:0;right:0;background:#171a22;padding:14px 20px;flex-direction:column}.navlinks.open{display:flex}.menu{display:block}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.frame-info{padding:7px}.panel{padding:12px}.admin-grid{grid-template-columns:1fr}.admin-grid .wide{grid-column:auto}.row{flex-direction:column}.selection.show{align-items:flex-start;flex-direction:column}.selection .btn{width:100%}}
-</style></head>
+@media(min-width:621px) and (max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:420px){.intro h1{font-size:25px}.grid{gap:7px}.frame-title{font-size:10px}.selection{bottom:8px}}\nhtml,body{max-width:100%;overflow-x:hidden}body{background:radial-gradient(ellipse at 50% -15%,#1a2030 0,transparent 48%),var(--bg)}img{max-width:100%}.panel,.frame{min-width:0}\n</style></head>
 <body>
 <header><div class="wrap nav"><a class="brand" href="index.html"><span class="brand-mark">♛</span><span>Locket Gold <span class="premium">PREMIUM</span><small style="display:block;color:#9ca5b4;font-size:9px;font-weight:500">Kích hoạt tự động 24/7</small></span></a><nav class="navlinks" id="navlinks"><a href="index.html">Trang chủ</a><a href="install.html">Hướng dẫn cài</a><a href="frames.html">Khung widget</a><a href="about.html">Giới thiệu</a></nav><button class="menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button></div></header>
 <main class="wrap">
- <div class="intro"><div class="eyebrow">THƯ VIỆN KHUNG</div><h1>Đổi khung viền widget</h1><p>Chọn khung, xem trước, rồi gửi cho tài khoản Gold của bạn. Không cần đăng nhập.</p></div>
- <section class="panel"><h2>Link hoặc username Locket để kích hoạt Gold</h2><p class="sub">Nhập link Locket của bạn (không bắt buộc để xem thư viện).</p><div class="row"><input id="locketUser" class="field" placeholder="https://locket.cam/username" autocomplete="off"><button class="btn" onclick="saveLocketUser()">Tiếp tục</button></div><p id="userStatus" class="status"></p></section>
- <section class="panel"><h2>Chọn khung</h2><p class="sub"><span id="frameCount">Đang tải...</span> · Chạm vào khung để xem lựa chọn</p><div id="filters" class="filterbar"></div><div id="frameGrid" class="grid"><div class="empty">Đang tải thư viện khung...</div></div><div id="selection" class="selection"><div><b id="selectedTitle"></b><small id="selectedNote"></small></div><div class="row"><button class="btn secondary" onclick="copySelection()">Sao chép tên khung</button><button class="btn danger" onclick="deleteFrame()">Xoá khung</button></div></div></section>
- <section class="panel"><button class="admin-toggle" onclick="document.getElementById('adminBody').classList.toggle('open')"><span>＋ Tự thêm khung mới qua API / Quản lý thư viện</span><span>⌄</span></button><div id="adminBody" class="admin-body">
-  <p class="sub">Bạn tự thêm khung qua API quản trị: chọn ảnh, nhập tên và danh mục rồi tải lên. Ảnh được lưu trên Cloudflare R2; chỉ người có mã quản trị mới được thêm hoặc xoá.</p>
-  <label style="display:block;font-size:10px;color:#aab4c4;margin-bottom:5px" for="adminToken">Mã quản lý</label><input id="adminToken" class="field" type="password" autocomplete="off" placeholder="Nhập FRAME_ADMIN_TOKEN">
-  <div class="admin-grid" style="margin-top:12px">
-   <div><label for="frameTitle">Tên khung</label><input id="frameTitle" class="field" maxlength="80" placeholder="Ví dụ: Khung hoa"></div>
-   <div><label for="frameCategory">Danh mục</label><input id="frameCategory" class="field" maxlength="40" placeholder="Ví dụ: Dễ thương"></div>
-   <div class="wide"><label for="frameNote">Mô tả ngắn</label><input id="frameNote" class="field" maxlength="120" placeholder="Ghi chú hiển thị dưới tên khung"></div>
-   <div class="wide"><label for="frameImage">Ảnh khung (JPG, PNG, WEBP · tối đa 5 MB)</label><input id="frameImage" class="field" type="file" accept="image/jpeg,image/png,image/webp"></div>
-   <div class="wide"><button class="btn" style="width:100%" onclick="addFrame()">Thêm khung qua API</button></div>
-  </div><div id="adminStatus" class="status"></div>
- </div></section>
+ <div class="intro"><div class="eyebrow">THƯ VIỆN KHUNG</div><h1>Đổi khung viền widget</h1><p>Khám phá thư viện khung widget. Chọn mẫu bạn thích và liên hệ hỗ trợ để được hướng dẫn sử dụng.</p></div>
+
+ <section class="panel"><h2>Chọn khung</h2><p class="sub"><span id="frameCount">Đang tải...</span> · Chạm vào khung để xem lựa chọn</p><div id="filters" class="filterbar"></div><div id="frameGrid" class="grid"><div class="empty">Đang tải thư viện khung...</div></div><div id="selection" class="selection"><div><b id="selectedTitle"></b><small id="selectedNote"></small></div><button class="btn secondary" onclick="copySelection()">Sao chép tên khung</button></div></section>
 </main><a href="https://t.me/HeyLocket" target="_blank" rel="noopener" aria-label="Hỗ trợ 24/7" style="position:fixed;right:16px;bottom:18px;z-index:10;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffe05b,#f5a51e);color:#211700;font-size:22px;box-shadow:0 8px 28px #ffb51f55">♧</a><footer class="wrap">Locket Gold là dịch vụ độc lập, không liên kết với Locket Labs, Inc.</footer>
 <script>
 const API_BASE="https://YOUR-WORKER.workers.dev"; // Cùng URL Worker với trang chủ
@@ -59,31 +48,11 @@ function setCategory(c){activeCategory=c;renderFilters();renderFrames();}
 function renderFrames(){
  const items=allFrames.filter(f=>activeCategory==="Tất cả"||(f.category||"Khung mới")===activeCategory);
  $("frameCount").textContent=allFrames.length+" mẫu";
- if(!items.length){$("frameGrid").innerHTML='<div class="empty">Chưa có khung nào trong danh mục này. Quản trị viên có thể thêm khung ở bên dưới.</div>';return;}
+ if(!items.length){$("frameGrid").innerHTML='<div class="empty">Chưa có khung nào trong danh mục này.</div>';return;}
  $("frameGrid").innerHTML=items.map(f=>'<article class="frame '+(selectedFrame?.id===f.id?"selected":"")+'" onclick="selectFrame(\''+esc(f.id)+'\')"><img loading="lazy" src="'+API_BASE+esc(f.image_url)+'" alt="'+esc(f.title)+'"><div class="frame-info"><div class="frame-title">'+esc(f.title)+'</div><div class="frame-note">'+esc(f.note||f.category||"Khung widget")+'</div></div></article>').join("");
 }
 function selectFrame(id){selectedFrame=allFrames.find(f=>f.id===id)||null;if(!selectedFrame)return;$("selectedTitle").textContent=selectedFrame.title;$("selectedNote").textContent=selectedFrame.note||selectedFrame.category||"Khung đã chọn";$("selection").classList.add("show");renderFrames();}
 async function copySelection(){if(!selectedFrame)return;try{await navigator.clipboard.writeText(selectedFrame.title);$("selectedNote").textContent="Đã sao chép tên khung. Liên hệ hỗ trợ để được hướng dẫn áp dụng.";}catch{$("selectedNote").textContent="Khung đã chọn: "+selectedFrame.title;}}
 function saveLocketUser(){const v=$("locketUser").value.trim();if(!v){$("userStatus").textContent="Bạn có thể để trống mục này khi chỉ xem khung.";return;}if(!/^(https?:\/\/)?(www\.)?locket\.cam\//i.test(v)&&!/^@[\w.]+$/.test(v)){ $("userStatus").textContent="Hãy nhập link locket.cam hoặc username hợp lệ.";return;}$("userStatus").textContent="Đã ghi nhận trên thiết bị. Không cần gửi mật khẩu.";}
-async function deleteFrame(){
- const token=$("adminToken").value.trim();
- if(!selectedFrame)return;
- if(!token){$("adminStatus").textContent="Nhập mã quản lý trong mục quản trị để xoá khung.";return;}
- if(!confirm("Xoá khung "+selectedFrame.title+"?"))return;
- try{
-  const r=await fetch(API_BASE+"/admin/frames/"+encodeURIComponent(selectedFrame.id),{method:"DELETE",headers:{Authorization:"Bearer "+token}});
-  const d=await r.json();if(!r.ok)throw new Error(d.error||"Không thể xoá khung");
-  selectedFrame=null;$("selection").classList.remove("show");$("adminStatus").textContent="Đã xoá khung.";await loadFrames();
- }catch(e){$("adminStatus").textContent=e.message;}
-}
-async function addFrame(){
- const token=$("adminToken").value.trim(),file=$("frameImage").files[0],title=$("frameTitle").value.trim();
- if(!token){$("adminStatus").textContent="Nhập mã quản lý trước.";return;}
- if(!title||!file){$("adminStatus").textContent="Nhập tên khung và chọn ảnh.";return;}
- const form=new FormData();form.append("title",title);form.append("category",$("frameCategory").value.trim()||"Khung mới");form.append("note",$("frameNote").value.trim());form.append("image",file);
- $("adminStatus").textContent="Đang tải ảnh lên...";
- try{const r=await fetch(API_BASE+"/admin/frames",{method:"POST",headers:{Authorization:"Bearer "+token},body:form});const d=await r.json();if(!r.ok)throw new Error(d.error||"Không thể thêm khung");$("adminStatus").textContent="Đã thêm khung thành công."; $("frameTitle").value="";$("frameNote").value="";$("frameImage").value="";await loadFrames();}
- catch(e){$("adminStatus").textContent=e.message;}
-}
 loadFrames();
 </script></body></html>
