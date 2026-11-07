@@ -170,7 +170,8 @@ async function recentPurchases(env, origin) {
   });
   return json({ items }, 200, origin || "");
 }
-\n
+
+
 function hasFrameAdmin(request, env) {
   const auth = request.headers.get("Authorization") || "";
   return !!env.FRAME_ADMIN_TOKEN && secureEqual(auth, "Bearer " + env.FRAME_ADMIN_TOKEN);
