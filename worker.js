@@ -138,23 +138,14 @@ async function activatePaidOrder(order, env) {
     await env.DB.prepare("UPDATE orders SET status='activation_failed' WHERE id=? AND status='processing'").bind(order.id).run();
   }
 }
-async function verifySePayHmac(request, rawBody, env) {
-  const secret = env.SEPAY_WEBHOOK_SECRET;
-  const signature = request.headers.get("X-SePay-Signature") || "";
-  const timestamp = request.headers.get("X-SePay-Timestamp") || "";
-  if (!secret || !/^sha256=[a-f0-9]{64}$/i.test(signature) || !/^\\d+$/.test(timestamp)) return false;
-  const ts = Number(timestamp);
-  if (!Number.isSafeInteger(ts) || Math.abs(Math.floor(Date.now()/1000) - ts) > 300) return false;
-  const key = await crypto.subtle.importKey(
-    "raw", new TextEncoder().encode(secret), {name:"HMAC",hash:"SHA-256"}, false, ["sign"]
-  );
-  const signed = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(timestamp + "." + rawBody));
-  const digest = [...new Uint8Array(signed)].map(b=>b.toString(16).padStart(2,"0")).join("");
-  const expected = "sha256=" + digest;
-  return secureEqual(expected.toLowerCase(), signature.toLowerCase());
+async function verifySePayApiKey(request, env) {
+  // SePay API Key webhook sends: Authorization: Apikey YOUR_API_KEY
+  const authorization = request.headers.get("Authorization") || "";
+  const match = authorization.match(/^Apikey\\s+(.+)$/i);
+  return Boolean(env.SEPAY_API_KEY && match && secureEqual(match[1].trim(), env.SEPAY_API_KEY));
 }
 async function paymentWebhook(request, env, rawBody) {
-  if (!await verifySePayHmac(request, rawBody, env)) {
+  if (!await verifySePayApiKey(request, env)) {
     return new Response(JSON.stringify({success:false,message:"Invalid signature"}), {
       status:401, headers:{"Content-Type":"application/json"}
     });
