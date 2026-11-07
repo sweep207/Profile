@@ -6,6 +6,10 @@ CREATE TABLE IF NOT EXISTS orders (
   amount INTEGER NOT NULL CHECK(amount > 0),
   status TEXT NOT NULL DEFAULT 'pending',
   expires_at INTEGER NOT NULL,
+  provider_activation_id TEXT,
+  activation_code TEXT,
+  install_url TEXT,
+  provider_error TEXT,
   created_at INTEGER NOT NULL DEFAULT (unixepoch() * 1000)
 );
 
