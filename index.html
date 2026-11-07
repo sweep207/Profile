@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ffbd00">
+<meta name="theme-color" content="#090c13">
 <meta name="description" content="Locket Gold — chọn gói dịch vụ, thanh toán VietQR và theo dõi đơn hàng.">
 <title>Locket Gold — Kích hoạt tự động</title>
 <style>
@@ -22,28 +22,55 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px}.footer-row{display:
 @media(max-width:850px){.pricing{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){header,.nav{height:57px}.wrap{width:calc(100% - 30px)}.navlinks{display:none;position:absolute;top:57px;left:0;right:0;background:var(--yellow);padding:15px 20px;flex-direction:column;gap:14px}.navlinks.open{display:flex}.menu{display:block}.hero{padding:52px 0 48px}.hero p{font-size:14px}.order-steps{grid-template-columns:1fr}.step-card{padding:19px}.pricing{grid-template-columns:1fr;max-width:420px;margin:auto}.plan{padding:20px}.benefits{grid-template-columns:1fr}.benefit{display:flex;gap:13px;align-items:flex-start}.benefit-icon{min-width:32px}.footer-row{display:block}.footer-links{margin-top:20px;gap:12px 18px}section{padding:42px 0}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* HeyLocket-inspired dark premium theme */
+:root{--yellow:#ffc52e;--yellow2:#ffad16;--ink:#f7f8fc;--muted:#9299a8;--paper:#0b0e15;--soft:#111622;--line:#242b39;--green:#35d6a0}
+html,body{background:#090c13;color:#f7f8fc}
+header{background:#0d111b;border-bottom:1px solid #202635;backdrop-filter:blur(16px)}
+.brand-mark{background:linear-gradient(145deg,#ffdc55,#f39a27);color:#17120a;border-radius:13px;width:40px;height:40px;font-size:22px;box-shadow:0 7px 22px #ffbd0030}
+.brand{font-size:18px}.brand:after{content:"PREMIUM";font-size:9px;color:#ffcf43;border:1px solid #856514;border-radius:20px;padding:3px 7px;letter-spacing:.05em}
+.navlinks{color:#e8eaf0}.navlinks.open{background:#0d111b}.menu{color:#f8f8f8}
+.btn{background:linear-gradient(110deg,#ffe15a,#ffae16);color:#211700;border-radius:12px;box-shadow:0 5px 18px #ffba2630}
+.hero{background:#090c13;padding:54px 0 32px}.hero h1{text-transform:uppercase;font-size:clamp(36px,8vw,58px);letter-spacing:-.04em}.hero p{color:#a6adba;max-width:700px;text-transform:uppercase;font-size:13px}
+.hero .hero-tag{display:none}.hero .hero-cta{background:linear-gradient(110deg,#ffe15a,#ffae16);color:#201600}.hero .hero-cta span{color:#201600}
+section{padding:34px 0}.section-head{margin-bottom:20px}.eyebrow{color:#ffc83d}.section-head h2{font-size:25px}.section-head p{color:#9299a8}
+.order-steps{display:block;max-width:760px}.step-card{background:#101622;border:1px solid #273043;border-radius:20px;box-shadow:none;padding:20px}.step-card:nth-child(2){display:none}.step-number{border-radius:50%;background:#ffb42e;color:#201500;width:28px;height:28px}.step-card h3{font-size:17px}.step-card p{color:#8f98a9}
+.field{background:#090d16;color:#f5f6fa;border:1px solid #2a3242;border-radius:13px}.field::placeholder{color:#687184}.field:focus{border-color:#ffc83d;box-shadow:0 0 0 3px #ffbd0020}
+#pricing{background:#090c13}.pricing{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.plan{background:#101620;border:1px solid #252e3e;border-radius:18px;padding:20px 16px;box-shadow:none}.plan.popular{border:1px solid #e9aa1d;background:#101620;box-shadow:0 0 0 1px #e9aa1d20}.plan-label{color:#ffc83d}.plan h3{text-transform:uppercase;font-size:14px;color:#f4f6fa}.duration{color:#b0b7c5}.price{color:#ffd02f;font-size:29px}.old-price{color:#778092}.plan ul{color:#d4d9e2;font-size:11px;gap:8px}.plan li:before{background:transparent;color:#35d6a0}.ribbon{background:#ffc52e;color:#211700}
+.benefit{background:#101620;border:1px solid #252e3e;border-radius:16px}.benefit h3{color:#f4f6fa}.benefit p{color:#9ca4b2}
+.faq details{background:#101620;border:1px solid #252e3e;border-radius:14px}.faq summary{color:#f5f6fa}.faq p{color:#9ca4b2}
+footer{border-color:#202635}.footer-note,.tiny{color:#8f98a9}.footer-links{color:#d9dde5}
+.modal{background:#000b;backdrop-filter:blur(8px)}.modal-card{background:#111724;color:#f5f6fa;border:1px solid #2a3344;border-radius:22px}.close{background:#202838;color:#fff}.detail{border-color:#293244}.detail span{color:#9ba4b3}.copy{background:#202838;color:#fff;border-color:#3a4559}.status{background:#392f12;color:#ffe08a}.status.success{background:#103326;color:#75e5b8}.status.error{background:#3b1d20;color:#ff9a9a}.qr-wrap{background:#fff}
+#supportFab{position:fixed;right:18px;bottom:22px;z-index:35;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(145deg,#ffe05b,#f5a51e);color:#211700;font-size:25px;box-shadow:0 8px 28px #ffb51f55;cursor:pointer}
+#supportPanel{position:fixed;inset:0;z-index:40;background:#000b;backdrop-filter:blur(9px);display:none;align-items:flex-end;justify-content:center;padding:16px}
+#supportPanel.open{display:flex}.support-card{width:min(520px,100%);background:#111724;border:1px solid #2a3344;border-radius:25px;padding:22px;position:relative;box-shadow:0 20px 70px #0008}.support-card h2{margin:18px 0 4px;font-size:24px}.support-card>p{color:#9ba4b3;margin:8px 0 20px}.support-option{display:flex;align-items:center;gap:14px;padding:15px;border-radius:17px;background:#1a2130;border:1px solid #30394a;margin-top:12px}.support-option .support-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#1b3155;color:#77aaff;font-size:24px}.support-option.telegram .support-icon{background:#17384b;color:#77d1ff}.support-option b{display:block;font-size:17px}.support-option small{display:block;color:#9ba4b3;font-size:12px}.support-option .external{margin-left:auto;color:#8b95a7;font-size:20px}.support-option.disabled{opacity:.55;cursor:not-allowed}
+#purchaseToast{position:fixed;left:14px;bottom:18px;z-index:34;display:none;align-items:center;gap:10px;max-width:min(370px,calc(100vw - 95px));padding:10px 13px 10px 10px;border-radius:18px;background:#121927;border:1px solid #2a3344;box-shadow:0 12px 35px #0008;animation:toastIn .35s ease}
+#purchaseToast.show{display:flex}.toast-avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#242d3e;color:#ffd34d;font-weight:900;flex:none}.toast-copy{min-width:0;font-size:12px;line-height:1.35}.toast-copy b{color:#ffcf42}.toast-copy small{display:block;color:#8791a2;margin-top:2px}.toast-copy strong{color:#f2f4f8}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:620px){.wrap{width:calc(100% - 18px)}header,.nav{height:57px}.navlinks{top:57px;background:#0d111b}.hero{padding:30px 0 24px}.hero p{font-size:11px}.section-head h2{font-size:19px}.step-card{padding:14px}.pricing{grid-template-columns:1fr;max-width:none;gap:10px}.plan{padding:18px 14px}.plan h3{font-size:13px}.plan ul{margin:12px 0 15px;gap:7px}.plan .btn{font-size:11px;padding:11px}.benefits{grid-template-columns:1fr}.support-card{padding:20px 16px}.support-card h2{font-size:21px}#purchaseToast{bottom:14px;left:10px}#supportFab{bottom:18px;right:14px;width:54px;height:54px}}
+
 </style>
 </head>
 <body>
 <header><div class="wrap nav">
 <a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a>
-<nav class="navlinks" id="mobileNav"><a href="#pricing">Bảng giá</a><a href="#benefits">Quyền lợi</a><a href="#faq">Câu hỏi thường gặp</a></nav>
+<nav class="navlinks" id="mobileNav"><a href="#order">Trang chủ</a><a href="#faq">Hướng dẫn cài</a><a href="#benefits">Khung widget</a><a href="#benefits">Giới thiệu</a></nav>
 <button class="menu" aria-label="Mở menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
 </div></header>
 <main>
 <section class="hero">
 <div class="wrap">
-<div class="hero-tag">✦ DỊCH VỤ LOCKET GOLD</div>
-<h1>Locket Gold</h1>
-<p>Nâng cấp Locket Gold tự động · Thanh toán VietQR · Hỗ trợ cài đặt tận tình</p>
+
+<h1>LOCKET GOLD</h1>
+<p>NÂNG CẤP LOCKET GOLD TỰ ĐỘNG · THANH TOÁN VIETQR · HỖ TRỢ CÀI ĐẶT TẬN TÌNH</p>
 <a class="hero-cta" href="#order">Bắt đầu ngay <span>♥</span></a>
 </div>
 </section>
 <section id="order">
 <div class="wrap">
-<div class="section-head"><div class="eyebrow">BẮT ĐẦU ĐƠN GIẢN</div><h2>Nâng cấp chỉ với vài bước</h2><p>Không cần cung cấp mật khẩu Locket hoặc tài khoản iCloud.</p></div>
+<div class="section-head"><div class="eyebrow">BẮT ĐẦU NGAY</div><h2>1. Nhập tài khoản Locket cần nâng cấp</h2><p>Không cần mật khẩu</p></div>
 <div class="order-steps">
-<article class="step-card"><span class="step-number">1</span><h3>Nhập tài khoản Locket cần nâng cấp</h3><p>Chỉ cần link trang cá nhân Locket công khai hoặc username.</p>
+<article class="step-card"><h3>Nhập link Locket của bạn</h3><p>Chỉ cần link Locket — không hỏi mật khẩu Locket hay tài khoản iCloud.</p>
 <input class="field" id="username" maxlength="100" placeholder="https://locket.cam/ten_cua_ban" autocomplete="off">
 <button class="btn" type="button" onclick="verifyAccount()">Kiểm tra tài khoản</button>
 <p class="hint" id="accountHint">Không cần mật khẩu · Không yêu cầu iCloud</p></article>
@@ -61,17 +88,17 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px}.footer-row{display:
 </section>
 <section id="benefits">
 <div class="wrap">
-<div class="section-head"><div class="eyebrow">TRẢI NGHIỆM GOLD</div><h2>Những gì bạn nhận được</h2></div>
+<div class="section-head"><div class="eyebrow">QUYỀN LỢI GOLD</div><h2>Trải nghiệm Locket Gold</h2></div>
 <div class="benefits">
-<article class="benefit"><div class="benefit-icon">🎥</div><div><h3>Quay video dài hơn</h3><p>Trải nghiệm quay video với thời lượng mở rộng theo gói Gold.</p></div></article>
-<article class="benefit"><div class="benefit-icon">🖼️</div><div><h3>Tải ảnh và video</h3><p>Chia sẻ ảnh và video từ thư viện của bạn.</p></div></article>
-<article class="benefit"><div class="benefit-icon">✨</div><div><h3>Khung và hiệu ứng</h3><p>Khám phá widget, photobooth và các tuỳ chọn cá nhân hoá.</p></div></article>
+<article class="benefit"><div class="benefit-icon">⚡</div><div><h3>Kích hoạt tự động</h3><p>Thanh toán VietQR, hệ thống tự nhận diện và xử lý đơn ngay sau khi chuyển khoản.</p></div></article>
+<article class="benefit"><div class="benefit-icon">🔑</div><div><h3>Không cần mật khẩu</h3><p>Chỉ cần link Locket — không hỏi mật khẩu Locket hay tài khoản iCloud.</p></div></article>
+<article class="benefit"><div class="benefit-icon">🛡️</div><div><h3>Hỗ trợ cài đặt</h3><p>Có hướng dẫn từng bước, được hỗ trợ trực tiếp khi bạn cần.</p></div></article>
 </div>
 </div>
 </section>
 <section id="faq">
 <div class="wrap">
-<div class="section-head"><div class="eyebrow">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2><p>Thông tin cần biết trước khi bạn nâng cấp.</p></div>
+<div class="section-head"><div class="eyebrow">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2><p>Giải đáp nhanh trước khi bạn nâng cấp.</p></div>
 <div class="faq">
 <details><summary>Có cần mật khẩu Locket hay tài khoản iCloud không?</summary><p>Không. Chỉ nhập link trang cá nhân Locket công khai hoặc username theo hướng dẫn. Không cung cấp mật khẩu, mã OTP hay thông tin iCloud.</p></details>
 <details><summary>Thanh toán xong bao lâu thì có Gold?</summary><p>Thời gian xử lý phụ thuộc vào trạng thái thanh toán và máy chủ xử lý đơn. Bạn có thể giữ cửa sổ đơn hàng để theo dõi trạng thái cập nhật.</p></details>
@@ -85,7 +112,17 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px}.footer-row{display:
 <div><a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket Gold</span></a><p class="footer-note">Dịch vụ độc lập. Không yêu cầu mật khẩu Locket hoặc thông tin tài khoản iCloud.</p><p class="tiny">© <span id="year"></span> Locket Gold. All rights reserved.</p></div>
 <div class="footer-links"><a href="#order">Đặt hàng</a><a href="#pricing">Bảng giá</a><a href="#benefits">Quyền lợi</a><a href="#faq">Hỗ trợ</a></div>
 </div></footer>
-<div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+<div id="purchaseToast" role="status" aria-live="polite"><div class="toast-avatar">★</div><div class="toast-copy"><strong><b id="toastBuyer">Khách hàng</b> vừa nâng cấp Gold</strong><small id="toastWhen">Đơn hàng đã xác nhận</small></div></div>
+<button id="supportFab" type="button" aria-label="Mở hỗ trợ 24/7" onclick="toggleSupport(true)">♧</button>
+<div id="supportPanel" role="dialog" aria-modal="true" aria-labelledby="supportTitle" onclick="if(event.target===this)toggleSupport(false)">
+ <div class="support-card"><button class="close" type="button" aria-label="Đóng hỗ trợ" onclick="toggleSupport(false)">✕</button>
+ <div class="brand-mark">♧</div><h2 id="supportTitle">Hỗ trợ 24/7</h2><p>Chọn kênh bạn tiện liên hệ — đội hỗ trợ sẽ trả lời sớm nhất.</p>
+ <a class="support-option" id="zaloSupport" href="#" target="_blank" rel="noopener" aria-label="Liên hệ Zalo"><span class="support-icon">◉</span><span><b>Zalo</b><small>Nhắn tin, gửi ảnh màn hình</small></span><span class="external">↗</span></a>
+ <a class="support-option telegram" href="https://t.me/HeyLocket" target="_blank" rel="noopener"><span class="support-icon">➤</span><span><b>Telegram</b><small>t.me/HeyLocket</small></span><span class="external">↗</span></a>
+ </div>
+</div>
+\n<div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-card">
 <button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
 <div id="formView"><div class="eyebrow">TẠO ĐƠN HÀNG</div><h2 id="modalTitle" style="margin:8px 0 2px">Thông tin đặt hàng</h2><p class="tiny">Chỉ nhập username hoặc link công khai cần thiết.</p>
@@ -101,7 +138,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px}.footer-row{display:
 </div></div>
 <script>
 
-const API_BASE = "https://YOUR-WORKER.workers.dev"; // Thay bằng URL Cloudflare Worker
+const API_BASE = "https://YOUR-WORKER.workers.dev"; // Điền URL Worker đang chạy\nconst SUPPORT_ZALO_URL = ""; // Điền link Zalo chính thức để bật nút Zalo
 let plans = [], selected = null, activeOrder = null, poller = null, ticker = null, expiresAt = 0, busy = false;
 const money = n => new Intl.NumberFormat("vi-VN").format(n) + "đ";
 const yearNode = document.getElementById("year"); if(yearNode) yearNode.textContent = new Date().getFullYear();
@@ -222,7 +259,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
   }else{targets.forEach(el=>el.classList.add("visible"));}
 })();
 
-loadPlans();
+loadPlans();\ninitRealPurchaseNotifications();\nconst zaloLink=document.getElementById("zaloSupport");\nif(SUPPORT_ZALO_URL){zaloLink.href=SUPPORT_ZALO_URL;}else{zaloLink.classList.add("disabled");zaloLink.removeAttribute("target");zaloLink.addEventListener("click",e=>{e.preventDefault();alert("Chủ website chưa cấu hình link Zalo hỗ trợ.");});}
 
 function verifyAccount(){
  const value=document.getElementById("username").value.trim();
@@ -269,6 +306,38 @@ function toggleMenu(){const nav=document.getElementById("mobileNav"),btn=documen
 document.querySelectorAll("#mobileNav a").forEach(a=>a.addEventListener("click",()=>{document.getElementById("mobileNav").classList.remove("open");document.querySelector(".menu").setAttribute("aria-expanded","false");}));
 document.getElementById("orderModal").addEventListener("click",e=>{if(e.target.id==="orderModal")closeModal();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
-</script>
+
+function toggleSupport(open){document.getElementById("supportPanel").classList.toggle("open",!!open);}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")toggleSupport(false);});
+let purchaseItems=[],purchaseIndex=0,purchaseTimer=null;
+function timeAgo(ts){
+ const seconds=Math.max(0,Math.floor((Date.now()-Number(ts))/1000));
+ if(seconds<60)return "Vừa xong";
+ if(seconds<3600)return Math.floor(seconds/60)+" phút trước";
+ if(seconds<86400)return Math.floor(seconds/3600)+" giờ trước";
+ return Math.floor(seconds/86400)+" ngày trước";
+}
+async function initRealPurchaseNotifications(){
+ if(!API_BASE||API_BASE.includes("YOUR-WORKER"))return;
+ try{
+  const r=await fetch(API_BASE+"/recent-purchases",{cache:"no-store"});
+  if(!r.ok)return;
+  const d=await r.json();
+  purchaseItems=Array.isArray(d.items)?d.items:[];
+  if(!purchaseItems.length)return;
+  showNextPurchase();
+  purchaseTimer=setInterval(showNextPurchase,18000);
+ }catch(e){console.warn("Không tải được thông báo đơn hàng thật",e);}
+}
+function showNextPurchase(){
+ if(!purchaseItems.length)return;
+ const item=purchaseItems[purchaseIndex%purchaseItems.length];purchaseIndex++;
+ document.getElementById("toastBuyer").textContent=item.buyer||"Khách hàng";
+ document.getElementById("toastWhen").textContent=timeAgo(item.created_at)+" · "+(item.plan_name||"Locket Gold");
+ const toast=document.getElementById("purchaseToast");
+ toast.classList.remove("show");void toast.offsetWidth;toast.classList.add("show");
+ setTimeout(()=>toast.classList.remove("show"),6500);
+}
+\n</script>
 </body>
 </html>
