@@ -105,3 +105,15 @@ Worker đã có API quản lý khung. Để bật tính năng tải ảnh khung:
 
 ## 9. Thay đổi giá
 Sửa các trường `price`, `duration`, `features` trong mảng `PLANS` ở đầu `worker.js`, sau đó chạy `npx wrangler deploy`. Trang chủ lấy bảng giá trực tiếp từ `GET /plans`, không cần sửa HTML.
+
+
+## 10. Cấu trúc website nhiều trang
+- `index.html`: trang chủ đặt hàng, chọn gói, tạo đơn VietQR, xem thông báo mua hàng và mở hỗ trợ.
+- `about.html`: trang giới thiệu riêng, quyền lợi, bảng giá lấy động từ `GET /plans`.
+- `install.html`: trang hướng dẫn cài đặt DNS iPhone riêng, gồm 4 bước và FAQ.
+- `frames.html`: thư viện khung widget và phần quản trị thêm/xoá khung.
+- Menu đầu trang và chân trang liên kết qua lại giữa các trang.
+
+Sau khi deploy Worker, thay `https://YOUR-WORKER.workers.dev` bằng URL Worker thật trong `index.html`, `about.html` và `frames.html`. Không cần API cho `install.html`.
+
+**Lưu ý:** Nút trên trang chủ hiện kiểm tra định dạng và tên miền của link Locket ở trình duyệt; nó chưa gọi API xác minh tài khoản trực tiếp với Locket. Không hiển thị thông báo rằng tài khoản đã được xác minh thành công nếu chưa có endpoint xác minh thực tế.
