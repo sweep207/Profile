@@ -304,7 +304,8 @@ footer{background:#0c1120!important;color:#a8b0c6!important;border-top:1px solid
 </div></div>
 <script>
 const API_BASE=window.LOCKET_API_BASE||"https://locket-plus-api.dangtoanvu07.workers.dev",SUPPORT_ZALO_URL="https://zalo.me/0853261605";
-function localDateISO(){const d=new Date();return d.getFullYear()+\"-\"+String(d.getMonth()+1).padStart(2,\"0\")+\"-\"+String(d.getDate()).padStart(2,\"0\");}\nlet plans=[],selected=null,activeOrder=null,poller=null,ticker=null,expiresAt=0,busy=false,purchaseItems=[],purchaseIndex=0,purchaseTimer=null,verifiedProfile=null,verifiedUsername="",activationDateValue=localDateISO();
+function localDateISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+let plans=[],selected=null,activeOrder=null,poller=null,ticker=null,expiresAt=0,busy=false,purchaseItems=[],purchaseIndex=0,purchaseTimer=null,verifiedProfile=null,verifiedUsername="",activationDateValue=localDateISO();
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat("vi-VN").format(n)+"đ";
 if($("year"))$("year").textContent=new Date().getFullYear();
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
