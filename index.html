@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi">
-<head>
+<head><script src="./config.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090c13">
@@ -147,7 +147,7 @@ header{background:#0d1118!important;border-bottom:1px solid #202635!important}
 <p class="tiny" style="margin-top:12px">Trang tự kiểm tra trạng thái mỗi 3 giây.</p><button class="btn" style="width:100%;margin-top:14px" onclick="closeModal()">Đóng cửa sổ</button></div>
 </div></div>
 <script>
-const API_BASE="https://YOUR-WORKER.workers.dev",SUPPORT_ZALO_URL="";
+const API_BASE=window.LOCKET_API_BASE||"https://YOUR-WORKER.workers.dev",SUPPORT_ZALO_URL="";
 let plans=[],selected=null,activeOrder=null,poller=null,ticker=null,expiresAt=0,busy=false,purchaseItems=[],purchaseIndex=0,purchaseTimer=null;
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat("vi-VN").format(n)+"đ";
 if($("year"))$("year").textContent=new Date().getFullYear();
