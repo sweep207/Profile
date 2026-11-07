@@ -492,7 +492,15 @@ export default {
           const now = Date.now();
           paidGoldActive = (completedOrders.results || []).some(order => {
             const days = durationByPlan[String(order.plan || "").toLowerCase()];
-            const createdAt = Date.parse(String(order.created_at || ""));
+            const rawCreatedAt = order.created_at;
+            // schema.sql stores created_at as INTEGER Unix milliseconds.
+            // Also tolerate Unix seconds or an ISO date string for older rows.
+            let createdAt = typeof rawCreatedAt === "number" ? rawCreatedAt : Number(rawCreatedAt);
+            if (!Number.isFinite(createdAt) || createdAt <= 0) {
+              createdAt = Date.parse(String(rawCreatedAt || ""));
+            } else if (createdAt < 100000000000) {
+              createdAt *= 1000;
+            }
             return Number.isFinite(days) && Number.isFinite(createdAt) &&
               createdAt + days * 86400000 > now;
           });
