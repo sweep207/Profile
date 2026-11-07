@@ -3,126 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#ffb900">
 <meta name="description" content="Trang đặt dịch vụ Locket với bảng giá minh bạch và thanh toán QR.">
-<title>Locket Plus — Dịch vụ nâng cấp</title>
+<title>Locket — Mua Gold</title>
 <style>
-:root{--bg:#090d19;--panel:#11182a;--panel2:#151e33;--line:rgba(255,255,255,.1);--muted:#9ba8c2;--text:#f6f7fb;--purple:#9b87ff;--cyan:#6fe5dc;--green:#54d6a0;--radius:24px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 550px at 10% -5%,#34265f66,transparent 65%),radial-gradient(800px 500px at 100% 28%,#15515a44,transparent 65%),var(--bg);color:var(--text);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.glass{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid var(--line);box-shadow:0 24px 80px #0003;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-header{position:sticky;top:0;z-index:10;background:#090d19bb;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff0d}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.04em}.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#9b87ff,#53d8d1);color:#101528;font-size:20px}.navlinks{display:flex;gap:26px;color:#c0c9da;font-size:14px}.navlinks a:hover{color:white}.btn{border:0;border-radius:14px;padding:13px 20px;background:linear-gradient(110deg,#a18aff,#6b7dff);color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 30px #7664ff35;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.btn-outline{background:#ffffff0a;border:1px solid var(--line);box-shadow:none}.hero{padding:86px 0 76px;display:grid;grid-template-columns:1.1fr .9fr;gap:45px;align-items:center}.eyebrow{display:inline-flex;gap:9px;align-items:center;border:1px solid #9b87ff55;background:#9b87ff14;color:#d9d1ff;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:800;letter-spacing:.08em}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}h1{font-size:clamp(42px,6vw,68px);line-height:1.06;letter-spacing:-.055em;margin:22px 0 18px}h1 span{background:linear-gradient(100deg,#c4b6ff,#71e8df);background-clip:text;color:transparent}.lead{max-width:580px;color:#b0bbd0;font-size:17px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.trust{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px;color:#aeb9ce;font-size:13px}.trust span{display:flex;gap:7px;align-items:center}.hero-art{min-height:390px;position:relative;display:grid;place-items:center}.orb{position:absolute;width:280px;height:280px;border-radius:50%;background:linear-gradient(135deg,#927bff66,#51e0d466);filter:blur(35px)}.phone{position:relative;width:min(280px,80%);padding:12px;border-radius:36px;background:linear-gradient(145deg,#ffffff40,#ffffff08);border:1px solid #ffffff3a;transform:rotate(5deg);box-shadow:0 35px 90px #0008}.phone-screen{border-radius:27px;min-height:340px;padding:22px 17px;background:linear-gradient(155deg,#252c50,#11192b);overflow:hidden}.phone-top{display:flex;justify-content:space-between;color:#d5dcf0;font-size:11px}.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:28px}.photo{height:105px;border-radius:16px;background:linear-gradient(135deg,#e8a5b9,#6b78a9)}.photo:nth-child(2){background:linear-gradient(135deg,#6dd7c9,#315e75)}.photo:nth-child(3){background:linear-gradient(135deg,#f2c47e,#b45d6c)}.photo:nth-child(4){background:linear-gradient(135deg,#9e9cf5,#554b85)}.phone-label{margin-top:18px;padding:12px;border-radius:14px;background:#ffffff12;color:#dfe6f5;font-size:12px}
-section{padding:72px 0}.section-head{text-align:center;max-width:700px;margin:0 auto 38px}.kicker{color:var(--cyan);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.13em}.section-head h2{font-size:clamp(29px,4vw,42px);letter-spacing:-.04em;line-height:1.15;margin:12px 0}.section-head p{color:var(--muted);margin:0}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.feature{padding:25px;border-radius:22px}.iconbox{width:46px;height:46px;border-radius:15px;background:#9b87ff1c;display:grid;place-items:center;font-size:22px;margin-bottom:18px}.feature h3{margin:0 0 8px;font-size:17px}.feature p{margin:0;color:var(--muted);font-size:14px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.step{padding:23px;border-radius:20px}.num{font-size:13px;color:var(--cyan);font-weight:900;letter-spacing:.12em}.step h3{margin:9px 0 6px}.step p{margin:0;color:var(--muted);font-size:14px}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}.plan{padding:25px;border-radius:24px;position:relative;display:flex;flex-direction:column}.plan.popular{border-color:#a18aff88;box-shadow:0 22px 70px #7765ff20}.ribbon{position:absolute;top:16px;right:16px;background:#9b87ff24;color:#d9d1ff;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}.plan-label{color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.plan h3{font-size:22px;margin:9px 0 3px}.duration{color:var(--muted);font-size:13px}.price{font-size:34px;font-weight:900;letter-spacing:-.04em;margin:20px 0 0}.old-price{color:#78839b;text-decoration:line-through;font-size:13px}.plan ul{list-style:none;padding:0;margin:20px 0 25px;display:grid;gap:11px;color:#c3cde0;font-size:13px}.plan li:before{content:"✓";color:var(--green);font-weight:900;margin-right:9px}.plan .btn{width:100%;margin-top:auto}.note{text-align:center;color:#8592ab;font-size:12px;margin-top:20px}.faq{max-width:780px;margin:auto;display:grid;gap:12px}.faq details{padding:18px 21px;border-radius:17px}.faq summary{font-weight:750;cursor:pointer}.faq p{color:var(--muted);margin-bottom:0;font-size:14px}
-footer{padding:32px 0 45px;border-top:1px solid #ffffff12;color:#8592ab;font-size:13px}.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.modal{position:fixed;inset:0;z-index:30;background:#02040bd9;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:25px;position:relative;max-height:calc(100vh - 36px);overflow:auto}.close{position:absolute;right:17px;top:14px;border:0;background:#ffffff12;color:white;border-radius:10px;width:34px;height:34px;cursor:pointer}.field{display:block;width:100%;padding:14px 15px;border-radius:13px;border:1px solid var(--line);background:#090f1e;color:white;outline:none}.field:focus{border-color:var(--purple)}.label{display:block;font-size:13px;color:#c4cde0;margin:15px 0 7px}.qr-wrap{background:white;border-radius:16px;padding:10px;width:220px;margin:18px auto}.qr-wrap img{width:100%;display:block;border-radius:8px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #ffffff12;font-size:13px}.detail span{color:var(--muted)}.detail strong{text-align:right;overflow-wrap:anywhere}.status{margin-top:16px;padding:13px;border-radius:13px;background:#f4b84c16;color:#f5cb78;font-size:13px}.status.success{background:#54d6a01a;color:#6ee3ad}.status.error{background:#ff66751a;color:#ff8994}.timer{text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;margin:4px 0 12px}.copy{border:1px solid var(--line);background:#ffffff0a;color:#d8dff0;border-radius:9px;padding:5px 9px;font-size:11px;cursor:pointer}.tiny{font-size:11px;color:#8390a8}.hidden{display:none!important}
-@media(max-width:800px){.navlinks{display:none}.hero{grid-template-columns:1fr;padding:58px 0 40px;gap:10px}.hero-art{min-height:330px}.grid3,.steps{grid-template-columns:1fr}.pricing{grid-template-columns:1fr;max-width:480px;margin:auto}.plan{padding:23px}.hero h1{max-width:600px}section{padding:55px 0}}
-@media(max-width:420px){.wrap{width:min(100% - 28px,1120px)}.nav{height:66px}.nav>.btn{padding:10px 13px;font-size:12px}.hero-actions .btn{width:100%}.phone{width:245px}.phone-screen{min-height:305px}.photo{height:88px}}
-
-/* Visual refresh: polished gradient, motion and responsive interactions */
-:root{--bg:#080b18;--panel:#121a30;--purple:#a78bfa;--cyan:#67e8d7;--radius:26px}
-body{background:radial-gradient(ellipse 720px 480px at 12% 0%,#6044b344,transparent 70%),radial-gradient(ellipse 680px 500px at 94% 18%,#1e9c9a30,transparent 68%),linear-gradient(180deg,#090d1c 0%,#0b1020 48%,#080b17 100%);background-attachment:fixed}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.18;background-image:radial-gradient(#fff 0.6px,transparent .6px);background-size:26px 26px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
-header{background:rgba(8,11,24,.78);border-bottom:1px solid rgba(167,139,250,.14)}
-.brand-mark{box-shadow:0 8px 28px #9b87ff55;animation:brandPulse 4s ease-in-out infinite}
-.navlinks a{position:relative;transition:color .2s}
-.navlinks a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:right .25s}
-.navlinks a:hover:after{right:0}
-.hero{padding-top:96px;padding-bottom:88px}
-.eyebrow{box-shadow:inset 0 0 24px #9b87ff10}
-h1{line-height:1.02}
-h1 span{background-image:linear-gradient(100deg,#d2c6ff 4%,#a78bfa 43%,#67e8d7 95%);background-size:180% auto;animation:gradientFlow 7s ease-in-out infinite}
-.lead{line-height:1.8}
-.btn{background:linear-gradient(110deg,#a78bfa,#7775f8 58%,#55cfc8);background-size:160% 100%;transition:transform .25s,box-shadow .25s,background-position .5s}
-.btn:hover{box-shadow:0 14px 38px #8b78ff55;background-position:100% 0}
-.btn-outline{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.16)}
-.hero-art{perspective:1000px}
-.phone{animation:phoneFloat 6s ease-in-out infinite;transform-origin:center}
-.phone-screen{background:linear-gradient(155deg,#2c3158,#11192b 78%);position:relative}
-.phone-screen:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,#ffffff0c 45%,transparent 65%);transform:translateX(-120%);animation:shine 7s ease-in-out infinite;pointer-events:none}
-.photo{position:relative;overflow:hidden;box-shadow:inset 0 0 22px #ffffff1a}
-.photo:after{content:"";position:absolute;inset:0;background:linear-gradient(145deg,#ffffff22,transparent 60%)}
-.feature,.step,.plan,.faq details{transition:transform .28s,border-color .28s,box-shadow .28s}
-.feature:hover,.step:hover{transform:translateY(-6px);border-color:#a78bfa66;box-shadow:0 22px 55px #0005}
-.iconbox{box-shadow:inset 0 0 22px #9b87ff18;border:1px solid #a78bfa25}
-.section-head h2{letter-spacing:-.045em}
-.plan{background:linear-gradient(155deg,rgba(27,34,59,.96),rgba(15,21,39,.94));border-color:#ffffff18}
-.plan.popular{background:linear-gradient(155deg,#28234a,#121b32 80%);border-color:#b5a3ff99;box-shadow:0 24px 80px #806cff24}
-.plan:hover{transform:translateY(-7px);border-color:#a78bfa88;box-shadow:0 26px 65px #0006}
-.plan .price{background:linear-gradient(90deg,#fff,#b9adff 55%,#80e9dc);background-clip:text;color:transparent}
-.ribbon{background:linear-gradient(100deg,#a78bfa33,#67e8d733);border:1px solid #b9adff55}
-.faq details[open]{border-color:#a78bfa66}
-footer{background:#070a14aa}
-.modal-card{border-color:#ffffff22;box-shadow:0 30px 100px #000a}
-.field{transition:border-color .2s,box-shadow .2s}
-.field:focus{box-shadow:0 0 0 4px #a78bfa20}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-@keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(5deg)}50%{transform:translateY(-13px) rotate(2deg)}}
-@keyframes brandPulse{0%,100%{box-shadow:0 8px 28px #9b87ff35}50%{box-shadow:0 8px 36px #67e8d755}}
-@keyframes gradientFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-@keyframes shine{0%,65%,100%{transform:translateX(-120%)}85%{transform:translateX(120%)}}
-@media(max-width:800px){.hero{padding-top:62px;padding-bottom:42px}.hero-art{min-height:330px}.navlinks{display:none}.feature:hover,.step:hover,.plan:hover{transform:none}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
-
+:root{--gold:#ffb900;--gold2:#f5a900;--cream:#fffdf1;--cream2:#fff7e6;--ink:#17130a;--muted:#756b57;--line:#f3e8cf}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+header{height:56px;background:var(--gold);position:relative;z-index:5}.nav{height:56px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:8px;font-weight:950;font-size:17px}.brand-mark{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#e9a500;color:#8c5c00;font-size:17px}.navlinks{display:flex;gap:24px;font-size:13px;font-weight:700}.nav>.btn{display:none}.menu{font-size:22px;font-weight:700}
+.btn{border:0;border-radius:999px;padding:13px 22px;background:var(--gold);color:#201700;font-weight:850;cursor:pointer;transition:.2s}.btn:hover{background:#f3a900;transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:not-allowed}
+.hero{position:relative;padding:0 0 46px;text-align:center;background:linear-gradient(var(--gold) 0 200px,var(--cream) 200px)}.hero-inner{width:min(720px,calc(100% - 36px));margin:auto}.hero-screen{height:272px;background:#000;color:#fff;position:relative;display:flex;align-items:flex-end;justify-content:center;margin:0 auto;width:min(100%,620px);box-shadow:0 3px 9px #0002}.hero-screen:before{content:"";position:absolute;right:9%;top:34%;width:23px;height:23px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px #fff}.hero-screen:after{content:"BEST FRIENDS FIRST";position:absolute;left:6%;top:47%;background:var(--gold);color:#161000;font-weight:1000;font-size:9px;padding:6px;border-radius:50%;transform:rotate(-15deg)}.hero-brand{position:absolute;bottom:42px;left:0;right:0;font-size:25px;font-weight:950;color:#1d1707}.hero-brand .brand-mark{display:inline-grid;vertical-align:middle;width:28px;height:28px;margin-right:8px}.hero-caption{position:relative;margin-top:-13px;display:inline-flex;align-items:center;gap:7px;background:#ffbd39e8;padding:6px 17px;border-radius:30px;font-size:12px;font-weight:700}.down{display:block;color:#bdb7a7;font-size:27px;line-height:1;margin-top:8px}
+section{padding:18px 0}.features{display:grid;grid-template-columns:1fr;gap:10px;margin-top:0}.feature{min-height:176px;padding:23px 18px 17px;border-radius:24px;background:var(--cream2);display:flex;flex-direction:column;justify-content:flex-end}.feature-icon{height:92px;display:grid;place-items:center;font-size:49px;line-height:1;margin-bottom:7px}.feature h3{font-size:13px;line-height:1.3;margin:0 0 4px;font-weight:950}.feature p{font-size:11px;color:var(--muted);margin:0}.section-head{text-align:center;margin:10px auto 20px}.kicker{font-size:9px;color:#8b806d;letter-spacing:.2em;font-weight:800}.section-head h2{font-size:22px;line-height:1.12;letter-spacing:-.04em;margin:4px 0 0;font-weight:1000}.section-head p{color:var(--muted);font-size:12px;margin:8px auto 0;max-width:500px}
+.steps{display:grid;grid-template-columns:1fr;gap:10px}.step{padding:22px;border-radius:22px;background:var(--cream2)}.num{font-size:11px;color:#b17b00;font-weight:950}.step h3{margin:8px 0 4px;font-size:15px}.step p{margin:0;color:var(--muted);font-size:12px}
+#pricing{padding-top:16px}.pricing{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 max(18px,calc((100vw - 1120px)/2)) 12px;scrollbar-width:none}.pricing::-webkit-scrollbar{display:none}.plan{scroll-snap-align:center;flex:0 0 270px;min-width:0;border:1px solid var(--gold2);border-radius:19px;background:#fff5dc;padding:15px 13px 13px;display:flex;flex-direction:column;position:relative;box-shadow:0 5px 20px #d89a0010}.plan.popular{border:1.5px solid #f0a300;background:#fff2d0}.ribbon{position:absolute;top:-10px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--gold);border-radius:99px;padding:3px 12px;font-size:9px;font-weight:950;color:#211700}.plan-label{font-size:10px;font-weight:950}.plan h3{font-size:13px;line-height:1.2;margin:2px 0}.duration{font-size:9px;color:var(--muted)}.price{font-size:26px;font-weight:1000;letter-spacing:-.04em;margin:3px 0}.old-price{font-size:9px;color:#8b806d;text-decoration:line-through}.plan ul{list-style:none;padding:0;margin:12px 0 14px;display:grid;gap:7px;color:#352c1b;font-size:9px;line-height:1.35}.plan li:before{content:"✓";display:inline-grid;place-items:center;width:12px;height:12px;margin-right:6px;border-radius:50%;background:var(--gold);font-size:8px;font-weight:1000}.plan .btn{width:100%;margin-top:auto;padding:9px 12px;font-size:11px}.note{text-align:center;color:#8b806d;font-size:9px;margin:10px auto 0}
+.faq{max-width:760px;margin:auto;display:grid;gap:9px}.faq details{padding:14px 16px;border-radius:16px;background:var(--cream2)}.faq summary{font-weight:800;font-size:12px;cursor:pointer}.faq p{color:var(--muted);font-size:11px;margin:8px 0 0}
+footer{padding:35px 0 45px;background:var(--cream);color:#2a2418;font-size:11px}.footer-row{display:grid;grid-template-columns:1fr 1fr;gap:22px}.footer-brand{font-size:18px;font-weight:950;margin-bottom:7px}.footer-links{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-weight:650}.footer-links a{display:block}.footer-tag{grid-column:1/-1;font-size:20px;font-weight:1000;text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:5px;margin-top:18px;white-space:nowrap}
+.modal{position:fixed;inset:0;z-index:30;background:#17130add;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:23px;background:var(--cream);position:relative;max-height:calc(100vh - 36px);overflow:auto;box-shadow:0 25px 80px #0004}.close{position:absolute;right:17px;top:14px;border:0;background:#f2e7ce;color:#2b2417;border-radius:10px;width:34px;height:34px;cursor:pointer}.field{display:block;width:100%;padding:14px 15px;border-radius:13px;border:1px solid #e7d9ba;background:white;color:#17130a;outline:none}.field:focus{border-color:var(--gold)}.label{display:block;font-size:13px;color:#574c37;margin:15px 0 7px}.qr-wrap{background:white;border-radius:16px;padding:10px;width:220px;margin:18px auto}.qr-wrap img{width:100%;display:block;border-radius:8px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eadfc8;font-size:13px}.detail span{color:#786d58}.detail strong{text-align:right;overflow-wrap:anywhere}.status{margin-top:16px;padding:13px;border-radius:13px;background:#fff0c9;color:#765100;font-size:13px}.status.success{background:#e7f5d9;color:#376b24}.status.error{background:#ffe5dc;color:#a33120}.timer{text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;margin:4px 0 12px}.copy{border:1px solid #eadfc8;background:#fff8e9;color:#5a4a2c;border-radius:9px;padding:5px 9px;font-size:11px;cursor:pointer}.tiny{font-size:11px;color:#827761}.hidden{display:none!important}
+@media(min-width:700px){header{height:64px}.nav{height:64px}.menu{display:none}.navlinks{display:flex}.nav>.btn{display:block}.hero{padding-bottom:60px;background:linear-gradient(var(--gold) 0 260px,var(--cream) 260px)}.hero-screen{height:360px}.hero-inner{width:min(850px,calc(100% - 40px))}.features{grid-template-columns:repeat(2,1fr);gap:16px}.feature{min-height:220px;padding:28px}.feature-icon{height:110px;font-size:58px}.feature h3{font-size:16px}.feature p{font-size:13px}.steps{grid-template-columns:repeat(3,1fr)}.pricing{justify-content:center;overflow:visible;padding:0 0 12px}.plan{flex:1 1 0;max-width:330px;padding:20px}.plan h3{font-size:16px}.plan ul{font-size:11px}.price{font-size:32px}.footer-row{grid-template-columns:1.2fr 1fr}.footer-tag{font-size:32px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
+
 <header><div class="wrap nav">
-<a class="brand" href="#"><span class="brand-mark">✦</span><span>LOCKET <span style="color:var(--cyan)">PLUS</span></span></a>
-<nav class="navlinks"><a href="#benefits">Quyền lợi</a><a href="#how">Cách sử dụng</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
-<a class="btn" href="#pricing">Xem bảng giá</a>
+<a class="brand" href="#"><span class="brand-mark">♥</span><span>Locket</span></a>
+<nav class="navlinks"><a href="#benefits">Quyền lợi</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
+<span class="menu" aria-label="Menu">≡</span>
 </div></header>
-
 <main>
-<div class="wrap hero">
-<div>
-<div class="eyebrow"><i class="dot"></i> DỊCH VỤ HỖ TRỢ LOCKET</div>
-<h1>Khoảnh khắc của bạn,<br><span>trọn vẹn hơn.</span></h1>
-<p class="lead">Chọn gói dịch vụ phù hợp, tạo đơn nhanh và theo dõi thanh toán ngay trên website. Bảng giá được công khai rõ ràng, hỗ trợ trên điện thoại và máy tính.</p>
-<div class="hero-actions"><a class="btn" href="#pricing">Khám phá các gói <span aria-hidden="true">→</span></a><a class="btn btn-outline" href="#how">Xem cách đặt hàng</a></div>
-<div class="trust"><span>✓ Không yêu cầu mật khẩu</span><span>✓ Thanh toán QR</span><span>✓ Hỗ trợ mobile</span></div>
-</div>
-<div class="hero-art" aria-label="Minh họa giao diện Locket">
-<div class="orb"></div><div class="phone"><div class="phone-screen"><div class="phone-top"><b>9:41</b><span>● ● ●</span></div><div style="margin-top:22px;font-weight:850;font-size:21px">Your little moments</div><div style="font-size:11px;color:#aab6d1">A little closer, every day.</div><div class="photo-grid"><div class="photo"></div><div class="photo"></div><div class="photo"></div><div class="photo"></div></div><div class="phone-label">✦ Make every moment count.</div></div></div>
-</div>
-</div>
-
-<section id="benefits"><div class="wrap">
-<div class="section-head"><div class="kicker">Trải nghiệm đơn giản</div><h2>Mọi thứ rõ ràng ngay từ đầu</h2><p>Thông tin dịch vụ, giá và quy trình đặt hàng được trình bày minh bạch để bạn dễ lựa chọn.</p></div>
-<div class="grid3">
-<article class="feature glass"><div class="iconbox">🔐</div><h3>Không nhập mật khẩu</h3><p>Form chỉ nhận username hoặc đường dẫn cần thiết. Không yêu cầu mật khẩu hay mã OTP của tài khoản.</p></article>
-<article class="feature glass"><div class="iconbox">💳</div><h3>Thanh toán bằng QR</h3><p>Mã QR được tạo theo từng đơn hàng, kèm nội dung chuyển khoản để hệ thống đối chiếu.</p></article>
-<article class="feature glass"><div class="iconbox">📱</div><h3>Tối ưu điện thoại</h3><p>Giao diện co giãn theo màn hình, thao tác dễ dàng trên iPhone, Android, tablet và desktop.</p></article>
-</div>
+<div class="hero"><div class="hero-inner">
+<div class="hero-screen"><div class="hero-brand"><span class="brand-mark">♥</span>Locket</div></div>
+<div class="hero-caption">Mua Gold　♥　Locket</div><span class="down">⌄</span>
+</div></div>
+<section id="benefits"><div class="wrap features">
+<article class="feature"><div class="feature-icon">💬🧡</div><h3>Không tải app thứ 3</h3><p>Những gì bạn nhận được khi nâng cấp Gold</p></article>
+<article class="feature"><div class="feature-icon">🧍🛡️</div><h3>Không dụ̣ng tới iCloud</h3><p>Chọn gói và nâng cấp ngay trên trang</p></article>
+<article class="feature"><div class="feature-icon">🧩🧡</div><h3>Không cần tài khoản, mật khẩu</h3><p>Khách đã nâng cấp Gold nói gì</p></article>
+<article class="feature"><div class="feature-icon">📱</div><h3>Chỉ dùng 5 bước</h3><p>Hướng dẫn cài DNS để dùng Gold</p></article>
 </div></section>
-
-<section id="how"><div class="wrap">
-<div class="section-head"><div class="kicker">3 bước đơn giản</div><h2>Đặt hàng chỉ trong vài phút</h2><p>Hãy kiểm tra kỹ thông tin và số tiền trước khi chuyển khoản.</p></div>
-<div class="steps">
-<article class="step glass"><div class="num">BƯỚC 01</div><h3>Chọn gói dịch vụ</h3><p>Nhập username hoặc link Locket và chọn gói phù hợp với nhu cầu.</p></article>
-<article class="step glass"><div class="num">BƯỚC 02</div><h3>Quét mã thanh toán</h3><p>Quét VietQR, giữ nguyên số tiền và nội dung chuyển khoản của đơn.</p></article>
-<article class="step glass"><div class="num">BƯỚC 03</div><h3>Theo dõi trạng thái</h3><p>Website tự kiểm tra trạng thái đơn. Nếu cần xử lý thủ công, bộ phận hỗ trợ sẽ tiếp nhận.</p></article>
-</div>
-</div></section>
-
 <section id="pricing"><div class="wrap">
-<div class="section-head"><div class="kicker">Bảng giá linh hoạt</div><h2>Chọn gói phù hợp với bạn</h2><p>Giá được tải từ máy chủ để bạn có thể thay đổi tập trung mà không cần sửa giao diện.</p></div>
-<div id="plans" class="pricing"><div class="plan glass"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
-<p class="note">Giá hiển thị là giá do đơn vị vận hành cấu hình. Vui lòng kiểm tra thông tin trước khi thanh toán.</p>
+<div class="section-head"><div class="kicker">BẢNG GIÁ</div><h2>Chọn gói,<br>nâng cấp ngay</h2></div>
+<div id="plans" class="pricing"><div class="plan popular"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
+<p class="note">Đã có Gold?</p>
+<div style="display:flex;justify-content:center;gap:8px;margin:8px auto 0"><a class="btn" style="font-size:10px;padding:9px 16px" href="#how">Cài lại DNS</a><a class="btn" style="font-size:10px;padding:9px 16px" href="#faq">Đổi khung viên</a></div>
 </div></section>
-
-<section id="faq"><div class="wrap">
-<div class="section-head"><div class="kicker">Hỗ trợ</div><h2>Câu hỏi thường gặp</h2></div>
-<div class="faq">
-<details class="glass"><summary>Tôi có cần cung cấp mật khẩu Locket không?</summary><p>Không. Website mẫu này chỉ nhận username hoặc đường dẫn. Không nhập mật khẩu, OTP hay thông tin đăng nhập.</p></details>
-<details class="glass"><summary>Thanh toán xong bao lâu thì đơn được xác nhận?</summary><p>Trạng thái được kiểm tra tự động. Thời gian xác nhận phụ thuộc vào ngân hàng, webhook và cấu hình máy chủ.</p></details>
-<details class="glass"><summary>Nếu đã chuyển tiền nhưng đơn chưa cập nhật?</summary><p>Giữ lại biên nhận và liên hệ bộ phận hỗ trợ. Không chuyển khoản lần thứ hai cho cùng một đơn nếu chưa được xác minh.</p></details>
-<details class="glass"><summary>Website có liên kết chính thức với Locket không?</summary><p>Đây là giao diện dịch vụ độc lập, không phải website chính thức của Locket. Chỉ sử dụng dịch vụ có quyền cung cấp và tuân thủ điều khoản của nhà cung cấp liên quan.</p></details>
-</div>
-</div></section>
+<section id="how"><div class="wrap"><div class="section-head"><div class="kicker">HƯỚNG DẪN</div><h2>Cách sử dụng</h2></div><div class="steps">
+<article class="step"><div class="num">BƯỚC 01</div><h3>Chọn gói dịch vụ</h3><p>Chọn gói phù hợp và nhập thông tin cần thiết.</p></article>
+<article class="step"><div class="num">BƯỚC 02</div><h3>Thanh toán QR</h3><p>Quét mã và chuyển đúng số tiền, nội dung đơn hàng.</p></article>
+<article class="step"><div class="num">BƯỚC 03</div><h3>Theo dõi đơn hàng</h3><p>Kiểm tra trạng thái đơn ngay trên website.</p></article>
+</div></div></section>
+<section id="faq"><div class="wrap"><div class="section-head"><div class="kicker">HỖ TRỢ</div><h2>Câu hỏi thường gặp</h2></div><div class="faq">
+<details><summary>Tôi có cần cung cấp mật khẩu Locket không?</summary><p>Không. Không nhập mật khẩu, OTP hay thông tin đăng nhập.</p></details>
+<details><summary>Thanh toán xong bao lâu thì đơn được xác nhận?</summary><p>Trạng thái phụ thuộc vào xác nhận thanh toán và cấu hình máy chủ.</p></details>
+<details><summary>Website có phải trang chính thức của Locket không?</summary><p>Đây là website dịch vụ độc lập, không phải website chính thức của Locket.</p></details>
+</div></div></section>
 </main>
-
-<footer><div class="wrap footer-row"><div><b>LOCKET PLUS</b><div class="tiny">Dịch vụ độc lập · Không phải website chính thức của Locket</div></div><div>© <span id="year"></span> Locket Plus. All rights reserved.</div></div></footer>
-
+<footer><div class="wrap footer-row">
+<div><div class="footer-brand"><span class="brand-mark" style="display:inline-grid">♥</span> Locket</div><div class="tiny">© 2026 Uplocket</div></div>
+<div class="footer-links"><a href="#pricing">Mua Gold</a><a href="#how">Hướng dẫn</a><a href="#pricing">Bảng giá</a><a href="#faq">Đánh giá</a><a href="#how">Cài DNS</a><a href="#how">Cài DNS</a><a href="#faq">Tùy chỉnh khung</a><a href="#faq">Về Uplocket</a><a href="#faq">Giới thiệu</a></div>
+<div class="footer-tag">BEST FRIENDS FIRST</div>
+</div></footer>
 <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-card glass">
 <button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
