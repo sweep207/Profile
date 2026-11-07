@@ -212,31 +212,60 @@ async function lookupInstallLink(request, env, origin) {
   return json({success:true,install_url:row.install_url,plan:row.plan,created_at:row.created_at,activation_date:row.activation_date||null},200,origin);
 }
 async function createOrder(request, env, origin) {
-  if(!await rateLimit(request,env)) return json({error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
-  let body; try{body=await request.json();}catch{return json({error:"Dữ liệu không hợp lệ"},400,origin);}
-  const username=String(body.username||"").trim();
-  const plan=PLANS.find(p=>p.id===String(body.plan||""));
-  if(!username || username.length>100 || /[<>]/.test(username)) return json({error:"Username hoặc link không hợp lệ"},400,origin);
-  if(!plan || !Number.isSafeInteger(plan.price) || plan.price<=0) return json({error:"Gói dịch vụ chưa được cấu hình hợp lệ"},400,origin);
-  if(!env.BANK_ID || !env.BANK_ACCOUNT || !env.BANK_ACCOUNT_NAME) return json({error:"Máy chủ chưa cấu hình tài khoản nhận tiền"},503,origin);
+  try {
+    if(!await rateLimit(request,env)) return json({success:false,error:"Bạn thao tác quá nhanh. Vui lòng thử lại sau."},429,origin);
+    let body;
+    try { body=await request.json(); }
+    catch { return json({success:false,error:"Dữ liệu đơn hàng không hợp lệ."},400,origin); }
 
-  // Xác minh tài khoản ở phía Worker trước khi tạo đơn hoặc sinh mã QR.
-  const verification = await verifyLocketAccount(username, env);
-  if (!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
-  const verifiedUsername = verification.username;
+    const username=String(body.username||"").trim();
+    const plan=PLANS.find(p=>p.id===String(body.plan||""));
+    if(!username || username.length>100 || /[<>]/.test(username)) return json({success:false,error:"Username hoặc link không hợp lệ."},400,origin);
+    if(!plan || !Number.isSafeInteger(plan.price) || plan.price<=0) return json({success:false,error:"Gói dịch vụ chưa được cấu hình hợp lệ."},400,origin);
+    if(!env.BANK_ID || !env.BANK_ACCOUNT || !env.BANK_ACCOUNT_NAME) return json({success:false,error:"Máy chủ chưa cấu hình tài khoản nhận tiền."},503,origin);
 
-  const id=crypto.randomUUID(), code=await orderCode(env), expires=Date.now()+10*60*1000;
-  await env.DB.prepare(`
-    INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at,activation_date)
-    VALUES(?,?,?,?,?,'pending',?,?)
-  `).bind(id,code,verifiedUsername,plan.id,plan.price,expires,String(body.activationDate||'')).run();
+    // Xác minh lại username ở phía máy chủ trước khi tạo đơn.
+    const verification = await verifyLocketAccount(username, env);
+    if (!verification.ok) return json({success:false,error:verification.error},verification.status,origin);
+    const verifiedUsername = verification.username;
 
-  const qr=new URL(`https://img.vietqr.io/image/${encodeURIComponent(env.BANK_ID)}-${encodeURIComponent(env.BANK_ACCOUNT)}-compact2.png`);
-  qr.searchParams.set("amount",String(plan.price));
-  qr.searchParams.set("addInfo",code);
-  qr.searchParams.set("accountName",env.BANK_ACCOUNT_NAME);
-  return json({success:true,order_code:code,amount:plan.price,plan:plan.name,expires_at:expires,qr_url:qr.toString()},200,origin);
+    // Tự bổ sung cột ngày kích hoạt cho D1 cũ nếu database chưa có cột này.
+    const columns = await env.DB.prepare("PRAGMA table_info(orders)").all();
+    const hasActivationDate = (columns.results || []).some(col => col.name === "activation_date");
+    if (!hasActivationDate) {
+      await env.DB.prepare("ALTER TABLE orders ADD COLUMN activation_date TEXT").run();
+    }
+
+    const id=crypto.randomUUID();
+    const code=await orderCode(env);
+    const expires=Date.now()+10*60*1000;
+    const activationDate=String(body.activationDate||"").trim();
+    if (activationDate && !/^\\d{4}-\\d{2}-\\d{2}$/.test(activationDate)) {
+      return json({success:false,error:"Ngày kích hoạt không hợp lệ."},400,origin);
+    }
+    await env.DB.prepare(`
+      INSERT INTO orders(id,order_code,username,plan,amount,status,expires_at,activation_date)
+      VALUES(?,?,?,?,?,'pending',?,?)
+    `).bind(id,code,verifiedUsername,plan.id,plan.price,expires,activationDate).run();
+
+    const qr=new URL(`https://img.vietqr.io/image/${encodeURIComponent(env.BANK_ID)}-${encodeURIComponent(env.BANK_ACCOUNT)}-compact2.png`);
+    qr.searchParams.set("amount",String(plan.price));
+    qr.searchParams.set("addInfo",code);
+    qr.searchParams.set("accountName",env.BANK_ACCOUNT_NAME);
+    return json({success:true,order_code:code,amount:plan.price,plan:plan.name,expires_at:expires,qr_url:qr.toString()},200,origin);
+  } catch (error) {
+    const message=String(error?.message||"Lỗi không xác định");
+    console.error("Create order failed:",message);
+    // Trả lỗi vận hành an toàn để dễ xác định nguyên nhân, không tiết lộ thông tin bí mật.
+    const publicMessage=/no such table|no such column|has no column named/i.test(message)
+      ? "Cơ sở dữ liệu đơn hàng chưa đúng cấu trúc. Vui lòng báo quản trị viên kiểm tra D1."
+      : /UPLOCKET|Uplocket|lookup|fetch failed|timed out/i.test(message)
+        ? "Dịch vụ xác minh Locket đang lỗi. Vui lòng thử lại sau."
+        : "Không thể tạo đơn hàng lúc này. Vui lòng thử lại sau.";
+    return json({success:false,error:publicMessage},500,origin);
+  }
 }
+
 async function checkPayment(request, env, origin) {
   const code=new URL(request.url).searchParams.get("order_code");
   if(!code || !/^LOCKET(?:\d{6}|[A-F0-9]{12})$/.test(code)) return json({error:"Mã đơn không hợp lệ"},400,origin);
