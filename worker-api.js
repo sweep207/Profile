@@ -4,9 +4,10 @@
 // Set SEPAY_API_KEY as a Worker secret before enabling the SePay webhook.
 
 const PLANS = [
-  { id: "month", label: "LINH HOẠT", name: "Gói 1 Tháng", duration: "30 ngày", price: 30000, compare_at: 49000, badge: "", featured: false, button_text: "Chọn gói 1 tháng", features: ["Thời hạn 30 ngày", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"] },
-  { id: "year", label: "TIẾT KIỆM", name: "Gói 1 Năm", duration: "365 ngày", price: 150000, compare_at: 199000, badge: "ĐƯỢC CHỌN NHIỀU", featured: true, button_text: "Chọn gói 1 năm", features: ["Thời hạn 365 ngày", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"] },
-  { id: "lifetime", label: "TRỌN ĐỜI", name: "Gói Vĩnh Viễn", duration: "Theo điều kiện nhà cung cấp", price: 300000, compare_at: 399000, badge: "", featured: false, button_text: "Chọn gói vĩnh viễn", features: ["Thanh toán một lần", "Hỗ trợ theo chính sách dịch vụ", "Theo dõi đơn hàng trực tuyến"] }
+  { id:"trial", label:"DÙNG THỬ", name:"Locket Gold Trial", duration:"1 ngày", price:4000, compare_at:0, badge:"TRIAL", featured:true, button_text:"Đang chọn gói này", features:["Hạn sử dụng: 1 ngày","Quay video 30 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"pro", label:"PRO", name:"Locket Gold Pro", duration:"180 ngày", price:30000, compare_at:0, badge:"PRO", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: 6 tháng","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"premium", label:"PREMIUM", name:"Locket Gold Premium", duration:"365 ngày", price:50000, compare_at:0, badge:"PREMIUM", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: 1 năm","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] },
+  { id:"forever", label:"FOREVER", name:"Locket Gold Forever", duration:"Trọn đời", price:130000, compare_at:0, badge:"FOREVER", featured:false, button_text:"Chọn gói này", features:["Hạn sử dụng: Vĩnh viễn","Quay video 60 giây","Up ảnh và video từ bộ sưu tập","Ghi âm khi quay video","Khung widget tuỳ chỉnh","Photobooth cực đẹp","Filter AI siêu xịn","Tặng Spotify Premium miễn phí","Không liên quan đến iCloud"] }
 ];
 
 function corsHeaders(origin, env) {
@@ -106,6 +107,19 @@ async function sepayWebhook(request, env) {
   }
   return Response.json({ success: true });
 }
+
+async function recentPurchases(env, origin) {
+  const rows = await env.DB.prepare("SELECT username, plan, created_at FROM orders WHERE status IN ('paid','processing','completed') ORDER BY created_at DESC LIMIT 12").all();
+  const names = Object.fromEntries(PLANS.map(p => [p.id, p.name]));
+  const items = (rows.results || []).map(row => {
+    const raw = String(row.username || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "");
+    const user = (raw.split(/[/?#]/)[0] || "Khách hàng").replace(/[^a-zA-Z0-9_.-]/g, "");
+    const buyer = user.length <= 2 ? user.slice(0,1) + "***" : user.slice(0,2) + "***";
+    return { buyer, plan_name: names[row.plan] || "Locket Gold", created_at: Number(row.created_at) };
+  });
+  return reply({ items }, 200, origin, env);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
