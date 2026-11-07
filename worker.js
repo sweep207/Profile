@@ -195,7 +195,7 @@ async function recentPurchases(env, origin) {
   ).all();
   const names = Object.fromEntries(PLANS.map(p => [p.id, p.name]));
   const items = (rows.results || []).map(row => {
-    const raw = String(row.username || "").trim().replace(/^https?:\\/\\//i, "").replace(/^www\\./i, "").replace(/\\/$/, "");
+    const raw = String(row.username || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "");
     const user = (raw.split(/[/?#]/)[0] || "Khách hàng").replace(/[^a-zA-Z0-9_.-]/g, "");
     const buyer = user.length <= 2 ? user[0] + "***" : user.slice(0, 2) + "***";
     return { buyer, plan_name: names[row.plan] || "Locket Gold", created_at: Number(row.created_at) };
