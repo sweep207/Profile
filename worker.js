@@ -270,7 +270,8 @@ async function processUpgrade(request, env) {
 export default {
   async fetch(request,env) {
     const url=new URL(request.url);
-    if (!env.DB && url.pathname !== "/health") return json({error:"D1 binding DB chưa được cấu hình."},503);\n    const origin=allowedOrigin(request,env);
+    if (!env.DB && url.pathname !== "/health") return json({error:"D1 binding DB chưa được cấu hình."},503);
+    const origin=allowedOrigin(request,env);
     if(request.method==="OPTIONS"){
       if(origin===null) return new Response(null,{status:403});
       return new Response(null,{status:204,headers:{
