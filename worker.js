@@ -189,7 +189,7 @@ async function paymentWebhook(request, env, rawBody) {
   return new Response(JSON.stringify({success:true}), {status:200,headers:{"Content-Type":"application/json"}});
 }
 
-async function recentPurchases(env) {
+async function recentPurchases(env, origin) {
   const rows = await env.DB.prepare(
     "SELECT username, plan, status, created_at FROM orders WHERE status IN ('paid','processing','completed') ORDER BY created_at DESC LIMIT 12"
   ).all();
@@ -200,7 +200,7 @@ async function recentPurchases(env) {
     const buyer = user.length <= 2 ? user[0] + "***" : user.slice(0, 2) + "***";
     return { buyer, plan_name: names[row.plan] || "Locket Gold", created_at: Number(row.created_at) };
   });
-  return json({ items }, 200, "");
+  return json({ items }, 200, origin || "");
 }
 \nasync function processUpgrade(request, env) {
   const auth=request.headers.get("Authorization")||"";
@@ -226,7 +226,7 @@ export default {
     if(!isWebhook && origin===null) return json({error:"Origin not allowed"},403,"");
     try{
       if(request.method==="GET" && url.pathname==="/health") return json({ok:true});
-      if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");\n      if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env);
+      if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");\n      if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="POST" && url.pathname==="/create-order") return await createOrder(request,env,origin||"");
       if(request.method==="GET" && url.pathname==="/check-payment") return await checkPayment(request,env,origin||"");
       if(request.method==="POST" && url.pathname==="/webhook/sepay") { const rawBody=await request.text(); return await paymentWebhook(request,env,rawBody); }
