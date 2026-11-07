@@ -285,7 +285,10 @@ async function checkPayment(request, env, origin) {
 }
 async function activatePaidOrder(order, env) {
   if (!env.UPLOCKET_API_KEY) {
-    console.error("UPLOCKET_API_KEY is not configured; order remains paid.");
+    const message = "Máy chủ chưa cấu hình UPLOCKET_API_KEY. Đơn đã thanh toán, cần cấu hình API key rồi xử lý lại.";
+    console.error(message);
+    await env.DB.prepare("UPDATE orders SET status='activation_failed', provider_error=? WHERE id=? AND status='paid'")
+      .bind(message, order.id).run();
     return;
   }
   const plan = PLANS.find(p => p.id === order.plan);
@@ -309,8 +312,15 @@ async function activatePaidOrder(order, env) {
       throw new Error("Uplocket: " + String(data.error || data.message || ("HTTP " + response.status)).slice(0, 500));
     }
     const d = data.data;
+    const installUrl = String(d.installUrl || d.install_url || d.downloadUrl || d.download_url || d.enrollUrl || d.enroll_url || d.url || "").trim();
+    if (!installUrl) {
+      throw new Error("Uplocket phản hồi thành công nhưng không có link cài đặt DNS. Đơn được giữ ở trạng thái lỗi để kiểm tra, không báo kích hoạt thành công giả.");
+    }
+    let parsedInstallUrl;
+    try { parsedInstallUrl = new URL(installUrl); } catch { throw new Error("Uplocket trả về link DNS không hợp lệ."); }
+    if (parsedInstallUrl.protocol !== "https:") throw new Error("Uplocket trả về link DNS không an toàn.");
     await env.DB.prepare("UPDATE orders SET status='completed', provider_activation_id=?, activation_code=?, install_url=?, provider_error=NULL WHERE id=? AND status='processing'")
-      .bind(String(d.id || ""),String(d.activationCode || ""),String(d.installUrl || d.downloadUrl || d.enrollUrl || d.url || ""),order.id).run();
+      .bind(String(d.id || ""),String(d.activationCode || d.activation_code || ""),installUrl,order.id).run();
   } catch (e) {
     const message = String(e?.message || "Không xác định").slice(0, 500);
     console.error("Uplocket activation error:", message);
