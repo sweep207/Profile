@@ -117,3 +117,28 @@ Sửa các trường `price`, `duration`, `features` trong mảng `PLANS` ở đ
 Sau khi deploy Worker, thay `https://YOUR-WORKER.workers.dev` bằng URL Worker thật trong `index.html`, `about.html` và `frames.html`. Không cần API cho `install.html`.
 
 **Lưu ý:** Nút trên trang chủ hiện kiểm tra định dạng và tên miền của link Locket ở trình duyệt; nó chưa gọi API xác minh tài khoản trực tiếp với Locket. Không hiển thị thông báo rằng tài khoản đã được xác minh thành công nếu chưa có endpoint xác minh thực tế.
+
+
+## 11. Quản lý khung widget và video hướng dẫn qua API
+
+### Khung widget
+- Tạo R2 bucket tên `locket-widget-frames` và giữ binding `FRAMES_BUCKET` trong `wrangler.toml`.
+- Chạy lại schema để tạo bảng `frames` và `site_settings` (các lệnh `CREATE TABLE IF NOT EXISTS` không làm mất dữ liệu cũ):
+  ```bash
+  npx wrangler d1 execute locket-plus-orders --remote --file=./schema.sql
+  ```
+- Đặt mã quản trị bí mật:
+  ```bash
+  npx wrangler secret put FRAME_ADMIN_TOKEN
+  ```
+- Mở `frames.html`, mở mục **Tự thêm khung mới qua API**, nhập mã quản trị, tên, danh mục, mô tả và chọn ảnh JPG/PNG/WEBP tối đa 5 MB. Trang gửi ảnh đến `POST /admin/frames`; thư viện công khai lấy dữ liệu từ `GET /frames`. Xoá khung gọi `DELETE /admin/frames/:id`.
+
+### Video hướng dẫn cài đặt
+- Mở `install.html`, phần **Quản lý video hướng dẫn**.
+- Nhập cùng mã `FRAME_ADMIN_TOKEN` và dán link HTTPS YouTube, Vimeo hoặc MP4.
+- Trang lưu link qua `POST /admin/install-video`; khách xem video từ `GET /install-video`. Bấm **Gỡ video** để xoá video hiện tại.
+
+### Sau khi cập nhật
+- Thay `https://YOUR-WORKER.workers.dev` trong `frames.html` và `install.html` bằng URL Worker đang chạy.
+- Deploy lại Worker sau khi cập nhật mã nguồn: `npx wrangler deploy`.
+- Không nhập API key thật vào HTML/GitHub. Mã `FRAME_ADMIN_TOKEN` chỉ lưu trong Cloudflare Worker Secret và chỉ nhập khi quản trị.
