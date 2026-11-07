@@ -13,3 +13,7 @@ database_id = "REPLACE_WITH_D1_DATABASE_ID"
 # BANK_ID = "MB"
 # BANK_ACCOUNT = "YOUR_ACCOUNT_NUMBER"
 # BANK_ACCOUNT_NAME = "YOUR_ACCOUNT_NAME"
+
+[[r2_buckets]]
+binding = "FRAMES_BUCKET"
+bucket_name = "locket-widget-frames"
