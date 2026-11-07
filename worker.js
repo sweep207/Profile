@@ -270,7 +270,6 @@ async function processUpgrade(request, env) {
 export default {
   async fetch(request,env) {
     const url=new URL(request.url);
-    if (!env.DB && url.pathname !== "/health") return json({error:"D1 binding DB chưa được cấu hình."},503);
     const origin=allowedOrigin(request,env);
     if(request.method==="OPTIONS"){
       if(origin===null) return new Response(null,{status:403});
@@ -282,7 +281,8 @@ export default {
     const isWebhook=url.pathname==="/webhook/sepay";
     if(!isWebhook && origin===null) return json({error:"Origin not allowed"},403,"");
     try{
-      if(request.method==="GET" && url.pathname==="/health") return json({ok:true,service:"Locket Gold order API"});
+      if(request.method==="GET" && url.pathname==="/health") return json({ok:Boolean(env.DB),service:"Locket Gold order API",database:Boolean(env.DB)},env.DB?200:503,origin||"");
+      if(!env.DB) return json({error:"D1 binding DB chưa được cấu hình."},503,origin||"");
       if(request.method==="GET" && url.pathname==="/plans") return json({plans:publicPlans()},200,origin||"");
       if(request.method==="GET" && url.pathname==="/recent-purchases") return await recentPurchases(env, origin);
       if(request.method==="GET" && url.pathname==="/frames") return await listFrames(env,origin);
