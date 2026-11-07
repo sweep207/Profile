@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Trang đặt dịch vụ Locket với bảng giá minh bạch và thanh toán QR.">
+<title>Locket Plus — Dịch vụ nâng cấp</title>
+<style>
+:root{--bg:#090d19;--panel:#11182a;--panel2:#151e33;--line:rgba(255,255,255,.1);--muted:#9ba8c2;--text:#f6f7fb;--purple:#9b87ff;--cyan:#6fe5dc;--green:#54d6a0;--radius:24px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 550px at 10% -5%,#34265f66,transparent 65%),radial-gradient(800px 500px at 100% 28%,#15515a44,transparent 65%),var(--bg);color:var(--text);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.glass{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid var(--line);box-shadow:0 24px 80px #0003;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+header{position:sticky;top:0;z-index:10;background:#090d19bb;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff0d}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.04em}.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#9b87ff,#53d8d1);color:#101528;font-size:20px}.navlinks{display:flex;gap:26px;color:#c0c9da;font-size:14px}.navlinks a:hover{color:white}.btn{border:0;border-radius:14px;padding:13px 20px;background:linear-gradient(110deg,#a18aff,#6b7dff);color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 30px #7664ff35;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.btn-outline{background:#ffffff0a;border:1px solid var(--line);box-shadow:none}.hero{padding:86px 0 76px;display:grid;grid-template-columns:1.1fr .9fr;gap:45px;align-items:center}.eyebrow{display:inline-flex;gap:9px;align-items:center;border:1px solid #9b87ff55;background:#9b87ff14;color:#d9d1ff;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:800;letter-spacing:.08em}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}h1{font-size:clamp(42px,6vw,68px);line-height:1.06;letter-spacing:-.055em;margin:22px 0 18px}h1 span{background:linear-gradient(100deg,#c4b6ff,#71e8df);background-clip:text;color:transparent}.lead{max-width:580px;color:#b0bbd0;font-size:17px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.trust{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px;color:#aeb9ce;font-size:13px}.trust span{display:flex;gap:7px;align-items:center}.hero-art{min-height:390px;position:relative;display:grid;place-items:center}.orb{position:absolute;width:280px;height:280px;border-radius:50%;background:linear-gradient(135deg,#927bff66,#51e0d466);filter:blur(35px)}.phone{position:relative;width:min(280px,80%);padding:12px;border-radius:36px;background:linear-gradient(145deg,#ffffff40,#ffffff08);border:1px solid #ffffff3a;transform:rotate(5deg);box-shadow:0 35px 90px #0008}.phone-screen{border-radius:27px;min-height:340px;padding:22px 17px;background:linear-gradient(155deg,#252c50,#11192b);overflow:hidden}.phone-top{display:flex;justify-content:space-between;color:#d5dcf0;font-size:11px}.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:28px}.photo{height:105px;border-radius:16px;background:linear-gradient(135deg,#e8a5b9,#6b78a9)}.photo:nth-child(2){background:linear-gradient(135deg,#6dd7c9,#315e75)}.photo:nth-child(3){background:linear-gradient(135deg,#f2c47e,#b45d6c)}.photo:nth-child(4){background:linear-gradient(135deg,#9e9cf5,#554b85)}.phone-label{margin-top:18px;padding:12px;border-radius:14px;background:#ffffff12;color:#dfe6f5;font-size:12px}
+section{padding:72px 0}.section-head{text-align:center;max-width:700px;margin:0 auto 38px}.kicker{color:var(--cyan);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.13em}.section-head h2{font-size:clamp(29px,4vw,42px);letter-spacing:-.04em;line-height:1.15;margin:12px 0}.section-head p{color:var(--muted);margin:0}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.feature{padding:25px;border-radius:22px}.iconbox{width:46px;height:46px;border-radius:15px;background:#9b87ff1c;display:grid;place-items:center;font-size:22px;margin-bottom:18px}.feature h3{margin:0 0 8px;font-size:17px}.feature p{margin:0;color:var(--muted);font-size:14px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.step{padding:23px;border-radius:20px}.num{font-size:13px;color:var(--cyan);font-weight:900;letter-spacing:.12em}.step h3{margin:9px 0 6px}.step p{margin:0;color:var(--muted);font-size:14px}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}.plan{padding:25px;border-radius:24px;position:relative;display:flex;flex-direction:column}.plan.popular{border-color:#a18aff88;box-shadow:0 22px 70px #7765ff20}.ribbon{position:absolute;top:16px;right:16px;background:#9b87ff24;color:#d9d1ff;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}.plan-label{color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.plan h3{font-size:22px;margin:9px 0 3px}.duration{color:var(--muted);font-size:13px}.price{font-size:34px;font-weight:900;letter-spacing:-.04em;margin:20px 0 0}.old-price{color:#78839b;text-decoration:line-through;font-size:13px}.plan ul{list-style:none;padding:0;margin:20px 0 25px;display:grid;gap:11px;color:#c3cde0;font-size:13px}.plan li:before{content:"✓";color:var(--green);font-weight:900;margin-right:9px}.plan .btn{width:100%;margin-top:auto}.note{text-align:center;color:#8592ab;font-size:12px;margin-top:20px}.faq{max-width:780px;margin:auto;display:grid;gap:12px}.faq details{padding:18px 21px;border-radius:17px}.faq summary{font-weight:750;cursor:pointer}.faq p{color:var(--muted);margin-bottom:0;font-size:14px}
+footer{padding:32px 0 45px;border-top:1px solid #ffffff12;color:#8592ab;font-size:13px}.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;z-index:30;background:#02040bd9;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal.open{display:flex}.modal-card{width:min(470px,100%);padding:25px;border-radius:25px;position:relative;max-height:calc(100vh - 36px);overflow:auto}.close{position:absolute;right:17px;top:14px;border:0;background:#ffffff12;color:white;border-radius:10px;width:34px;height:34px;cursor:pointer}.field{display:block;width:100%;padding:14px 15px;border-radius:13px;border:1px solid var(--line);background:#090f1e;color:white;outline:none}.field:focus{border-color:var(--purple)}.label{display:block;font-size:13px;color:#c4cde0;margin:15px 0 7px}.qr-wrap{background:white;border-radius:16px;padding:10px;width:220px;margin:18px auto}.qr-wrap img{width:100%;display:block;border-radius:8px}.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #ffffff12;font-size:13px}.detail span{color:var(--muted)}.detail strong{text-align:right;overflow-wrap:anywhere}.status{margin-top:16px;padding:13px;border-radius:13px;background:#f4b84c16;color:#f5cb78;font-size:13px}.status.success{background:#54d6a01a;color:#6ee3ad}.status.error{background:#ff66751a;color:#ff8994}.timer{text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;margin:4px 0 12px}.copy{border:1px solid var(--line);background:#ffffff0a;color:#d8dff0;border-radius:9px;padding:5px 9px;font-size:11px;cursor:pointer}.tiny{font-size:11px;color:#8390a8}.hidden{display:none!important}
+@media(max-width:800px){.navlinks{display:none}.hero{grid-template-columns:1fr;padding:58px 0 40px;gap:10px}.hero-art{min-height:330px}.grid3,.steps{grid-template-columns:1fr}.pricing{grid-template-columns:1fr;max-width:480px;margin:auto}.plan{padding:23px}.hero h1{max-width:600px}section{padding:55px 0}}
+@media(max-width:420px){.wrap{width:min(100% - 28px,1120px)}.nav{height:66px}.nav>.btn{padding:10px 13px;font-size:12px}.hero-actions .btn{width:100%}.phone{width:245px}.phone-screen{min-height:305px}.photo{height:88px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="brand" href="#"><span class="brand-mark">✦</span><span>LOCKET <span style="color:var(--cyan)">PLUS</span></span></a>
+<nav class="navlinks"><a href="#benefits">Quyền lợi</a><a href="#how">Cách sử dụng</a><a href="#pricing">Bảng giá</a><a href="#faq">FAQ</a></nav>
+<a class="btn" href="#pricing">Xem bảng giá</a>
+</div></header>
+
+<main>
+<div class="wrap hero">
+<div>
+<div class="eyebrow"><i class="dot"></i> DỊCH VỤ HỖ TRỢ LOCKET</div>
+<h1>Khoảnh khắc của bạn,<br><span>trọn vẹn hơn.</span></h1>
+<p class="lead">Chọn gói dịch vụ phù hợp, tạo đơn nhanh và theo dõi thanh toán ngay trên website. Bảng giá được công khai rõ ràng, hỗ trợ trên điện thoại và máy tính.</p>
+<div class="hero-actions"><a class="btn" href="#pricing">Khám phá các gói <span aria-hidden="true">→</span></a><a class="btn btn-outline" href="#how">Xem cách đặt hàng</a></div>
+<div class="trust"><span>✓ Không yêu cầu mật khẩu</span><span>✓ Thanh toán QR</span><span>✓ Hỗ trợ mobile</span></div>
+</div>
+<div class="hero-art" aria-label="Minh họa giao diện Locket">
+<div class="orb"></div><div class="phone"><div class="phone-screen"><div class="phone-top"><b>9:41</b><span>● ● ●</span></div><div style="margin-top:22px;font-weight:850;font-size:21px">Your little moments</div><div style="font-size:11px;color:#aab6d1">A little closer, every day.</div><div class="photo-grid"><div class="photo"></div><div class="photo"></div><div class="photo"></div><div class="photo"></div></div><div class="phone-label">✦ Make every moment count.</div></div></div>
+</div>
+</div>
+
+<section id="benefits"><div class="wrap">
+<div class="section-head"><div class="kicker">Trải nghiệm đơn giản</div><h2>Mọi thứ rõ ràng ngay từ đầu</h2><p>Thông tin dịch vụ, giá và quy trình đặt hàng được trình bày minh bạch để bạn dễ lựa chọn.</p></div>
+<div class="grid3">
+<article class="feature glass"><div class="iconbox">🔐</div><h3>Không nhập mật khẩu</h3><p>Form chỉ nhận username hoặc đường dẫn cần thiết. Không yêu cầu mật khẩu hay mã OTP của tài khoản.</p></article>
+<article class="feature glass"><div class="iconbox">💳</div><h3>Thanh toán bằng QR</h3><p>Mã QR được tạo theo từng đơn hàng, kèm nội dung chuyển khoản để hệ thống đối chiếu.</p></article>
+<article class="feature glass"><div class="iconbox">📱</div><h3>Tối ưu điện thoại</h3><p>Giao diện co giãn theo màn hình, thao tác dễ dàng trên iPhone, Android, tablet và desktop.</p></article>
+</div>
+</div></section>
+
+<section id="how"><div class="wrap">
+<div class="section-head"><div class="kicker">3 bước đơn giản</div><h2>Đặt hàng chỉ trong vài phút</h2><p>Hãy kiểm tra kỹ thông tin và số tiền trước khi chuyển khoản.</p></div>
+<div class="steps">
+<article class="step glass"><div class="num">BƯỚC 01</div><h3>Chọn gói dịch vụ</h3><p>Nhập username hoặc link Locket và chọn gói phù hợp với nhu cầu.</p></article>
+<article class="step glass"><div class="num">BƯỚC 02</div><h3>Quét mã thanh toán</h3><p>Quét VietQR, giữ nguyên số tiền và nội dung chuyển khoản của đơn.</p></article>
+<article class="step glass"><div class="num">BƯỚC 03</div><h3>Theo dõi trạng thái</h3><p>Website tự kiểm tra trạng thái đơn. Nếu cần xử lý thủ công, bộ phận hỗ trợ sẽ tiếp nhận.</p></article>
+</div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+<div class="section-head"><div class="kicker">Bảng giá linh hoạt</div><h2>Chọn gói phù hợp với bạn</h2><p>Giá được tải từ máy chủ để bạn có thể thay đổi tập trung mà không cần sửa giao diện.</p></div>
+<div id="plans" class="pricing"><div class="plan glass"><div class="plan-label">ĐANG TẢI</div><h3>Bảng giá dịch vụ</h3><p class="duration">Vui lòng đợi trong giây lát...</p></div></div>
+<p class="note">Giá hiển thị là giá do đơn vị vận hành cấu hình. Vui lòng kiểm tra thông tin trước khi thanh toán.</p>
+</div></section>
+
+<section id="faq"><div class="wrap">
+<div class="section-head"><div class="kicker">Hỗ trợ</div><h2>Câu hỏi thường gặp</h2></div>
+<div class="faq">
+<details class="glass"><summary>Tôi có cần cung cấp mật khẩu Locket không?</summary><p>Không. Website mẫu này chỉ nhận username hoặc đường dẫn. Không nhập mật khẩu, OTP hay thông tin đăng nhập.</p></details>
+<details class="glass"><summary>Thanh toán xong bao lâu thì đơn được xác nhận?</summary><p>Trạng thái được kiểm tra tự động. Thời gian xác nhận phụ thuộc vào ngân hàng, webhook và cấu hình máy chủ.</p></details>
+<details class="glass"><summary>Nếu đã chuyển tiền nhưng đơn chưa cập nhật?</summary><p>Giữ lại biên nhận và liên hệ bộ phận hỗ trợ. Không chuyển khoản lần thứ hai cho cùng một đơn nếu chưa được xác minh.</p></details>
+<details class="glass"><summary>Website có liên kết chính thức với Locket không?</summary><p>Đây là giao diện dịch vụ độc lập, không phải website chính thức của Locket. Chỉ sử dụng dịch vụ có quyền cung cấp và tuân thủ điều khoản của nhà cung cấp liên quan.</p></details>
+</div>
+</div></section>
+</main>
+
+<footer><div class="wrap footer-row"><div><b>LOCKET PLUS</b><div class="tiny">Dịch vụ độc lập · Không phải website chính thức của Locket</div></div><div>© <span id="year"></span> Locket Plus. All rights reserved.</div></div></footer>
+
+<div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-card glass">
+<button class="close" onclick="closeModal()" aria-label="Đóng">✕</button>
+<div id="formView">
+<div class="kicker">TẠO ĐƠN HÀNG</div><h2 id="modalTitle" style="margin:8px 0 2px">Thông tin đặt hàng</h2><p class="tiny">Chỉ nhập username hoặc link công khai cần thiết.</p>
+<label class="label" for="username">Link Locket hoặc Username</label><input class="field" id="username" maxlength="100" placeholder="Nhập username hoặc link Locket" autocomplete="off">
+<div class="detail" style="margin:14px 0"><span>Gói đã chọn</span><strong id="selectedPlan">—</strong></div>
+<div class="detail"><span>Thành tiền</span><strong id="selectedPrice">—</strong></div>
+<p id="formError" class="tiny" style="color:#ff8994;min-height:18px"></p>
+<button id="createBtn" class="btn" style="width:100%" onclick="createOrder()">Tạo đơn & thanh toán</button>
+</div>
+<div id="paymentView" class="hidden">
+<div class="kicker">THANH TOÁN ĐƠN HÀNG</div><h2 style="margin:8px 0 0">Quét mã VietQR</h2><p class="tiny">Chuyển đúng số tiền và giữ nguyên nội dung chuyển khoản.</p>
+<div class="qr-wrap"><img id="qrImage" alt="Mã QR thanh toán"></div>
+<div class="detail"><span>Mã đơn</span><strong id="orderCode"></strong></div>
+<div class="detail"><span>Số tiền</span><strong id="orderAmount"></strong></div>
+<div class="detail"><span>Nội dung CK</span><strong><span id="transferContent"></span> <button class="copy" onclick="copyOrderCode()">Sao chép</button></strong></div>
+<p class="tiny" style="text-align:center;margin-top:13px">Thời gian giữ đơn còn lại</p><div id="countdown" class="timer">10:00</div>
+<div id="paymentStatus" class="status">◷ Đang chờ thanh toán...</div>
+<p class="tiny" style="margin-top:12px">Trang tự kiểm tra trạng thái mỗi 3 giây. Không đóng trang nếu muốn tiếp tục theo dõi.</p>
+<button class="btn btn-outline" style="width:100%;margin-top:14px" onclick="closeModal()">Đóng cửa sổ</button>
+</div>
+</div></div>
+
+<script>
+const API_BASE = "https://YOUR-WORKER.workers.dev"; // Thay bằng URL Cloudflare Worker
+let plans = [], selected = null, activeOrder = null, poller = null, ticker = null, expiresAt = 0, busy = false;
+const money = n => new Intl.NumberFormat("vi-VN").format(n) + "đ";
+document.getElementById("year").textContent = new Date().getFullYear();
+
+async function loadPlans(){
+  const host = document.getElementById("plans");
+  try{
+    const r = await fetch(API_BASE + "/plans", {cache:"no-store"});
+    if(!r.ok) throw new Error("Không tải được bảng giá");
+    const d = await r.json();
+    plans = d.plans || [];
+    if(!plans.length) throw new Error("Chưa có gói dịch vụ");
+    host.innerHTML = plans.map((p,i)=>`
+      <article class="plan glass ${p.featured ? "popular" : ""}">
+        ${p.badge ? `<span class="ribbon">${escapeHtml(p.badge)}</span>` : ""}
+        <div class="plan-label">${escapeHtml(p.label || "GÓI DỊCH VỤ")}</div>
+        <h3>${escapeHtml(p.name)}</h3>
+        <div class="duration">${escapeHtml(p.duration || "")}</div>
+        <div class="price">${money(p.price)}</div>
+        ${p.compare_at ? `<div class="old-price">${money(p.compare_at)}</div>` : ""}
+        <ul>${(p.features || []).map(f=>`<li>${escapeHtml(f)}</li>`).join("")}</ul>
+        <button class="btn" onclick="openOrder('${escapeAttr(p.id)}')">${escapeHtml(p.button_text || "Chọn gói này")} →</button>
+      </article>`).join("");
+  }catch(e){
+    host.innerHTML = '<div class="glass plan" style="grid-column:1/-1;text-align:center"><b>Chưa tải được bảng giá</b><p class="tiny">Kiểm tra địa chỉ API Worker và thử tải lại trang.</p></div>';
+  }
+}
+function escapeHtml(s){return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function escapeAttr(s){return escapeHtml(s).replace(/"/g,"&quot;");}
+function openOrder(id){
+  selected = plans.find(p=>p.id===id);
+  if(!selected) return;
+  document.getElementById("selectedPlan").textContent = selected.name;
+  document.getElementById("selectedPrice").textContent = money(selected.price);
+  document.getElementById("username").value = "";
+  document.getElementById("formError").textContent = "";
+  document.getElementById("formView").classList.remove("hidden");
+  document.getElementById("paymentView").classList.add("hidden");
+  document.getElementById("orderModal").classList.add("open");
+}
+function closeModal(){
+  document.getElementById("orderModal").classList.remove("open");
+  // Không hủy đơn ở server; chỉ dừng polling trên thiết bị.
+  stopTimers();
+}
+async function createOrder(){
+  const username = document.getElementById("username").value.trim();
+  const error = document.getElementById("formError");
+  const btn = document.getElementById("createBtn");
+  error.textContent = "";
+  if(!username){error.textContent="Vui lòng nhập username hoặc link Locket.";return;}
+  if(!selected)return;
+  btn.disabled = true; btn.textContent = "Đang tạo đơn...";
+  try{
+    const r = await fetch(API_BASE + "/create-order",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username,plan:selected.id})
+    });
+    const d = await r.json();
+    if(!r.ok || !d.success) throw new Error(d.error || "Không thể tạo đơn.");
+    activeOrder = d.order_code; expiresAt = d.expires_at;
+    document.getElementById("qrImage").src = d.qr_url;
+    document.getElementById("orderCode").textContent = d.order_code;
+    document.getElementById("transferContent").textContent = d.order_code;
+    document.getElementById("orderAmount").textContent = money(d.amount);
+    document.getElementById("formView").classList.add("hidden");
+    document.getElementById("paymentView").classList.remove("hidden");
+    startCountdown(); startPolling();
+  }catch(e){error.textContent=e.message;}
+  finally{btn.disabled=false;btn.textContent="Tạo đơn & thanh toán";}
+}
+function startCountdown(){
+  clearInterval(ticker);
+  ticker=setInterval(()=>{
+    const left=Math.max(0,Math.ceil((expiresAt-Date.now())/1000));
+    document.getElementById("countdown").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0");
+    if(left<=0){clearInterval(ticker);checkPayment();}
+  },1000);
+}
+function startPolling(){clearInterval(poller);checkPayment();poller=setInterval(checkPayment,3000);}
+function stopTimers(){clearInterval(poller);clearInterval(ticker);poller=null;ticker=null;}
+async function checkPayment(){
+  if(!activeOrder || busy)return;
+  busy=true;
+  try{
+    const r=await fetch(API_BASE+"/check-payment?order_code="+encodeURIComponent(activeOrder),{cache:"no-store"});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||"Không kiểm tra được trạng thái");
+    const el=document.getElementById("paymentStatus");
+    if(d.status==="completed"){el.className="status success";el.textContent="✓ Thanh toán thành công. Đơn hàng đã hoàn tất.";stopTimers();}
+    else if(d.status==="paid"){el.textContent="✓ Đã nhận thanh toán. Đang chờ xử lý đơn.";el.className="status success";}
+    else if(d.status==="processing"){el.textContent="Đang xử lý yêu cầu của bạn..."; }
+    else if(d.status==="activation_failed"){el.className="status error";el.textContent="Đã nhận tiền nhưng xử lý dịch vụ gặp lỗi. Vui lòng liên hệ hỗ trợ.";stopTimers();}
+    else if(d.status==="expired"){el.className="status error";el.textContent="Đơn hàng đã hết hạn. Vui lòng tạo đơn mới.";stopTimers();}
+    else {el.textContent="◷ Đang chờ thanh toán...";}
+  }catch(e){console.warn(e);}
+  finally{busy=false;}
+}
+async function copyOrderCode(){
+  if(!activeOrder)return;
+  try{await navigator.clipboard.writeText(activeOrder);document.querySelector(".copy").textContent="Đã sao chép";}
+  catch{document.querySelector(".copy").textContent="Không sao chép được";}
+}
+document.getElementById("orderModal").addEventListener("click",e=>{if(e.target.id==="orderModal")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+loadPlans();
+</script>
+</body>
+</html>
